@@ -37,7 +37,11 @@ function OnBoarding(props) {
                     width: 30,
                     height: 30,
                 }}
-                typeIcon='Entypo'
+                icon={{
+                    type: 'AntDesign',
+                    name: 'arrowleft',
+                    size: 12
+                }}
                 onPress={fctTest}
             />
 
