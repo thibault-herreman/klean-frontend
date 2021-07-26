@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View, Button } from 'react-native';
 import SearchBarElement from '../lib/SearchBarElement';
+import AutoComplete from '../lib/AutoComplete'
 import { connect } from 'react-redux';
 import ButtonElement from '../lib/ButtonElement';
 import {colors} from '../lib/colors';
@@ -15,36 +16,6 @@ function OnBoarding(props) {
     return (
         <View style={styles.container}>
             <Text>OnBoarding</Text>
-
-            <ButtonElement 
-                text='Participer'
-                propStyles={{
-                    color: colors.white,
-                    bgColor: colors.secondary,
-                    fontSize: 14,
-                    fontWeight: 500,
-                    width: 154,
-                    height: 33,
-                    borderRadius: 5
-                }}
-                onPress={fctTest}
-            />
-
-            <ButtonElement 
-                propStyles={{
-                    color: colors.white,
-                    bgColor: colors.secondary,
-                    borderRadius: 100,
-                    width: 30,
-                    height: 30,
-                }}
-                icon={{
-                    type: 'AntDesign',
-                    name: 'arrowleft',
-                    size: 12
-                }}
-                onPress={fctTest}
-            />
 
             <Text>{`${props.token}`}</Text>
             <Button title="login" onPress={() => props.login("monsupertokenchercheenbdd")} />
