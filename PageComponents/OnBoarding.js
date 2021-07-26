@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, Button } from 'react-native';
 import SearchBarElement from '../lib/SearchBarElement';
 import AutoComplete from '../lib/AutoComplete'
 import { connect } from 'react-redux';
+import {ChatList} from "../lib/chatList"
 
 function OnBoarding(props) {
 
@@ -13,6 +14,9 @@ function OnBoarding(props) {
     return (
         <View style={styles.container}>
             <Text>OnBoarding</Text>
+
+            <ChatList></ChatList>
+
             <Text>{`${props.token}`}</Text>
             <Button title="login" onPress={() => props.login("monsupertokenchercheenbdd")} />
             <Button title="signOut" onPress={() => props.signOut()} />
