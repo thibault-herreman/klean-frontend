@@ -1,9 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View, Button } from 'react-native';
-import SearchBarElement from '../lib/SearchBarElement';
-import InputElement from '../lib/InputElement';
-import AutoComplete from '../lib/AutoComplete'
 import { connect } from 'react-redux';
+
 
 function OnBoarding(props) {
 
