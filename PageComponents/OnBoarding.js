@@ -1,19 +1,12 @@
 import React from 'react';
 import { StyleSheet, Text, View, Button } from 'react-native';
 import { connect } from 'react-redux';
-import {CleanWalkList} from "../lib/listCleanWalk"
 
 function OnBoarding(props) {
-
-    const fctTest = () => {
-        console.log('je test et c cool');
-    }
 
     return (
         <View style={styles.container}>
             <Text>OnBoarding</Text>
-
-            <CleanWalkList></CleanWalkList>
 
             <Text>{`${props.token}`}</Text>
             <Button title="login" onPress={() => props.login("monsupertokenchercheenbdd")} />
