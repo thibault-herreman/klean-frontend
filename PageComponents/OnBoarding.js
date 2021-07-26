@@ -1,5 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View, Button } from 'react-native';
+import SearchBarElement from '../lib/SearchBarElement';
 import { connect } from 'react-redux';
 
 
