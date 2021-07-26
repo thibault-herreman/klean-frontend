@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View, Button } from 'react-native';
 import ListCities from '../lib/ListCities'
 import { connect } from 'react-redux';
+import SearchBarElement from '../lib/SearchBarElement';
 
 function OnBoarding(props) {
 
