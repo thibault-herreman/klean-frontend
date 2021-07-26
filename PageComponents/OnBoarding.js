@@ -2,9 +2,6 @@ import React from 'react';
 import { StyleSheet, Text, View, Button } from 'react-native';
 import ListCities from '../lib/ListCities'
 import { connect } from 'react-redux';
-import ButtonElement from '../lib/ButtonElement';
-import {colors} from '../lib/colors';
-
 
 function OnBoarding(props) {
 
@@ -15,7 +12,6 @@ function OnBoarding(props) {
     return (
         <View style={styles.container}>
             <Text>OnBoarding</Text>
-
             <Text>{`${props.token}`}</Text>
             <Button title="login" onPress={() => props.login("monsupertokenchercheenbdd")} />
             <Button title="signOut" onPress={() => props.signOut()} />
