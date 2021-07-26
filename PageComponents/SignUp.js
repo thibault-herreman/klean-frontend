@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, Text, View, Button } from "react-native";
+import { StyleSheet, Text, View, Image, Button } from "react-native";
 import { connect } from "react-redux";
 import { Dimensions } from "react-native";
 import { color } from "react-native-elements/dist/helpers";
@@ -10,11 +10,12 @@ import { typography, Typography } from "../lib/typography";
 import ButtonElement from "../lib/ButtonElement";
 import InputElement from "../lib/InputElement";
 import { Colors } from "react-native/Libraries/NewAppScreen";
+import LogoKlean from "../assets/imagesKlean/LogoKlean.png";
 
 function SignUp(props) {
   return (
-    <SafeAreaView>
-      <View>
+    <SafeAreaView style={styles.safeArea}>
+      <View style={styles.mainView}>
         <View style={styles.topBanner}>
           <View style={styles.backButton}>
             <ButtonElement typeButton="back" />
@@ -37,11 +38,12 @@ function SignUp(props) {
 
         <View style={styles.register}>
           <ButtonElement typeButton="middleSecondary" text="M'inscrire" />
-        </View>
-
-        <View style={styles.register}>
           <Text style={typography.body}>Vous avez déjà un compte?</Text>
           <Text style={typography.body}>Se connecter</Text>
+        </View>
+
+        <View style={styles.logoContainer}>
+          <Image source={LogoKlean} style={styles.logo} />
         </View>
 
         {/* <Text>SignUp</Text>
@@ -77,6 +79,11 @@ function mapStateToProps(state) {
 }
 
 const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+    alignItems: "center",
+    backgroundColor: colors.white,
+  },
   topBanner: {
     justifyContent: "center",
     alignItems: "center",
@@ -101,6 +108,18 @@ const styles = StyleSheet.create({
   register: {
     marginTop: 100,
     alignItems: "center",
+  },
+  logoContainer: {
+    flex: 1,
+    width: windowDimensions.width,
+    justifyContent:"flex-end",
+    alignItems: "center",
+  },
+  logo: {
+    width: 250,
+    height: 250,
+    // width: windowDimensions.width * 1,
+    // height: windowDimensions.height * 0.4,
   },
 });
 
