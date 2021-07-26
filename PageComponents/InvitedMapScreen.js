@@ -6,10 +6,12 @@ import * as Location from 'expo-location';
 import ButtonElement from '../lib/ButtonElement';
 import SearchBarElement from '../lib/SearchBarElement';
 import { colors } from '../lib/colors';
+import pinSmall from '../assets/imagesKlean/pinSmall.png';
 
 function InvitedMapScreen(props) {
 
     const [position, setPosition] = useState({ latitude: 0, longitude: 0 });
+    const [isVisible, setIsVisible] = useState(false);
 
     useEffect(() => {
         async function askPermissions() {
@@ -48,7 +50,9 @@ function InvitedMapScreen(props) {
                     coordinate={{ latitude: position.latitude, longitude:  position.longitude }}
                     title="Hello"
                     description="I am here"
-                    //image={require('./assets/custom_pin.png')}
+                    image={pinSmall}
+                    anchor={{ x: 0.5, y: 1 }}
+                    centerOffset={{ x: 0.5, y: 1 }}
                 />
             </MapView>
             <ButtonElement 
@@ -94,7 +98,7 @@ function mapStateToProps(state) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff',
+        backgroundColor: colors.white,
         alignItems: 'center',
         justifyContent: 'center',
         
