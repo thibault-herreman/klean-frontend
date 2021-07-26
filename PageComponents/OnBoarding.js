@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, Button } from 'react-native';
 import ListCities from '../lib/ListCities'
 import { connect } from 'react-redux';
 import SearchBarElement from '../lib/SearchBarElement';
+import ScreenTitles from '../lib/ScreenTitles';
 
 function OnBoarding(props) {
 
@@ -24,7 +25,6 @@ function OnBoarding(props) {
                 onPress={() => props.navigation.navigate('Login')} />
             <Button title="SignUp"
                 onPress={() => props.navigation.navigate('SignUp')} />
-            <ListCities />
         </View>
     );
 }
