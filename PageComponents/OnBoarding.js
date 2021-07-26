@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, Button } from 'react-native';
 import SearchBarElement from '../lib/SearchBarElement';
 import AutoComplete from '../lib/AutoComplete'
 import { connect } from 'react-redux';
-import {CleanWalkList} from "../lib/listCleanWalk"
+import {Badges} from "../lib/badges";
 
 function OnBoarding(props) {
 
@@ -15,7 +15,9 @@ function OnBoarding(props) {
         <View style={styles.container}>
             <Text>OnBoarding</Text>
 
-            <CleanWalkList></CleanWalkList>
+            <Badges type="green"></Badges>
+            <Badges type="orange"></Badges>
+
 
             <Text>{`${props.token}`}</Text>
             <Button title="login" onPress={() => props.login("monsupertokenchercheenbdd")} />
