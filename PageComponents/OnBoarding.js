@@ -1,9 +1,11 @@
 import React from 'react';
 import { StyleSheet, Text, View, Button } from 'react-native';
-import SearchBarElement from '../lib/SearchBarElement';
-import AutoComplete from '../lib/AutoComplete'
 import { connect } from 'react-redux';
+<<<<<<< HEAD
 import {Badges} from "../lib/badges";
+=======
+
+>>>>>>> c0ddc711b88fb40b7272923d9919d5e1171c2fb3
 
 function OnBoarding(props) {
 
@@ -14,11 +16,14 @@ function OnBoarding(props) {
     return (
         <View style={styles.container}>
             <Text>OnBoarding</Text>
+<<<<<<< HEAD
 
             <Badges type="green"></Badges>
             <Badges type="orange"></Badges>
 
 
+=======
+>>>>>>> c0ddc711b88fb40b7272923d9919d5e1171c2fb3
             <Text>{`${props.token}`}</Text>
             <Button title="login" onPress={() => props.login("monsupertokenchercheenbdd")} />
             <Button title="signOut" onPress={() => props.signOut()} />
