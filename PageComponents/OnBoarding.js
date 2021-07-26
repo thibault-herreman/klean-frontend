@@ -1,8 +1,9 @@
 import React from 'react';
 import { StyleSheet, Text, View, Button } from 'react-native';
-import ListCities from '../lib/ListCities'
-import { connect } from 'react-redux';
 import SearchBarElement from '../lib/SearchBarElement';
+import AutoComplete from '../lib/AutoComplete'
+import { connect } from 'react-redux';
+import {CleanWalkList} from "../lib/listCleanWalk"
 
 function OnBoarding(props) {
 
@@ -13,6 +14,9 @@ function OnBoarding(props) {
     return (
         <View style={styles.container}>
             <Text>OnBoarding</Text>
+
+            <CleanWalkList></CleanWalkList>
+
             <Text>{`${props.token}`}</Text>
             <Button title="login" onPress={() => props.login("monsupertokenchercheenbdd")} />
             <Button title="signOut" onPress={() => props.signOut()} />
@@ -24,7 +28,6 @@ function OnBoarding(props) {
                 onPress={() => props.navigation.navigate('Login')} />
             <Button title="SignUp"
                 onPress={() => props.navigation.navigate('SignUp')} />
-            <ListCities />
         </View>
     );
 }
