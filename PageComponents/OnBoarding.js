@@ -4,10 +4,6 @@ import { connect } from 'react-redux';
 
 function OnBoarding(props) {
 
-    const fctTest = () => {
-        console.log('je test et c cool');
-    }
-
     return (
         <View style={styles.container}>
             <Text>OnBoarding</Text>
