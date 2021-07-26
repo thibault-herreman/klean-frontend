@@ -7,10 +7,6 @@ function OnBoarding(props) {
     return (
         <View style={styles.container}>
             <Text>OnBoarding</Text>
-<<<<<<< HEAD
-
-=======
->>>>>>> 085ef5e171d364e52de45a549a6af2b08b4087f4
             <Text>{`${props.token}`}</Text>
             <Button title="login" onPress={() => props.login("monsupertokenchercheenbdd")} />
             <Button title="signOut" onPress={() => props.signOut()} />
