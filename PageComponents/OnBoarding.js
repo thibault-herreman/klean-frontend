@@ -1,13 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View, Button } from 'react-native';
-import SearchBarElement from '../lib/SearchBarElement';
-<<<<<<< HEAD
-import ScreenTitles from '../lib/ScreenTitles';
-=======
-import AutoComplete from '../lib/AutoComplete'
 import { connect } from 'react-redux';
 import {CleanWalkList} from "../lib/listCleanWalk"
->>>>>>> fee316ffc554954f3ab0ae44585632533227d3e5
 
 function OnBoarding(props) {
 
