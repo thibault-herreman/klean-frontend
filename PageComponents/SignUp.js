@@ -37,7 +37,7 @@ function SignUp(props) {
         </View>
 
         <View style={styles.register}>
-          <ButtonElement typeButton="middleSecondary" text="M'inscrire" />
+          <ButtonElement typeButton="middleSecondary" text="M'inscrire" onPress={() => props.login("monsupertokenchercheenbdd")} />
           <Text style={typography.body}>Vous avez déjà un compte?</Text>
           <Text style={typography.body}>Se connecter</Text>
         </View>
