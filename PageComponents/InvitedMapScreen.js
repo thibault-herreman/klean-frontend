@@ -7,6 +7,7 @@ import ButtonElement from '../lib/ButtonElement';
 import SearchBarElement from '../lib/SearchBarElement';
 import { colors } from '../lib/colors';
 import pinSmall from '../assets/imagesKlean/pinSmall.png';
+import PreviewEvent from '../lib/PreviewEvent';
 
 function InvitedMapScreen(props) {
 
@@ -55,6 +56,10 @@ function InvitedMapScreen(props) {
                     centerOffset={{ x: 0.5, y: 1 }}
                 />
             </MapView>
+            <PreviewEvent 
+                title="Nettoyage de rue en bas de chez moi à Paris près de Wagram"
+                desc="Je vous propose que l’on nettoye ensemble la rue car des jeunes ont laissé leur poubelle et c'est dangereux pour les enfants"
+            />
             <ButtonElement 
                  typeButton='fullFat'
                  backgroundColor={colors.primary}

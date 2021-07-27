@@ -18,8 +18,7 @@ import ChatProfilStack from '../PageComponents/ChatProfilStack';
 import ConnectedEventDetailMapStack from '../PageComponents/ConnectedEventDetailMapStack';
 import ConnectedEventDetailProfilStack from '../PageComponents/ConnectedEventDetailProfilStack'
 
-
-import colors from '../lib/colors';
+import { colors } from '../lib/colors';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -49,17 +48,19 @@ export default function ConnectedFlow() {
       },
     })}
       tabBarOptions={{
-        activeTintColor: '#0984e3',
-        inactiveTintColor: '#dfe6e9',
+        activeTintColor: colors.white,
+        inactiveTintColor: "#D1D1D1",
         style: {
-          backgroundColor: '#111224',
+          backgroundColor: colors.primary,
           height: 64,
+          paddingBottom: 10,
+          paddingTop: 10
         }
       }}>
       <Tab.Screen name="Chercher" component={ConnectedMapStack} />
+      <Tab.Screen name="Classement" component={CitiesRanking} />
       <Tab.Screen name="Proposer" component={CreateEventStack} />
       <Tab.Screen name="Profil" component={ProfilStack} />
-      <Tab.Screen name="Classement" component={CitiesRanking} />
       <Tab.Screen name="Actualité" component={News} />
     </Tab.Navigator>
   )

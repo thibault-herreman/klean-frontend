@@ -1,7 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View, ImageBackground } from 'react-native';
 import { connect } from 'react-redux';
-
 import {Badges} from "../lib/Badges.js";
 import ScreenTitles from '../lib/ScreenTitles.js';
 import ButtonElement from "../lib/ButtonElement";
@@ -65,7 +64,6 @@ function ConnectedEventDetailMapStack(props) {
     );
 }
 
-
 function mapDispatchToProps(dispatch) {
     return {
         login: function (token) {
@@ -97,13 +95,14 @@ const styles = StyleSheet.create({
         paddingRight: 17,
         flexDirection: 'row',
         alignItems: 'center',
-
     },
     backButton: {
         position: 'absolute', 
+        zIndex: 10,
     },
     goButton: {
         position: 'absolute', 
+        zIndex: 10,
     },
     generalInfoCleanwalk: {
         marginTop: 11,
