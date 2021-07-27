@@ -12,7 +12,7 @@ import PreviewEvent from '../lib/PreviewEvent';
 function InvitedMapScreen(props) {
 
     const [position, setPosition] = useState({ latitude: 0, longitude: 0 });
-    const [isVisible, setIsVisible] = useState(false);
+    const [isVisiblePreview, setIsVisiblePreview] = useState(false);
 
     useEffect(() => {
         async function askPermissions() {
@@ -47,18 +47,21 @@ function InvitedMapScreen(props) {
                     longitudeDelta: 0.0421,
                 }}
             >
-                <Marker 
+                <Marker draggable
                     coordinate={{ latitude: position.latitude, longitude:  position.longitude }}
                     title="Hello"
                     description="I am here"
                     image={pinSmall}
                     anchor={{ x: 0.5, y: 1 }}
                     centerOffset={{ x: 0.5, y: 1 }}
+                    onPress={() => setIsVisiblePreview(!isVisiblePreview)}
                 />
             </MapView>
             <PreviewEvent 
                 title="Nettoyage de rue en bas de chez moi à Paris près de Wagram"
                 desc="Je vous propose que l’on nettoye ensemble la rue car des jeunes ont laissé leur poubelle et c'est dangereux pour les enfants"
+                nameOrga="J. Doe"
+                visible={isVisiblePreview}
             />
             <ButtonElement 
                  typeButton='fullFat'
