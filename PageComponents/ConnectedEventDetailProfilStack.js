@@ -55,10 +55,6 @@ function ConnectedEventDetailMapStack(props) {
                 <Badges type="green" text="gants" margeR={true}/> 
                 <Badges type="green" text="sacs poubelle" margeR={true}/> 
                 <Badges type="green" text="pince" margeR={true}/> 
-                <Badges type="green" text="chapeau" margeR={true}/> 
-                <Badges type="green" text="baskets" margeR={true}/> 
-                <Badges type="green" text="boissons" margeR={true}/> 
-                <Badges type="green" text="snack" margeR={true}/> 
             </View>
 
             <View>

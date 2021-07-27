@@ -32,7 +32,6 @@ function CreateEvent(props) {
     <SafeAreaView style={{ flex: 1 }}>
       <View style={styles.contentSearchBar}>
         <SearchBarElement placeholder="Où ? (adresse)" />
-        <SearchBarElement placeholder="Quand ? (date)" />
       </View>
       <MapView
         style={styles.container}
@@ -63,13 +62,10 @@ function CreateEvent(props) {
           <ButtonElement typeButton="geoloc" />
         </View>
 
-        <Text style={typography.postClInformationText}>
-          ° Saisir une adresse.
+        <Text style={styles.textInfo}>
+          - Saisir une adresse OU {"\n"}- appuyer longuement pour ajouter un repère.
         </Text>
-        <Text style={typography.postClInformationText}>ou</Text>
-        <Text style={typography.postClInformationText}>
-          ° Appuyer longuement pour ajouter un repère.
-        </Text>
+        {/*<Text style={styles.textInfo}></Text>*/}
       </View>
 
       <ButtonElement
@@ -124,10 +120,15 @@ const styles = StyleSheet.create({
     paddingBottom: 20,
   },
   information: {
-    height: windowDimensions.height * 0.13,
+    paddingVertical: 20,
     backgroundColor: colors.primary,
     justifyContent: "center",
     paddingLeft: windowDimensions.width * 0.1,
   },
+  textInfo: {
+    fontSize: typography.postClInformationText.fontSize,
+    fontFamily: typography.postClInformationText.fontFamily,
+    color: colors.white
+  }
 });
 export default connect(mapStateToProps, mapDispatchToProps)(CreateEvent);

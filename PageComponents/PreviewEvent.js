@@ -3,6 +3,7 @@ import { Text, View, StyleSheet, Image, Pressable } from 'react-native';
 import { colors } from "../lib/colors";
 import { windowDimensions } from "../lib/windowDimensions";
 import Badges from '../lib/Badges';
+import { typography } from "../lib/typography";
 
 function PreviewEvent(props) {
 
@@ -13,9 +14,9 @@ function PreviewEvent(props) {
         previewEventTitle: {
             backgroundColor: colors.secondary,
             width: windowDimensions.width,
-            padding: 6,
-            fontSize: 14,
-            fontFamily: "Lato_700Bold",
+            padding: 10,
+            fontSize: typography.h2.fontSize,
+            fontFamily: typography.h2.fontFamily,
             color: "white",
         },
         ctPreviewEvent: {
