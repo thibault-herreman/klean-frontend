@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, Text, View, StatusBar, Image, SafeAreaView } from 'react-native';
 
 import ScreenTitles from '../lib/ScreenTitles';
@@ -15,6 +15,9 @@ import { ScrollView } from 'react-native-gesture-handler';
 
 function Profil(props) {
 
+    const [isCwOnOrganize, setIsCwOnOrganize] = useState(true);
+    const [isStatOnPerso, setIsStatOnPerso] = useState(true);
+
     return (
         <View style={styles.container}>
             <SafeAreaView style={styles.header}>
@@ -25,34 +28,70 @@ function Profil(props) {
                 </View>
             </SafeAreaView>
             <ScrollView>
-                <ScreenTitles title="Cleanwalks" titleType="secondary" />
-                <View style={styles.switch}>
-                    <ButtonElement text="J'organise" typeButton='middleFine' onPress={() => console.log("press")} />
-                    <ButtonElement text="Je participe" typeButton='middleFine' outline={true} onPress={() => console.log("press")} />
-                </View>
-                <View style={styles.list}>
-                    <CleanwalkList onPress={() => props.navigation.navigate('ConnectedEventDetailProfilStack')} />
-                </View>
 
+                {isCwOnOrganize ? (
+                    <>
+                        <ScreenTitles title="Cleanwalks" titleType="secondary" />
+                        <View style={styles.switch}>
+                            <ButtonElement text="J'organise" typeButton='middleFine' outline={false} onPress={() => setIsCwOnOrganize(true)} />
+                            <ButtonElement text="Je participe" typeButton='middleFine' outline={true} onPress={() => setIsCwOnOrganize(false)} />
+                        </View>
+                        <View style={styles.list}>
+                            <CleanwalkList onPress={() => props.navigation.navigate('ConnectedEventDetailProfilStack')} />
+                        </View>
+                    </>
+                ) : (
+                    <>
+                        <ScreenTitles title="Cleanwalks" titleType="secondary" />
+                        <View style={styles.switch}>
+                            <ButtonElement text="J'organise" typeButton='middleFine' outline={true} onPress={() => setIsCwOnOrganize(true)} />
+                            <ButtonElement text="Je participe" typeButton='middleFine' outline={false} onPress={() => setIsCwOnOrganize(false)} />
+                        </View>
+                        <View style={styles.list}>
+                            <CleanwalkList onPress={() => props.navigation.navigate('ConnectedEventDetailProfilStack')} />
+                        </View>
+                    </>
+                )}
 
-                <ScreenTitles title="Statistiques" titleType="secondary" />
-                <View style={styles.switch}>
-                    <ButtonElement text="Personnelles" typeButton='middleFine' onPress={() => console.log("press")} />
-                    <ButtonElement text="Ville" typeButton='middleFine' outline={true} onPress={() => console.log("press")} />
-                </View>
-                <View style={styles.stat}>
-                    <Image
-                        style={styles.robot}
-                        source={require('../assets/imagesKlean/Robot3Carre.png')}
-                    />
-                    <View style={styles.statBody}>
-                        <Text style={styles.statBodyTitle}>Trash Exterminator</Text>
-                        <Text style={styles.statBodyText}>50 Cleanwalks réalisées</Text>
-                    </View>
-                </View>
+                {isStatOnPerso ? (
+                    <>
+                        <ScreenTitles title="Statistiques" titleType="secondary" />
+                        <View style={styles.switch}>
+                            <ButtonElement text="Personnelles" typeButton='middleFine' outline={false} onPress={() => setIsStatOnPerso(true)} />
+                            <ButtonElement text="Ville" typeButton='middleFine' outline={true} onPress={() => setIsStatOnPerso(false)} />
+                        </View>
+                        <View style={styles.stat}>
+                            <Image
+                                style={styles.robot}
+                                source={require('../assets/imagesKlean/Robot3Carre.png')}
+                            />
+                            <View style={styles.statBody}>
+                                <Text style={styles.statBodyTitle}>Trash Exterminator</Text>
+                                <Text style={styles.statBodyText}>50 Cleanwalks réalisées</Text>
+                            </View>
+                        </View>
+                    </>
+                ) : (
+                    <>
+                        <ScreenTitles title="Statistiques" titleType="secondary" />
+                        <View style={styles.switch}>
+                            <ButtonElement text="Personnelles" typeButton='middleFine' outline={true} onPress={() => setIsStatOnPerso(true)} />
+                            <ButtonElement text="Ville" typeButton='middleFine' outline={false} onPress={() => setIsStatOnPerso(false)} />
+                        </View>
+                        <View style={styles.stat}>
+                            <Image
+                                style={styles.robot}
+                                source={require('../assets/imagesKlean/CityPicto.png')}
+                            />
+                            <View style={styles.statBody}>
+                                <Text style={styles.statBodyTitle}>Marseille</Text>
+                                <Text style={styles.statBodyText}>1 200 points</Text>
+                            </View>
+                        </View>
+                    </>
+                )}
 
-
-                <ScreenTitles title="Informations personnelles" titleType="secondary" />
+                < ScreenTitles title="Informations personnelles" titleType="secondary" />
                 <View style={styles.infoPerso}>
                     <View style={styles.avatar}>
                         <FontAwesome name="user" size={40} color="white" />
