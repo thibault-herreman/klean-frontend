@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, StatusBar, Image, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, StatusBar, Image, ScrollView, SafeAreaView } from 'react-native';
 
 import ScreenTitles from '../lib/ScreenTitles';
 import ButtonElement from '../lib/ButtonElement';
@@ -15,11 +15,13 @@ import CleanwalkList from '../lib/CleanwalkList';
 
 function Profil(props) {
 
+
+
     return (
         <View style={styles.container}>
-            <View style={styles.logout}>
+            <SafeAreaView style={styles.logout}>
                 <ButtonElement typeButton='logout' onPress={() => { props.signOut() }} />
-            </View>
+            </SafeAreaView>
             <Text style={styles.mainTitle}> MON PROFIL </Text>
 
             <ScrollView>
@@ -29,7 +31,7 @@ function Profil(props) {
                 <ButtonElement text="Je participe" typeButton='middleFine' outline={true} onPress={() => console.log("press")} />
             </View>
             <View style={styles.list}>
-                <CleanwalkList />
+                <CleanwalkList onPress={() => props.navigation.navigate('ConnectedEventDetailProfilStack')}/>
             </View>
 
 
@@ -91,8 +93,9 @@ const styles = StyleSheet.create({
         textAlign: "center"
     },
     logout: {
+        flex: 1,
         position: "absolute",
-        top: StatusBar.currentHeight + 5,
+        top: StatusBar.currentHeight + 5 || 5,
         left: windowDimensions.width - 40,
         zIndex: 10,
     },
