@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, StatusBar, View, Text } from "react-native";
+import { StyleSheet, StatusBar, View, SafeAreaView } from "react-native";
 import { connect } from "react-redux";
 import MapView, { PROVIDER_GOOGLE, Marker } from "react-native-maps";
 import * as Location from "expo-location";
@@ -32,7 +32,9 @@ function ConnectedMapScreen(props) {
   }, [position]);
 
   return (
-    <>
+
+    <SafeAreaView>
+
       <View style={styles.contentSearchBar}>
         <SearchBarElement placeholder="Où ? (adresse)" />
         <SearchBarElement placeholder="Quand ? (date)" />
@@ -63,22 +65,9 @@ function ConnectedMapScreen(props) {
 
       <ButtonElement typeButton="geoloc" />
 
-    </>
+    </SafeAreaView>
 
-    // <View style={styles.container}>
-    //     <Text>invitedMapScreen</Text>
-    //     <Text>{`${props.token}`}</Text>
-    //     <Button title="login" onPress={() => props.login("monsupertokenchercheenbdd")} />
-    //     <Button title="signOut" onPress={() => props.signOut()} />
-    //     <Button title="InvitedMapScreen"
-    //         onPress={() => props.navigation.navigate('InvitedMapScreen')} />
-    //     <Button title="InvitedEventDetail"
-    //         onPress={() => props.navigation.navigate('InvitedEventDetail')} />
-    //     <Button title="Login"
-    //         onPress={() => props.navigation.navigate('Login')} />
-    //     <Button title="SignUp"
-    //         onPress={() => props.navigation.navigate('SignUp')} />
-    // </View>
+
   );
 }
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, StatusBar, Image, ScrollView, SafeAreaView } from 'react-native';
+import { StyleSheet, Text, View, StatusBar, Image, SafeAreaView } from 'react-native';
 
 import ScreenTitles from '../lib/ScreenTitles';
 import ButtonElement from '../lib/ButtonElement';
@@ -12,26 +12,25 @@ import { windowDimensions } from '../lib/windowDimensions';
 import { FontAwesome } from '@expo/vector-icons';
 import CleanwalkList from '../lib/CleanwalkList';
 
-
 function Profil(props) {
-
-
 
     return (
         <View style={styles.container}>
-            <SafeAreaView style={styles.logout}>
-                <ButtonElement typeButton='logout' onPress={() => { props.signOut() }} />
+            <SafeAreaView style={styles.header}>
+                <View style={styles.dull}></View>
+                <Text style={styles.mainTitle}> MON PROFIL </Text>
+                <View style={styles.logout}>
+                    <ButtonElement typeButton='logout' onPress={() => { props.signOut() }} />
+                </View>
             </SafeAreaView>
-            <Text style={styles.mainTitle}> MON PROFIL </Text>
 
-            
             <ScreenTitles title="Cleanwalks" titleType="secondary" />
             <View style={styles.switch}>
                 <ButtonElement text="J'organise" typeButton='middleFine' onPress={() => console.log("press")} />
                 <ButtonElement text="Je participe" typeButton='middleFine' outline={true} onPress={() => console.log("press")} />
             </View>
             <View style={styles.list}>
-                <CleanwalkList onPress={() => props.navigation.navigate('ConnectedEventDetailProfilStack')}/>
+                <CleanwalkList onPress={() => props.navigation.navigate('ConnectedEventDetailProfilStack')} />
             </View>
 
 
@@ -64,7 +63,6 @@ function Profil(props) {
                     <ButtonElement text="Modifier mot de passe" typeButton="password" />
                 </View>
             </View>
-        
         </View>
     );
 }
@@ -86,18 +84,22 @@ const styles = StyleSheet.create({
         paddingTop: StatusBar.currentHeight,
         paddingBottom: 40,
     },
+    header:{
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-between"
+    },
+    dull: {
+        paddingLeft: 35,
+    },
+    logout: {
+        paddingRight: 10,
+    },
     mainTitle: {
         fontSize: typography.h1.fontSize,
         fontFamily: typography.h1.fontFamily,
         paddingVertical: 10,
         textAlign: "center"
-    },
-    logout: {
-        flex: 1,
-        position: "absolute",
-        top: StatusBar.currentHeight + 5 || 5,
-        left: windowDimensions.width - 40,
-        zIndex: 10,
     },
     switch: {
         flexDirection: "row",
@@ -139,10 +141,10 @@ const styles = StyleSheet.create({
         borderRadius: 50
     },
     infoPerso: {
-       flexDirection: "row",
+        flexDirection: "row",
         height: 120,
         alignItems: "center",
-        justifyContent: "center" 
+        justifyContent: "center"
     }
 });
 
