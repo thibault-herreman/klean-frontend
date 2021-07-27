@@ -129,9 +129,11 @@ function CitiesRanking(props) {
 
     return (
         <View style={styles.container}>
-            <Text style={styles.mainTitle}> CLASSEMENT DES VILLES </Text>
+            <SafeAreaView>
+                <Text style={styles.mainTitle}> CLASSEMENT DES VILLES </Text>
+            </SafeAreaView>
             <ScreenTitles title="Liste des villes" titleType="secondary" />
-            <ListCities data={DATA}/>
+            <ListCities data={DATA} />
             <ScreenTitles title="Ma ville" titleType="secondary" />
             <View style={styles.listItem}>
                 <Text style={styles.ranking}>#2</Text>
@@ -167,7 +169,7 @@ const styles = StyleSheet.create({
     },
     mainTitle: {
         fontSize: typography.h1.fontSize,
-        fontFamily : typography.h1.fontFamily,
+        fontFamily: typography.h1.fontFamily,
         paddingVertical: 10,
         textAlign: "center"
     },
@@ -179,7 +181,7 @@ const styles = StyleSheet.create({
         width: windowDimensions.width,
         paddingVertical: 9,
         paddingHorizontal: 8,
-        marginBottom: 6   
+        marginBottom: 6
     },
     points: {
         marginLeft: "auto",
