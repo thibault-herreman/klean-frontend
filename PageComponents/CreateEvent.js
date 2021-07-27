@@ -77,7 +77,6 @@ function CreateEvent(props) {
         backgroundColor={colors.secondary}
         text="Continuer"
         onPress={() => props.navigation.navigate("EventFillInfo")}
-        //   onPress={() => props.navigation.navigate("CreateEvent")}
       />
     </SafeAreaView>
 
