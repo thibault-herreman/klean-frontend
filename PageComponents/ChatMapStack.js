@@ -20,7 +20,7 @@ import { Colors } from "react-native/Libraries/NewAppScreen";
 import LogoKlean from "../assets/imagesKlean/LogoKlean.png";
 import { FlatList, ScrollView } from "react-native-gesture-handler";
 import ScreenTitles from "../lib/ScreenTitles";
-import ChatList from "../lib/chatList";
+import ChatList from "../lib/ChatList";
 
 function ChatMapStack(props) {
   return (
