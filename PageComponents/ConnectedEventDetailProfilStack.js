@@ -129,10 +129,6 @@ const styles = StyleSheet.create({
         marginBottom: 11,
         marginLeft: 18,
     },
-    cleanwalkTitle: {
-        fontFamily: 'Lato_400Regular',
-        fontSize: 18,
-    },
     descriptionCleanwalk: {
         marginBottom: 11,
         marginLeft: 18,
