@@ -1,15 +1,17 @@
 import React from 'react';
 import { StyleSheet, Text, View, ImageBackground } from 'react-native';
 import { connect } from 'react-redux';
-import {Badges} from "../lib/Badges.js";
+import Badges from "../lib/Badges.js";
 import ScreenTitles from '../lib/ScreenTitles.js';
 import ButtonElement from "../lib/ButtonElement";
+import Participants from "../lib/Participants";
 import {windowDimensions} from '../lib/windowDimensions.js';
 import {typography} from '../lib/typography.js';
 
 function ConnectedEventDetailMapStack(props) {
 
     return (
+        
         // <View style={styles.container}>
         //     <Text>ConnectedEventDetail-MapStack</Text>
         //     <Text>{`${props.token}`}</Text>
@@ -22,6 +24,7 @@ function ConnectedEventDetailMapStack(props) {
         //     <Button title="Chat"
         //         onPress={() => props.navigation.navigate('ChatMapStack')} />
         // </View>
+
 
 
         <View style={styles.container}>
@@ -45,7 +48,6 @@ function ConnectedEventDetailMapStack(props) {
                 <View style={styles.cleanwakDescriptionContainer}>
                     <Text style={typography.bodyLight}>Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum</Text> 
                 </View>
-                
             </View>
 
             <View style={styles.badges}>
@@ -59,6 +61,22 @@ function ConnectedEventDetailMapStack(props) {
                 <ScreenTitles titleType="secondary" 
                 title={"Participants"}/>
             </View>
+
+            <View style={styles.participantsContainer}>
+                <View style={styles.participantsList}>
+                    <Participants />
+                </View>
+
+                <View style={styles.chat}>
+                    <ButtonElement typeButton="chat"/>
+                </View>
+            </View>
+
+            <View style={styles.confirmButton}>
+                <ButtonElement typeButton="middleSecondary" text="Me désinscrire"/>
+            </View>
+
+
 
         </View>
     );
@@ -83,12 +101,10 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#fff',
-        // alignItems: 'center',
-        // justifyContent: 'center',
     },
     banner: {
         width: windowDimensions.width,
-        height: 76,
+        height: 100,
         marginTop: 29,
         justifyContent: 'space-between',
         paddingLeft: 17,
@@ -127,8 +143,23 @@ const styles = StyleSheet.create({
         marginRight: 18,
         flexDirection: 'row',
         justifyContent: 'space-around',
+    },
+    participantsContainer:{
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+    },
+    participantsList: {
+        marginTop: 11,
+        marginBottom: 11,
+    },
+    chat: {
+        marginTop: 11,
+        marginRight: 18,
+    },
+    confirmButton: {
+        flexDirection: 'row',
+        justifyContent: 'center',
     }
-
 });
 
 export default connect(
