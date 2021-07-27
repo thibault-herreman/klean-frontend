@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View, Image } from 'react-native';
 import { connect } from 'react-redux';
 
-import {Badges} from "../lib/badges.js";
+import Badges from "../lib/Badges.js";
 import ScreenTitles from '../lib/ScreenTitles.js';
 
 function ConnectedEventDetailMapStack(props) {
