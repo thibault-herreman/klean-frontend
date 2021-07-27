@@ -11,6 +11,7 @@ import { windowDimensions } from '../lib/windowDimensions';
 
 import { FontAwesome } from '@expo/vector-icons';
 import CleanwalkList from '../lib/CleanwalkList';
+import { ScrollView } from 'react-native-gesture-handler';
 
 
 function Profil(props) {
@@ -24,46 +25,47 @@ function Profil(props) {
                     <ButtonElement typeButton='logout' onPress={() => { props.signOut() }} />
                 </View>
             </SafeAreaView>
-
-            <ScreenTitles title="Cleanwalks" titleType="secondary" />
-            <View style={styles.switch}>
-                <ButtonElement text="J'organise" typeButton='middleFine' onPress={() => console.log("press")} />
-                <ButtonElement text="Je participe" typeButton='middleFine' outline={true} onPress={() => console.log("press")} />
-            </View>
-            <View style={styles.list}>
-                <CleanwalkList onPress={() => props.navigation.navigate('ConnectedEventDetailProfilStack')} />
-            </View>
-
-
-            <ScreenTitles title="Statistiques" titleType="secondary" />
-            <View style={styles.switch}>
-                <ButtonElement text="Personnelles" typeButton='middleFine' onPress={() => console.log("press")} />
-                <ButtonElement text="Ville" typeButton='middleFine' outline={true} onPress={() => console.log("press")} />
-            </View>
-            <View style={styles.stat}>
-                <Image
-                    style={styles.robot}
-                    source={require('../assets/imagesKlean/Robot3Carre.png')}
-                />
-                <View style={styles.statBody}>
-                    <Text style={styles.statBodyTitle}>Trash Exterminator</Text>
-                    <Text style={styles.statBodyText}>50 Cleanwalks réalisées</Text>
+            <ScrollView>
+                <ScreenTitles title="Cleanwalks" titleType="secondary" />
+                <View style={styles.switch}>
+                    <ButtonElement text="J'organise" typeButton='middleFine' onPress={() => console.log("press")} />
+                    <ButtonElement text="Je participe" typeButton='middleFine' outline={true} onPress={() => console.log("press")} />
                 </View>
-            </View>
+                <View style={styles.list}>
+                    <CleanwalkList onPress={() => props.navigation.navigate('ConnectedEventDetailProfilStack')} />
+                </View>
 
 
-            <ScreenTitles title="Informations personnelles" titleType="secondary" />
-            <View style={styles.infoPerso}>
-                <View style={styles.avatar}>
-                    <FontAwesome name="user" size={40} color="white" />
+                <ScreenTitles title="Statistiques" titleType="secondary" />
+                <View style={styles.switch}>
+                    <ButtonElement text="Personnelles" typeButton='middleFine' onPress={() => console.log("press")} />
+                    <ButtonElement text="Ville" typeButton='middleFine' outline={true} onPress={() => console.log("press")} />
                 </View>
-                <View style={styles.statBody}>
-                    <Text style={styles.statBodyText}>Mika</Text>
-                    <Text style={styles.statBodyText}>Doe</Text>
-                    <Text style={styles.statBodyText}>mika.doe@gmail.com</Text>
-                    <ButtonElement text="Modifier mot de passe" typeButton="password" />
+                <View style={styles.stat}>
+                    <Image
+                        style={styles.robot}
+                        source={require('../assets/imagesKlean/Robot3Carre.png')}
+                    />
+                    <View style={styles.statBody}>
+                        <Text style={styles.statBodyTitle}>Trash Exterminator</Text>
+                        <Text style={styles.statBodyText}>50 Cleanwalks réalisées</Text>
+                    </View>
                 </View>
-            </View>
+
+
+                <ScreenTitles title="Informations personnelles" titleType="secondary" />
+                <View style={styles.infoPerso}>
+                    <View style={styles.avatar}>
+                        <FontAwesome name="user" size={40} color="white" />
+                    </View>
+                    <View style={styles.statBody}>
+                        <Text style={styles.statBodyText}>Mika</Text>
+                        <Text style={styles.statBodyText}>Doe</Text>
+                        <Text style={styles.statBodyText}>mika.doe@gmail.com</Text>
+                        <ButtonElement text="Modifier mot de passe" typeButton="password" />
+                    </View>
+                </View>
+            </ScrollView>
         </View>
     );
 }
@@ -85,7 +87,7 @@ const styles = StyleSheet.create({
         paddingTop: StatusBar.currentHeight,
         paddingBottom: 40,
     },
-    header:{
+    header: {
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "space-between"
