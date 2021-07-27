@@ -62,6 +62,7 @@ function ConnectedMapScreen(props) {
       </MapView>
 
       <ButtonElement typeButton="geoloc" />
+
     </>
 
     // <View style={styles.container}>

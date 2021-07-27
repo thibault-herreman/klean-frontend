@@ -24,7 +24,7 @@ function Profil(props) {
             </SafeAreaView>
             <Text style={styles.mainTitle}> MON PROFIL </Text>
 
-            <ScrollView>
+            
             <ScreenTitles title="Cleanwalks" titleType="secondary" />
             <View style={styles.switch}>
                 <ButtonElement text="J'organise" typeButton='middleFine' onPress={() => console.log("press")} />
@@ -64,7 +64,7 @@ function Profil(props) {
                     <ButtonElement text="Modifier mot de passe" typeButton="password" />
                 </View>
             </View>
-            </ScrollView>
+        
         </View>
     );
 }
