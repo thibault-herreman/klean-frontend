@@ -9,7 +9,6 @@ import {
 } from "react-native";
 import { connect } from "react-redux";
 import { Dimensions } from "react-native";
-import { color } from "react-native-elements/dist/helpers";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { colors } from "../lib/colors";
 import { windowDimensions } from "../lib/windowDimensions";
@@ -29,7 +28,7 @@ function SignUp(props) {
           <View style={styles.backButton}>
             <ButtonElement
               typeButton="back"
-              onPress={() => props.navigation.navigate()}
+              onPress={() => props.navigation.navigate("InvitedMapScreen")}
             />
           </View>
           <View style={styles.title}>
@@ -114,6 +113,7 @@ const styles = StyleSheet.create({
   backButton: {
     position: "absolute",
     left: "10%",
+    zIndex: 10,
   },
   title: {
     justifyContent: "center",
