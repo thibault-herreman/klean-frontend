@@ -57,6 +57,7 @@ function InvitedMapScreen(props) {
             </MapView>
             <ButtonElement 
                  typeButton='fullFat'
+                 backgroundColor={colors.primary}
                  text='Se connecter'
                  onPress={() => props.navigation.navigate('Login')}
             />
