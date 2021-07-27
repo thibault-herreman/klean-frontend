@@ -1,5 +1,12 @@
 import React from "react";
-import { StyleSheet, Text, View, Image, Button } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  KeyboardAvoidingView,
+  Button,
+} from "react-native";
 import { connect } from "react-redux";
 import { Dimensions } from "react-native";
 import { color } from "react-native-elements/dist/helpers";
@@ -25,39 +32,35 @@ function SignUp(props) {
           </View>
         </View>
 
-        <View style={styles.inputFields}>
-          <InputElement placeholder="Prénom" type="simpleInput"></InputElement>
-          <InputElement placeholder="Nom" type="simpleInput"></InputElement>
-          <InputElement placeholder="Email" type="simpleInput"></InputElement>
-          <InputElement
-            placeholder="Password"
-            type="simpleInput"
-          ></InputElement>
-          <InputElement placeholder="Ville" type="simpleInput"></InputElement>
-        </View>
+        <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} >
+          <View style={styles.inputFields}>
+            <InputElement
+              placeholder="Prénom"
+              type="simpleInput"
+            ></InputElement>
+            <InputElement placeholder="Nom" type="simpleInput"></InputElement>
+            <InputElement placeholder="Email" type="simpleInput"></InputElement>
+            <InputElement
+              placeholder="Password"
+              type="simpleInput"
+            ></InputElement>
+            <InputElement placeholder="Ville" type="simpleInput"></InputElement>
+          </View>
 
-        <View style={styles.register}>
-          <ButtonElement typeButton="middleSecondary" text="M'inscrire" />
-          <Text style={typography.body}>Vous avez déjà un compte?</Text>
-          <Text style={typography.body}>Se connecter</Text>
-        </View>
+          <View style={styles.register}>
+            <ButtonElement
+              style={styles.signupButton}
+              typeButton="middleSecondary"
+              text="M'inscrire"
+            />
+            <Text style={typography.body}>Vous avez déjà un compte?</Text>
+            <Text style={typography.body}>Se connecter</Text>
+          </View>
+        </KeyboardAvoidingView>
 
         <View style={styles.logoContainer}>
           <Image source={LogoKlean} style={styles.logo} />
         </View>
-
-        {/* <Text>SignUp</Text>
-            <Text>{`${props.token}`}</Text>
-            <Button title="login" onPress={() => props.login("monsupertokenchercheenbdd")} />
-            <Button title="signOut" onPress={() => props.signOut()} />
-            <Button title="InvitedMapScreen"
-                onPress={() => props.navigation.navigate('InvitedMapScreen')} />
-            <Button title="InvitedEventDetail"
-                onPress={() => props.navigation.navigate('InvitedEventDetail')} />
-            <Button title="Login"
-                onPress={() => props.navigation.navigate('Login')} />
-            <Button title="SignUp"
-                onPress={() => props.navigation.navigate('SignUp')} /> */}
       </View>
     </SafeAreaView>
   );
@@ -91,7 +94,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.grey,
     width: windowDimensions.width,
     height: windowDimensions.height * 0.1,
-    marginBottom: "10%",
+    marginBottom: "8%",
   },
   backButton: {
     position: "absolute",
@@ -106,20 +109,18 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   register: {
-    marginTop: 100,
+    marginTop: 70,
     alignItems: "center",
   },
   logoContainer: {
     flex: 1,
     width: windowDimensions.width,
-    justifyContent:"flex-end",
+    justifyContent: "flex-end",
     alignItems: "center",
   },
   logo: {
     width: 250,
     height: 250,
-    // width: windowDimensions.width * 1,
-    // height: windowDimensions.height * 0.4,
   },
 });
 
