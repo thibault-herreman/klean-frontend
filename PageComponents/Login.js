@@ -5,20 +5,17 @@ import {
   View,
   Image,
   KeyboardAvoidingView,
-  Button,
+  ScrollView,
 } from "react-native";
 import { connect } from "react-redux";
 import { Dimensions } from "react-native";
-import { color } from "react-native-elements/dist/helpers";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { colors } from "../lib/colors";
 import { windowDimensions } from "../lib/windowDimensions";
 import { typography, Typography } from "../lib/typography";
 import ButtonElement from "../lib/ButtonElement";
 import InputElement from "../lib/InputElement";
-import { Colors } from "react-native/Libraries/NewAppScreen";
 import LogoKlean from "../assets/imagesKlean/LogoKlean.png";
-import { ScrollView } from "react-native-gesture-handler";
 
 function Login(props) {
   return (
@@ -139,8 +136,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   logo: {
-    width: 250,
-    height: 250,
+    height: windowDimensions.height * 0.2,
+    width: windowDimensions.width * 0.3,
   },
 });
 
