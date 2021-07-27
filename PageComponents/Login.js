@@ -28,7 +28,7 @@ function Login(props) {
           <View style={styles.backButton}>
             <ButtonElement
               typeButton="back"
-              onPress={() => props.navigation.navigate()}
+              onPress={() => props.navigation.navigate("InvitedMapScreen")}
             />
           </View>
           <View style={styles.title}>
@@ -107,6 +107,7 @@ const styles = StyleSheet.create({
   backButton: {
     position: "absolute",
     left: "10%",
+    zIndex: 10,
   },
   title: {
     justifyContent: "center",
