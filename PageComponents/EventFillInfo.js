@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -14,8 +14,11 @@ import { windowDimensions } from "../lib/windowDimensions";
 import { typography, Typography } from "../lib/typography";
 import ButtonElement from "../lib/ButtonElement";
 import InputElement from "../lib/InputElement";
+import EventGuide from "../lib/EventGuide";
 
 function EventFillInfo(props) {
+  const [modalVisible, setModalVisible] = useState(false);
+
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.mainView}>
@@ -56,9 +59,13 @@ function EventFillInfo(props) {
             <View style={styles.guide}>
               <Text style={typography.body}>Guide pour l'organisateur</Text>
               <ButtonElement
-              style={styles.infoIcon}
-              onPress={() => console.log("ok")}
-              typeButton="info" />
+                style={styles.infoIcon}
+                // onPress={() => setModalVisible(!modalVisible)}
+                typeButton="info"
+              />
+              {/* <EventGuide
+                visible={modalVisible}
+              ></EventGuide> */}
             </View>
           </View>
 
@@ -141,8 +148,8 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   infoIcon: {
-      backgroundColor: "#000000",
-      marginHorizontal: 100,
+    backgroundColor: "#000000",
+    marginHorizontal: 100,
   },
 });
 
