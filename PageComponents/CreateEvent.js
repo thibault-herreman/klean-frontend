@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, StatusBar, View, Text } from "react-native";
+import { StyleSheet, StatusBar, View, Text, SafeAreaView } from "react-native";
 import { connect } from "react-redux";
 import MapView, { PROVIDER_GOOGLE, Marker } from "react-native-maps";
 import * as Location from "expo-location";
