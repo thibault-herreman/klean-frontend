@@ -3,9 +3,8 @@ import {
   StyleSheet,
   Text,
   View,
-  Image,
   KeyboardAvoidingView,
-  Button,
+  ScrollView,
 } from "react-native";
 import { connect } from "react-redux";
 import { Dimensions } from "react-native";
@@ -15,10 +14,6 @@ import { windowDimensions } from "../lib/windowDimensions";
 import { typography, Typography } from "../lib/typography";
 import ButtonElement from "../lib/ButtonElement";
 import InputElement from "../lib/InputElement";
-import { Colors } from "react-native/Libraries/NewAppScreen";
-import LogoKlean from "../assets/imagesKlean/LogoKlean.png";
-import { ScrollView } from "react-native-gesture-handler";
-import { Lato_100Thin } from "@expo-google-fonts/lato";
 
 function EventFillInfo(props) {
   return (
@@ -136,7 +131,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   register: {
-    marginTop: 70,
+    marginTop: 50,
+    marginBottom: 20,
     alignItems: "center",
   },
   guide: {

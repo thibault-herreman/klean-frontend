@@ -6,6 +6,7 @@ import {
   Image,
   KeyboardAvoidingView,
   Button,
+  ScrollView,
 } from "react-native";
 import { connect } from "react-redux";
 import { Dimensions } from "react-native";
@@ -15,67 +16,72 @@ import { windowDimensions } from "../lib/windowDimensions";
 import { typography, Typography } from "../lib/typography";
 import ButtonElement from "../lib/ButtonElement";
 import InputElement from "../lib/InputElement";
-import { Colors } from "react-native/Libraries/NewAppScreen";
 import LogoKlean from "../assets/imagesKlean/LogoKlean.png";
-import { ScrollView } from "react-native-gesture-handler";
-import { Lato_100Thin } from "@expo-google-fonts/lato";
 
 function SignUp(props) {
   return (
     <SafeAreaView style={styles.safeArea}>
-      <View style={styles.mainView}>
-        <View style={styles.topBanner}>
-          <View style={styles.backButton}>
-            <ButtonElement
-              typeButton="back"
-              onPress={() => props.navigation.navigate("InvitedMapScreen")}
-            />
-          </View>
-          <View style={styles.title}>
-            <Text style={typography.h1}>INSCRIPTION</Text>
-          </View>
-        </View>
-
-        {/* <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} > */}
-        <ScrollView>
-          <View style={styles.inputFields}>
-            <InputElement
-              placeholder="Prénom"
-              type="simpleInput"
-            ></InputElement>
-            <InputElement placeholder="Nom" type="simpleInput"></InputElement>
-            <InputElement placeholder="Email" type="simpleInput"></InputElement>
-            <InputElement
-              placeholder="Password"
-              type="simpleInput"
-            ></InputElement>
-            <InputElement placeholder="Ville" type="simpleInput"></InputElement>
-          </View>
-
-          <View style={styles.register}>
-            <ButtonElement
-              style={styles.registerButton}
-              typeButton="middleSecondary"
-              text="M'inscrire"
-              onPress={() => props.login("monsupertokenchercheenbdd")}
-            />
-            <View style={styles.textContainer}>
-              <Text style={typography.body}>Vous avez déjà un compte?</Text>
-              <Text
-                style={(typography.body, styles.link)}
-                onPress={() => props.navigation.navigate("Login")}
-              >
-                Se connecter
-              </Text>
+      <ScrollView>
+        <View style={styles.mainView}>
+          <View style={styles.topBanner}>
+            <View style={styles.backButton}>
+              <ButtonElement
+                typeButton="back"
+                onPress={() => props.navigation.navigate("InvitedMapScreen")}
+              />
+            </View>
+            <View style={styles.title}>
+              <Text style={typography.h1}>INSCRIPTION</Text>
             </View>
           </View>
-        </ScrollView>
-        {/* </KeyboardAvoidingView> */}
 
-        <View style={styles.logoContainer}>
-          <Image source={LogoKlean} style={styles.logo} />
+          {/* <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} > */}
+          <ScrollView>
+            <View style={styles.inputFields}>
+              <InputElement
+                placeholder="Prénom"
+                type="simpleInput"
+              ></InputElement>
+              <InputElement placeholder="Nom" type="simpleInput"></InputElement>
+              <InputElement
+                placeholder="Email"
+                type="simpleInput"
+              ></InputElement>
+              <InputElement
+                placeholder="Password"
+                type="simpleInput"
+              ></InputElement>
+              <InputElement
+                placeholder="Ville"
+                type="simpleInput"
+              ></InputElement>
+            </View>
+
+            <View style={styles.register}>
+              <ButtonElement
+                style={styles.registerButton}
+                typeButton="middleSecondary"
+                text="M'inscrire"
+                onPress={() => props.login("monsupertokenchercheenbdd")}
+              />
+              <View style={styles.textContainer}>
+                <Text style={typography.body}>Vous avez déjà un compte?</Text>
+                <Text
+                  style={(typography.body, styles.link)}
+                  onPress={() => props.navigation.navigate("Login")}
+                >
+                  Se connecter
+                </Text>
+              </View>
+            </View>
+          </ScrollView>
+          {/* </KeyboardAvoidingView> */}
+
+          <View style={styles.logoContainer}>
+            <Image source={LogoKlean} style={styles.logo} />
+          </View>
         </View>
-      </View>
+      </ScrollView>
     </SafeAreaView>
   );
 }
@@ -124,13 +130,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   register: {
-    marginTop: 70,
+    marginTop: 50,
     alignItems: "center",
   },
   registerButton: {
     paddingBottom: 10,
   },
-  textContainer:{
+  textContainer: {
     justifyContent: "center",
     alignItems: "center",
     marginTop: 20,
@@ -145,8 +151,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   logo: {
-    width: 250,
-    height: 250,
+    height: windowDimensions.height * 0.2,
+    width: windowDimensions.width * 0.3,
   },
 });
 
