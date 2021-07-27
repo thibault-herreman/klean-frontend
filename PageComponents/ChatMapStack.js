@@ -117,10 +117,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   inputField: {
-    // justifyContent: "center",
     marginBottom: windowDimensions.height * 0.02,
     alignItems: "center",
-    // flex: 1,
   },
   envoyerButton: {
     paddingBottom: 10,
