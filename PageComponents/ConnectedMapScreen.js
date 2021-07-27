@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, StatusBar, View, Text } from "react-native";
+import { StyleSheet, StatusBar, View, SafeAreaView } from "react-native";
 import { connect } from "react-redux";
 import MapView, { PROVIDER_GOOGLE, Marker } from "react-native-maps";
 import * as Location from "expo-location";
@@ -12,27 +12,23 @@ import { typography } from "../lib/typography";
 
 function ConnectedMapScreen(props) {
   const [position, setPosition] = useState({ latitude: 0, longitude: 0 });
-  const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
     async function askPermissions() {
       let { status } = await Location.requestForegroundPermissionsAsync();
-      //console.log('status', status);
-      if (status === "granted") {
-        Location.watchPositionAsync({ distanceInterval: 20 }, (location) => {
-          //console.log(location);
-          setPosition({
-            latitude: location.coords.latitude,
-            longitude: location.coords.longitude,
-          });
-        });
+      if (status === 'granted') {
+        Location.watchPositionAsync({ distanceInterval: 10 },
+          (location) => {
+            setPosition({ latitude: location.coords.latitude, longitude: location.coords.longitude });
+          }
+        );
       }
     }
     askPermissions();
-  }, [position]);
+  }, []);
 
   return (
-    <>
+    <SafeAreaView style={{flex:1}}>
       <View style={styles.contentSearchBar}>
         <SearchBarElement placeholder="Où ? (adresse)" />
         <SearchBarElement placeholder="Quand ? (date)" />
@@ -62,22 +58,8 @@ function ConnectedMapScreen(props) {
       </MapView>
 
       <ButtonElement typeButton="geoloc" />
-    </>
+    </SafeAreaView>
 
-    // <View style={styles.container}>
-    //     <Text>invitedMapScreen</Text>
-    //     <Text>{`${props.token}`}</Text>
-    //     <Button title="login" onPress={() => props.login("monsupertokenchercheenbdd")} />
-    //     <Button title="signOut" onPress={() => props.signOut()} />
-    //     <Button title="InvitedMapScreen"
-    //         onPress={() => props.navigation.navigate('InvitedMapScreen')} />
-    //     <Button title="InvitedEventDetail"
-    //         onPress={() => props.navigation.navigate('InvitedEventDetail')} />
-    //     <Button title="Login"
-    //         onPress={() => props.navigation.navigate('Login')} />
-    //     <Button title="SignUp"
-    //         onPress={() => props.navigation.navigate('SignUp')} />
-    // </View>
   );
 }
 

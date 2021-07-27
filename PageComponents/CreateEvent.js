@@ -14,27 +14,23 @@ import { typography } from "../lib/typography";
 function CreateEvent(props) {
 
     const [position, setPosition] = useState({ latitude: 0, longitude: 0 });
-    const [isVisible, setIsVisible] = useState(false);
   
     useEffect(() => {
       async function askPermissions() {
         let { status } = await Location.requestForegroundPermissionsAsync();
-        //console.log('status', status);
-        if (status === "granted") {
-          Location.watchPositionAsync({ distanceInterval: 20 }, (location) => {
-            //console.log(location);
-            setPosition({
-              latitude: location.coords.latitude,
-              longitude: location.coords.longitude,
-            });
-          });
+        if (status === 'granted') {
+          Location.watchPositionAsync({ distanceInterval: 10 },
+            (location) => {
+              setPosition({ latitude: location.coords.latitude, longitude: location.coords.longitude });
+            }
+          );
         }
       }
       askPermissions();
-    }, [position]);
+    }, []);
   
     return (
-      <>
+      <SafeAreaView style={{flex:1}}>
         <View style={styles.contentSearchBar}>
           <SearchBarElement placeholder="Où ? (adresse)" />
           <SearchBarElement placeholder="Quand ? (date)" />
@@ -83,8 +79,7 @@ function CreateEvent(props) {
         //   onPress={() => props.navigation.navigate("CreateEvent")}
         />
   
-  
-      </>
+      </SafeAreaView>
 
 
         // <View style={styles.container}>

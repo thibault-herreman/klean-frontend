@@ -13,7 +13,6 @@ import { FontAwesome } from '@expo/vector-icons';
 import CleanwalkList from '../lib/CleanwalkList';
 import { ScrollView } from 'react-native-gesture-handler';
 
-
 function Profil(props) {
 
     return (

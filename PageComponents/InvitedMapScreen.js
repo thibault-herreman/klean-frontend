@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import { StyleSheet, StatusBar, View } from 'react-native';
+import { StyleSheet, StatusBar, View, SafeAreaView } from 'react-native';
 import { connect } from 'react-redux';
 import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
 import * as Location from 'expo-location';
@@ -17,22 +17,19 @@ function InvitedMapScreen(props) {
     useEffect(() => {
         async function askPermissions() {
           let { status } = await Location.requestForegroundPermissionsAsync();
-          //console.log('status', status);
           if (status === 'granted') {
-            Location.watchPositionAsync({ distanceInterval: 20 },
+            Location.watchPositionAsync({ distanceInterval: 10 },
               (location) => {
-                //console.log(location);
                 setPosition({ latitude: location.coords.latitude, longitude: location.coords.longitude });
               }
             );
           }
         }
         askPermissions();
-    
-    }, [position]);
+    }, []);
 
     return (
-        <>
+        <SafeAreaView style={{flex:1}}>
             <View style={styles.contentSearchBar}>
                 <SearchBarElement placeholder="Où ? (adresse)" />
                 <SearchBarElement placeholder="Quand ? (date)" />
@@ -54,7 +51,7 @@ function InvitedMapScreen(props) {
                     image={pinSmall}
                     anchor={{ x: 0.5, y: 1 }}
                     centerOffset={{ x: 0.5, y: 1 }}
-                    onPress={() => setIsVisiblePreview(!isVisiblePreview)}
+                    // onPress={() => setIsVisiblePreview(!isVisiblePreview)}
                 />
             </MapView>
             <PreviewEvent 
@@ -70,7 +67,7 @@ function InvitedMapScreen(props) {
                  text='Se connecter'
                  onPress={() => props.navigation.navigate('Login')}
             />
-        </>
+        </SafeAreaView>
 
         // <View style={styles.container}>
         //     <Text>invitedMapScreen</Text>
@@ -116,7 +113,6 @@ const styles = StyleSheet.create({
     contentSearchBar: {
         marginTop: StatusBar.currentHeight || 0,
         backgroundColor: colors.primary,
-        display: 'flex',
         alignItems: 'center',
         paddingTop: 10,
         paddingBottom: 20
