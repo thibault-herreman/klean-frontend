@@ -18,6 +18,8 @@ import ButtonElement from "../lib/ButtonElement";
 import InputElement from "../lib/InputElement";
 import { Colors } from "react-native/Libraries/NewAppScreen";
 import LogoKlean from "../assets/imagesKlean/LogoKlean.png";
+import { ScrollView } from "react-native-gesture-handler";
+import { Lato_100Thin } from "@expo-google-fonts/lato";
 
 function SignUp(props) {
   return (
@@ -25,14 +27,18 @@ function SignUp(props) {
       <View style={styles.mainView}>
         <View style={styles.topBanner}>
           <View style={styles.backButton}>
-            <ButtonElement typeButton="back" />
+            <ButtonElement
+              typeButton="back"
+              onPress={() => props.navigation.navigate()}
+            />
           </View>
           <View style={styles.title}>
             <Text style={typography.h1}>INSCRIPTION</Text>
           </View>
         </View>
 
-        <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} >
+        {/* <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} > */}
+        <ScrollView>
           <View style={styles.inputFields}>
             <InputElement
               placeholder="Prénom"
@@ -49,14 +55,23 @@ function SignUp(props) {
 
           <View style={styles.register}>
             <ButtonElement
-              style={styles.signupButton}
+              style={styles.registerButton}
               typeButton="middleSecondary"
               text="M'inscrire"
+              onPress={() => props.login("monsupertokenchercheenbdd")}
             />
-            <Text style={typography.body}>Vous avez déjà un compte?</Text>
-            <Text style={typography.body}>Se connecter</Text>
+            <View style={styles.textContainer}>
+              <Text style={typography.body}>Vous avez déjà un compte?</Text>
+              <Text
+                style={(typography.body, styles.link)}
+                onPress={() => props.navigation.navigate("Login")}
+              >
+                Se connecter
+              </Text>
+            </View>
           </View>
-        </KeyboardAvoidingView>
+        </ScrollView>
+        {/* </KeyboardAvoidingView> */}
 
         <View style={styles.logoContainer}>
           <Image source={LogoKlean} style={styles.logo} />
@@ -111,6 +126,17 @@ const styles = StyleSheet.create({
   register: {
     marginTop: 70,
     alignItems: "center",
+  },
+  registerButton: {
+    paddingBottom: 10,
+  },
+  textContainer:{
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 20,
+  },
+  link: {
+    paddingTop: 10,
   },
   logoContainer: {
     flex: 1,
