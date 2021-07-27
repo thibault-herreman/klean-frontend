@@ -25,7 +25,7 @@ function ConnectedEventDetailMapStack(props) {
         <View style={styles.container}>
 
             <View>
-                <Image></Image>
+                <Image ></Image>
             </View>
 
             <View>
@@ -50,9 +50,6 @@ function ConnectedEventDetailMapStack(props) {
                 title={"Participants"}/>
 
             </View>
-
-
-
 
         </View>
     );
