@@ -3,20 +3,16 @@ import {
   StyleSheet,
   Text,
   View,
-  Image,
   KeyboardAvoidingView,
-  Button,
+  Dimensions,
 } from "react-native";
 import { connect } from "react-redux";
-import { Dimensions } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { colors } from "../lib/colors";
 import { windowDimensions } from "../lib/windowDimensions";
 import { typography, Typography } from "../lib/typography";
 import ButtonElement from "../lib/ButtonElement";
 import InputElement from "../lib/InputElement";
-import { Colors } from "react-native/Libraries/NewAppScreen";
-import LogoKlean from "../assets/imagesKlean/LogoKlean.png";
 import { FlatList, ScrollView } from "react-native-gesture-handler";
 import ScreenTitles from "../lib/ScreenTitles";
 import ChatList from "../lib/ChatList";
