@@ -31,7 +31,7 @@ function ConnectedEventDetailMapStack(props) {
 
             <View>
                 <ImageBackground style={styles.banner} source={require('../assets/imagesKlean/BannerCleanwalk.jpg')}>
-                    <ButtonElement style={styles.backButton} typeButton="back" />
+                    <ButtonElement style={styles.backButton} typeButton="back" onPress={() => props.navigation.navigate('Profil')}/>
                     <ButtonElement style={styles.goButton} typeButton="go" />
                 </ImageBackground>
             </View>
@@ -51,10 +51,14 @@ function ConnectedEventDetailMapStack(props) {
             </View>
 
             <View style={styles.badges}>
-                <Badges type="green"/> 
-                <Badges type="green"/> 
-                <Badges type="green"/> 
-                <Badges type="green"/> 
+                <Badges type="green" text="crème solaire" margeR={true}/> 
+                <Badges type="green" text="gants" margeR={true}/> 
+                <Badges type="green" text="sacs poubelle" margeR={true}/> 
+                <Badges type="green" text="pince" margeR={true}/> 
+                <Badges type="green" text="chapeau" margeR={true}/> 
+                <Badges type="green" text="baskets" margeR={true}/> 
+                <Badges type="green" text="boissons" margeR={true}/> 
+                <Badges type="green" text="snack" margeR={true}/> 
             </View>
 
             <View>
@@ -68,7 +72,7 @@ function ConnectedEventDetailMapStack(props) {
                 </View>
 
                 <View style={styles.chat}>
-                    <ButtonElement typeButton="chat"/>
+                    <ButtonElement typeButton="chat" onPress={() => props.navigation.navigate('ChatProfilStack')}/>
                 </View>
             </View>
 
@@ -142,7 +146,7 @@ const styles = StyleSheet.create({
         marginLeft: 18,
         marginRight: 18,
         flexDirection: 'row',
-        justifyContent: 'space-around',
+        flexWrap: "wrap",
     },
     participantsContainer:{
         flexDirection: 'row',

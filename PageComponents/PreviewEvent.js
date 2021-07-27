@@ -1,8 +1,8 @@
 import React from "react";
 import { Text, View, StyleSheet, Image, Pressable } from 'react-native';
-import { colors } from "./colors";
-import { windowDimensions } from "./windowDimensions";
-import Badges from './Badges';
+import { colors } from "../lib/colors";
+import { windowDimensions } from "../lib/windowDimensions";
+import Badges from '../lib/Badges';
 
 function PreviewEvent(props) {
 
