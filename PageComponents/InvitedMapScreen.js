@@ -51,7 +51,7 @@ function InvitedMapScreen(props) {
                     image={pinSmall}
                     anchor={{ x: 0.5, y: 1 }}
                     centerOffset={{ x: 0.5, y: 1 }}
-                    // onPress={() => setIsVisiblePreview(!isVisiblePreview)}
+                    onPress={() => setIsVisiblePreview(!isVisiblePreview)}
                 />
             </MapView>
             <PreviewEvent 
