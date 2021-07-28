@@ -13,6 +13,7 @@ function InvitedMapScreen(props) {
 
     const [position, setPosition] = useState({ latitude: 0, longitude: 0 });
     const [isVisiblePreview, setIsVisiblePreview] = useState(false);
+    const [date, setDate] = useState(new Date());
 
     useEffect(() => {
         async function askPermissions() {
@@ -34,8 +35,9 @@ function InvitedMapScreen(props) {
                 <SearchBarElement placeholder="Où ? (adresse)" />
                 
                 <SearchBarElement 
-                    dateValue='Date'
                     type='date'
+                    date={date}
+                    setDate={setDate}
                 />
 
             </View>
