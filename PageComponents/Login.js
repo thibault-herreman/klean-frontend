@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -16,8 +16,47 @@ import { typography, Typography } from "../lib/typography";
 import ButtonElement from "../lib/ButtonElement";
 import InputElement from "../lib/InputElement";
 import LogoKlean from "../assets/imagesKlean/LogoKlean.png";
+import PROXY from "../proxy";
 
 function Login(props) {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const [userExists, setUserExists] = useState(false);
+
+  const [listErrorLogin, setListErrorLogin] = useState([]);
+  let error = [];
+
+  async function login() {
+    props.login("monsupertokenchercheenbdd");
+
+    let findUser = await fetch(PROXY + "/users/sign-in", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: `emailFromFront${email}&passwordFromFront=${password}`,
+    });
+
+    let userInDb = await findUser.json();
+    if (userInDb.result == true) {
+      props.login(body.token);
+      setUserExists(true);
+    } else {
+      setListErrorLogin(body.error);
+    }
+  }
+
+  let errorsLogin = listErrorLogin.map((error, i) => {
+    return <Text>{error}</Text>;
+  });
+
+  let changeState = (name, value) => {
+    if (name == "email") {
+      setEmail(value);
+    } else if (name == "password") {
+      setPassword(value);
+    }
+  };
+
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.mainView}>
@@ -36,19 +75,28 @@ function Login(props) {
         {/* <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} > */}
         <ScrollView>
           <View style={styles.inputFields}>
-            <InputElement placeholder="Email" type="simpleInput"></InputElement>
             <InputElement
+              name="email"
+              setState={changeState}
+              placeholder="Email"
+              type="simpleInput"
+            ></InputElement>
+            <InputElement
+              name="password"
+              setState={changeState}
               placeholder="Password"
               type="simpleInput"
             ></InputElement>
           </View>
+
+          <View>{errorsLogin}</View>
 
           <View style={styles.register}>
             <ButtonElement
               style={styles.registerButton}
               typeButton="middleSecondary"
               text="Se connecter"
-              onPress={() => props.login("monsupertokenchercheenbdd")}
+              onPress={() => login()}
             />
             <View style={styles.textContainer}>
               <Text style={typography.body}>Vous n'avez pas de compte?</Text>

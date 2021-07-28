@@ -17,37 +17,44 @@ import { typography, Typography } from "../lib/typography";
 import ButtonElement from "../lib/ButtonElement";
 import InputElement from "../lib/InputElement";
 import LogoKlean from "../assets/imagesKlean/LogoKlean.png";
-import PROXY from "../proxy"
+import PROXY from "../proxy";
 
 function SignUp(props) {
-
-  const [userExists, setUserExists] = useState(false);
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [city, setCity] = useState("");
   const [password, setPassword] = useState("");
 
+  const [userExists, setUserExists] = useState(false);
+
   const [listErrorSignup, setListErrorSignup] = useState([]);
 
   async function register() {
-    props.login("monsupertokenchercheenbdd");
-
     let data = await fetch(PROXY + "/users/sign-up", {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: `firstName=${firstName}&lastName=${lastName}&email=${email}&city=${city}&password=${password}`,
+      body: `firstNameFromFront=${firstName}&lastNameFromFront=${lastName}&emailFromFront=${email}&cityFromFront=${city}&passwordFromFront=${password}`,
     });
 
     let body = await data.json();
-    console.log("body", body);
-    if (body.result == true){
-      // props.login(body.token);
+    if (body.result == true) {
+      props.login(body.token);
       setUserExists(true);
-    } else{
+    } else {
       setListErrorSignup(body.error);
     }
   }
+
+  // if (userExists) {
+  //   return(
+  //     onPress=
+  //   )
+  // }
+
+  let errorsRegister = listErrorSignup.map((error, i) => {
+    return <Text>{error}</Text>;
+  });
 
   let changeState = (name, value) => {
     if (name == "firstName") {
@@ -113,6 +120,7 @@ function SignUp(props) {
                 type="simpleInput"
               ></InputElement>
             </View>
+            <View>{errorsRegister}</View>
 
             <View style={styles.register}>
               <ButtonElement
