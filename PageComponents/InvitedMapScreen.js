@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import { StyleSheet, StatusBar, View, SafeAreaView, Button } from 'react-native';
+import { StyleSheet, StatusBar, View, SafeAreaView, Button, Pressable } from 'react-native';
 import { connect } from 'react-redux';
 import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
 import * as Location from 'expo-location';
@@ -8,34 +8,12 @@ import SearchBarElement from '../lib/SearchBarElement';
 import { colors } from '../lib/colors';
 import pinSmall from '../assets/imagesKlean/pinSmall.png';
 import PreviewEvent from './PreviewEvent';
-import DateTimePicker from '@react-native-community/datetimepicker';
 
 function InvitedMapScreen(props) {
 
     const [position, setPosition] = useState({ latitude: 0, longitude: 0 });
     const [isVisiblePreview, setIsVisiblePreview] = useState(false);
-    const [date, setDate] = useState(new Date(1598051730000));
-    const [mode, setMode] = useState('date');
-    const [show, setShow] = useState(false);
-
-    const onChange = (event, selectedDate) => {
-        const currentDate = selectedDate || date;
-        setShow(Platform.OS === 'ios');
-        setDate(currentDate);
-    };
-    
-    const showMode = (currentMode) => {
-        setShow(true);
-        setMode(currentMode);
-    };
-
-    const showDatepicker = () => {
-        showMode('date');
-    };
-
-    const showTimepicker = () => {
-        showMode('time');
-    };
+    const [date, setDate] = useState(new Date());
 
     useEffect(() => {
         async function askPermissions() {
@@ -56,24 +34,11 @@ function InvitedMapScreen(props) {
             <View style={styles.contentSearchBar}>
                 <SearchBarElement placeholder="Où ? (adresse)" />
                 
-                <View>
-                    <View>
-                        <Button onPress={showDatepicker} title="Show date picker!" />
-                    </View>
-                    <View>
-                        <Button onPress={showTimepicker} title="Show time picker!" />
-                    </View>
-                    {show && (
-                        <DateTimePicker
-                            testID="dateTimePicker"
-                            value={date}
-                            mode={mode}
-                            is24Hour={true}
-                            display="default"
-                            onChange={onChange}
-                        />
-                    )}
-                </View>
+                <SearchBarElement 
+                    type='date'
+                    date={date}
+                    setDate={setDate}
+                />
 
             </View>
             <MapView
