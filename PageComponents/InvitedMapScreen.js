@@ -19,6 +19,7 @@ function InvitedMapScreen(props) {
     const [date, setDate] = useState(new Date());
     const [adress, setAdress] = useState("")
     const [autoComplete, setAutoComplete] = useState([])
+    const [showAutoComplete, setShowAutoComplete] = useState(false)
 
     useEffect(() => {
         async function askPermissions() {
@@ -50,7 +51,7 @@ function InvitedMapScreen(props) {
     return (
         <SafeAreaView style={{ flex: 1 }}>
             <View style={styles.contentSearchBar}>
-                <SearchBarElement adress={adress} setAdress={setAdress} placeholder="Où ? (adresse)" />
+                <SearchBarElement adress={adress} setAdress={setAdress} onChangeShowAutoComplete={setShowAutoComplete} placeholder="Où ? (adresse)" />
 
                 <SearchBarElement
                     type='date'
@@ -60,7 +61,7 @@ function InvitedMapScreen(props) {
 
             </View>
             <View>
-                <AutoComplete data={autoComplete} onPress={setAdress} />
+                {showAutoComplete ? <AutoComplete data={autoComplete} onPress={setAdress} setShowAutoComplete={setShowAutoComplete} /> : null}
             </View>
             <MapView
                 style={styles.container}
