@@ -13,7 +13,7 @@ function InvitedMapScreen(props) {
 
     const [position, setPosition] = useState({ latitude: 0, longitude: 0 });
     const [isVisiblePreview, setIsVisiblePreview] = useState(false);
-    const [date, setDate] = useState(new Date());
+    const [dateSearch, setDateSearch] = useState(new Date());
 
     useEffect(() => {
         async function askPermissions() {
@@ -29,6 +29,11 @@ function InvitedMapScreen(props) {
         askPermissions();
     }, []);
 
+    useEffect(() => {
+        console.log('dateParent', dateSearch);
+       
+    }, [dateSearch]);
+
     return (
         <SafeAreaView style={{flex:1}}>
             <View style={styles.contentSearchBar}>
@@ -36,8 +41,14 @@ function InvitedMapScreen(props) {
                 
                 <SearchBarElement 
                     type='date'
-                    date={date}
-                    setDate={setDate}
+                    dateSearch={dateSearch}
+                    setDateSearch={setDateSearch}
+                />
+
+                <SearchBarElement 
+                    type='time'
+                    dateSearch={dateSearch}
+                    setDateSearch={setDateSearch}
                 />
 
             </View>
