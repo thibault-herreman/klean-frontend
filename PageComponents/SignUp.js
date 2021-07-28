@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -17,8 +17,59 @@ import { typography, Typography } from "../lib/typography";
 import ButtonElement from "../lib/ButtonElement";
 import InputElement from "../lib/InputElement";
 import LogoKlean from "../assets/imagesKlean/LogoKlean.png";
+import PROXY from "../proxy";
 
 function SignUp(props) {
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [city, setCity] = useState("");
+  const [password, setPassword] = useState("");
+
+  const [userExists, setUserExists] = useState(false);
+
+  const [listErrorSignup, setListErrorSignup] = useState([]);
+
+  async function register() {
+    let data = await fetch(PROXY + "/users/sign-up", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: `firstNameFromFront=${firstName}&lastNameFromFront=${lastName}&emailFromFront=${email}&cityFromFront=${city}&passwordFromFront=${password}`,
+    });
+
+    let body = await data.json();
+    if (body.result == true) {
+      props.login(body.token);
+      setUserExists(true);
+    } else {
+      setListErrorSignup(body.error);
+    }
+  }
+
+  // if (userExists) {
+  //   return(
+  //     onPress=
+  //   )
+  // }
+
+  let errorsRegister = listErrorSignup.map((error, i) => {
+    return <Text>{error}</Text>;
+  });
+
+  let changeState = (name, value) => {
+    if (name == "firstName") {
+      setFirstName(value);
+    } else if (name == "lastName") {
+      setLastName(value);
+    } else if (name == "email") {
+      setEmail(value);
+    } else if (name == "city") {
+      setCity(value);
+    } else if (name == "password") {
+      setPassword(value);
+    }
+  };
+
   return (
     <SafeAreaView style={styles.safeArea}>
       <ScrollView>
@@ -39,30 +90,44 @@ function SignUp(props) {
           <ScrollView>
             <View style={styles.inputFields}>
               <InputElement
+                name="firstName"
+                setState={changeState}
                 placeholder="Prénom"
                 type="simpleInput"
               ></InputElement>
-              <InputElement placeholder="Nom" type="simpleInput"></InputElement>
               <InputElement
+                name="lastName"
+                setState={changeState}
+                placeholder="Nom"
+                type="simpleInput"
+              ></InputElement>
+              <InputElement
+                name="email"
+                setState={changeState}
                 placeholder="Email"
                 type="simpleInput"
               ></InputElement>
               <InputElement
-                placeholder="Password"
-                type="simpleInput"
-              ></InputElement>
-              <InputElement
+                name="city"
+                setState={changeState}
                 placeholder="Ville"
                 type="simpleInput"
               ></InputElement>
+              <InputElement
+                name="password"
+                setState={changeState}
+                placeholder="Password"
+                type="simpleInput"
+              ></InputElement>
             </View>
+            <View>{errorsRegister}</View>
 
             <View style={styles.register}>
               <ButtonElement
                 style={styles.registerButton}
                 typeButton="middleSecondary"
                 text="M'inscrire"
-                onPress={() => props.login("monsupertokenchercheenbdd")}
+                onPress={() => register()}
               />
               <View style={styles.textContainer}>
                 <Text style={typography.body}>Vous avez déjà un compte?</Text>
