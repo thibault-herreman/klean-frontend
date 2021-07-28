@@ -29,7 +29,7 @@ function Login(props) {
     let data = await fetch(PROXY + "/users/sign-in", {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: `emailFromFront${email}&passwordFromFront=${password}`,
+      body: `emailFromFront=${email}&passwordFromFront=${password}`,
     });
 
     let body = await data.json();
@@ -45,7 +45,7 @@ function Login(props) {
   }
 
   let errorsLogin = listErrorLogin.map((error, i) => {
-    return <Text>{error}</Text>;
+    return <Text key={`error${i}`}>{error}</Text>;
   });
 
   let changeState = (name, value) => {

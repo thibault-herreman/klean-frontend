@@ -46,7 +46,7 @@ function SignUp(props) {
   }
 
   let errorsRegister = listErrorSignup.map((error, i) => {
-    return <Text>{error}</Text>;
+    return <Text key={`error${i}`}>{error}</Text>;
   });
 
   let changeState = (name, value) => {
@@ -62,6 +62,29 @@ function SignUp(props) {
       setPassword(value);
     }
   };
+
+  // let button;
+
+  // if (id) {
+  //   return (
+  //     <ButtonElement
+  //       style={styles.registerButton}
+  //       typeButton="middleSecondary"
+  //       text="M'inscrire et rejoindre "
+  //       onPress={() => registerAndParticipate()}
+  //     />
+  //   );
+  // }
+  // if (id == null) {
+  //   return (
+  //     <ButtonElement
+  //       style={styles.registerButton}
+  //       typeButton="middleSecondary"
+  //       text="M'inscrire"
+  //       onPress={() => register()}
+  //     />
+  //   );
+  // }
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -116,6 +139,7 @@ function SignUp(props) {
             <View style={styles.error}>{errorsRegister}</View>
 
             <View style={styles.register}>
+              {/* {button} */}
               <ButtonElement
                 style={styles.registerButton}
                 typeButton="middleSecondary"
@@ -156,7 +180,10 @@ function mapDispatchToProps(dispatch) {
 }
 
 function mapStateToProps(state) {
-  return { tokenObj: state.tokenObj };
+  return {
+    // idCleanwalk: state.idCleanWalk,
+    tokenObj: state.tokenObj,
+  };
 }
 
 const styles = StyleSheet.create({
