@@ -17,6 +17,7 @@ import { typography, Typography } from "../lib/typography";
 import ButtonElement from "../lib/ButtonElement";
 import InputElement from "../lib/InputElement";
 import LogoKlean from "../assets/imagesKlean/LogoKlean.png";
+import PROXY from "../proxy"
 
 function SignUp(props) {
 
@@ -32,7 +33,7 @@ function SignUp(props) {
   async function register() {
     props.login("monsupertokenchercheenbdd");
 
-    let data = await fetch("/users/sign-up", {
+    let data = await fetch(PROXY + "/users/sign-up", {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
       body: `firstName=${firstName}&lastName=${lastName}&email=${email}&city=${city}&password=${password}`,
