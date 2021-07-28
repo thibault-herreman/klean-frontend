@@ -76,7 +76,7 @@ function EventFillInfo(props) {
               text="Organiser"
               onPress={() => props.navigation.navigate("Profil")}
             />
-          </View>
+          </View> 
         </ScrollView>
         {/* </KeyboardAvoidingView> */}
       </View>
