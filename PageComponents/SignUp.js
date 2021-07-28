@@ -27,7 +27,6 @@ function SignUp(props) {
   const [password, setPassword] = useState("");
 
   const [userExists, setUserExists] = useState(false);
-
   const [listErrorSignup, setListErrorSignup] = useState([]);
 
   async function register() {
@@ -39,18 +38,12 @@ function SignUp(props) {
 
     let body = await data.json();
     if (body.result == true) {
-      props.login(body.token);
       setUserExists(true);
+      props.login(body.token);
     } else {
       setListErrorSignup(body.error);
     }
   }
-
-  // if (userExists) {
-  //   return(
-  //     onPress=
-  //   )
-  // }
 
   let errorsRegister = listErrorSignup.map((error, i) => {
     return <Text>{error}</Text>;
@@ -120,7 +113,7 @@ function SignUp(props) {
                 type="simpleInput"
               ></InputElement>
             </View>
-            <View>{errorsRegister}</View>
+            <View style={styles.error}>{errorsRegister}</View>
 
             <View style={styles.register}>
               <ButtonElement
@@ -205,6 +198,9 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     marginTop: 20,
+  },
+  error: {
+    alignItems: "center",
   },
   link: {
     paddingTop: 10,

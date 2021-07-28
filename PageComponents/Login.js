@@ -23,25 +23,24 @@ function Login(props) {
   const [password, setPassword] = useState("");
 
   const [userExists, setUserExists] = useState(false);
-
   const [listErrorLogin, setListErrorLogin] = useState([]);
-  let error = [];
 
   async function login() {
-    props.login("monsupertokenchercheenbdd");
-
-    let findUser = await fetch(PROXY + "/users/sign-in", {
+    let data = await fetch(PROXY + "/users/sign-in", {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
       body: `emailFromFront${email}&passwordFromFront=${password}`,
     });
 
-    let userInDb = await findUser.json();
-    if (userInDb.result == true) {
-      props.login(body.token);
+    let body = await data.json();
+    if (body.result == true) {
       setUserExists(true);
     } else {
       setListErrorLogin(body.error);
+    }
+
+    if (userExists) {
+      props.login(body.token);
     }
   }
 
@@ -89,7 +88,7 @@ function Login(props) {
             ></InputElement>
           </View>
 
-          <View>{errorsLogin}</View>
+          <View style={styles.error}>{errorsLogin}</View>
 
           <View style={styles.register}>
             <ButtonElement
@@ -173,6 +172,9 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     marginTop: 20,
+  },
+  error: {
+    alignItems: "center",
   },
   link: {
     paddingTop: 10,
