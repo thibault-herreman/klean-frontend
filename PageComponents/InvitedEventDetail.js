@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import { StyleSheet, Text, View, ImageBackground, SafeAreaView, ScrollView, StatusBar } from 'react-native';
 import { connect } from 'react-redux';
 import ScreenTitles from '../lib/ScreenTitles.js';
@@ -8,8 +8,37 @@ import BadgesList from '../lib/BadgesList.js';
 import {windowDimensions} from '../lib/windowDimensions.js';
 import {typography} from '../lib/typography.js';
 
+import PROXY from '../proxy.js';
 
 function InvitedEventDetail(props) {
+
+    const [cleanwalk, setCleanwalk] = useState([])
+
+    useEffect(() => {
+        async function loadData() {
+    
+            const responseCleanwalk = await fetch(PROXY + "/load-cleanwalk")
+            const jsonResponseCleanwalk = await responseCleanwalk.json()
+            
+            console.log("test", jsonResponseCleanwalk.cleanwalk)
+
+            setCleanwalk(jsonResponseCleanwalk.cleanwalk)
+            
+        }
+        loadData();
+      }, [])
+
+
+    // var badgesList = cleanwalk.toolBadge.map((badge, i) => {
+    //     return (
+
+    //         <View style={styles.badges}>
+    //             <BadgesList /> 
+    //         </View>
+
+    //     )
+    // })
+
 
     return (
         // <View style={styles.container}>
@@ -36,18 +65,20 @@ function InvitedEventDetail(props) {
                 </ImageBackground>
 
             <View style={styles.generalInfoCleanwalk}>
-                <Text style={typography.h2}>Nettoyage de la plage de Santa Giulia</Text>
-                <Text style={typography.bodyLight}>Corse du Sud</Text>
-                <Text style={typography.bodyLight}>Début : Samedi 8 août 2021 à 11h30</Text>
-                <Text style={typography.bodyLight}>Fin : Dimanche 9 août 2021 à 12h30</Text>
+                <Text style={typography.h2}>{cleanwalk.cleanwalkTitle}</Text>
+                {/* <Text style={typography.bodyLight}>{cleanwalk.cleanwalkCity.cityName}</Text> */}
+                <Text style={typography.bodyLight}>Début : {cleanwalk.startingDate}</Text>
+                <Text style={typography.bodyLight}>Fin : {cleanwalk.endingDate}</Text>
             </View>
 
             <View style={styles.descriptionCleanwalk}>
                 <Text style={typography.h3}>Description</Text>
                 <View style={styles.cleanwakDescriptionContainer}>
-                    <Text style={typography.bodyLight}>Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum</Text> 
+                    <Text style={typography.bodyLight}>{cleanwalk.cleanwalkDescription}</Text> 
                 </View>
             </View>
+
+            {/* {badgesList} */}
 
             <View style={styles.badges}>
                 <BadgesList />

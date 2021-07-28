@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, StatusBar, View, SafeAreaView, Button, Pressable } from 'react-native';
 import { connect } from 'react-redux';
 import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
@@ -8,38 +8,74 @@ import SearchBarElement from '../lib/SearchBarElement';
 import { colors } from '../lib/colors';
 import pinSmall from '../assets/imagesKlean/pinSmall.png';
 import PreviewEvent from './PreviewEvent';
+import AutoComplete from '../lib/AutoComplete';
+import PROXY from '../proxy'
+
 
 function InvitedMapScreen(props) {
 
     const [position, setPosition] = useState({ latitude: 0, longitude: 0 });
     const [isVisiblePreview, setIsVisiblePreview] = useState(false);
-    const [date, setDate] = useState(new Date());
+    const [dateSearch, setDateSearch] = useState(new Date());
+    const [adress, setAdress] = useState("")
+    const [autoComplete, setAutoComplete] = useState([])
+    const [showAutoComplete, setShowAutoComplete] = useState(false)
 
     useEffect(() => {
         async function askPermissions() {
-          let { status } = await Location.requestForegroundPermissionsAsync();
-          if (status === 'granted') {
-            Location.watchPositionAsync({ distanceInterval: 10 },
-              (location) => {
-                setPosition({ latitude: location.coords.latitude, longitude: location.coords.longitude });
-              }
-            );
-          }
+            let { status } = await Location.requestForegroundPermissionsAsync();
+            if (status === 'granted') {
+                Location.watchPositionAsync({ distanceInterval: 10 },
+                    (location) => {
+                        setPosition({ latitude: location.coords.latitude, longitude: location.coords.longitude });
+                    }
+                );
+            }
         }
         askPermissions();
     }, []);
 
+    useEffect(() => {
+        console.log('dateParent', dateSearch);
+    }, [dateSearch])
+
+    useEffect(() => {
+        async function loadData() {
+            let rawResponse = await fetch(PROXY + '/autocomplete-search', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: `adress=${adress.replace(" ", "+")}`
+            });
+            let response = await rawResponse.json();
+            setAutoComplete(response.response)
+        };
+        if (adress.length != null) {
+            loadData()
+        } else {
+
+        };
+    }, [adress])
+
     return (
-        <SafeAreaView style={{flex:1}}>
+        <SafeAreaView style={{ flex: 1 }}>
             <View style={styles.contentSearchBar}>
-                <SearchBarElement placeholder="Où ? (adresse)" />
-                
-                <SearchBarElement 
+                <SearchBarElement adress={adress} setAdress={setAdress} onChangeShowAutoComplete={setShowAutoComplete} placeholder="Où ? (adresse)" />
+
+                <SearchBarElement
                     type='date'
-                    date={date}
-                    setDate={setDate}
+                    dateSearch={dateSearch}
+                    setDateSearch={setDateSearch}
                 />
 
+                <SearchBarElement
+                    type='time'
+                    dateSearch={dateSearch}
+                    setDateSearch={setDateSearch}
+                />
+
+            </View>
+            <View>
+                {showAutoComplete ? <AutoComplete data={autoComplete} onPress={setAdress} setShowAutoComplete={setShowAutoComplete} /> : null}
             </View>
             <MapView
                 style={styles.container}
@@ -52,25 +88,25 @@ function InvitedMapScreen(props) {
                 }}
             >
                 <Marker draggable
-                    coordinate={{ latitude: position.latitude, longitude:  position.longitude }}
+                    coordinate={{ latitude: position.latitude, longitude: position.longitude }}
                     image={pinSmall}
                     anchor={{ x: 0.5, y: 1 }}
                     centerOffset={{ x: 0.5, y: 1 }}
                     onPress={() => setIsVisiblePreview(!isVisiblePreview)}
                 />
             </MapView>
-            <PreviewEvent 
+            <PreviewEvent
                 title="Nettoyage de rue en bas de chez moi à Paris près de Wagram"
                 desc="Je vous propose que l’on nettoye ensemble la rue car des jeunes ont laissé leur poubelle et c'est dangereux pour les enfants"
                 nameOrga="J. Doe"
                 onPress={() => props.navigation.navigate('InvitedEventDetail')}
                 visible={isVisiblePreview}
             />
-            <ButtonElement 
-                 typeButton='fullFat'
-                 backgroundColor={colors.primary}
-                 text='Se connecter'
-                 onPress={() => props.navigation.navigate('Login')}
+            <ButtonElement
+                typeButton='fullFat'
+                backgroundColor={colors.primary}
+                text='Se connecter'
+                onPress={() => props.navigation.navigate('Login')}
             />
         </SafeAreaView>
 
@@ -113,7 +149,7 @@ const styles = StyleSheet.create({
         backgroundColor: colors.white,
         alignItems: 'center',
         justifyContent: 'center',
-        
+
     },
     contentSearchBar: {
         marginTop: StatusBar.currentHeight || 0,
