@@ -1,10 +1,10 @@
 import React from 'react';
-import { StyleSheet, Text, View, ImageBackground } from 'react-native';
+import { StyleSheet, Text, View, ImageBackground, SafeAreaView, ScrollView, StatusBar } from 'react-native';
 import { connect } from 'react-redux';
-import Badges from "../lib/Badges.js";
 import ScreenTitles from '../lib/ScreenTitles.js';
 import ButtonElement from "../lib/ButtonElement";
 import Participants from "../lib/Participants";
+import BadgesList from '../lib/BadgesList.js';
 import {windowDimensions} from '../lib/windowDimensions.js';
 import {typography} from '../lib/typography.js';
 
@@ -25,16 +25,12 @@ function ConnectedEventDetailMapStack(props) {
         //         onPress={() => props.navigation.navigate('ChatMapStack')} />
         // </View>
 
-
-
-        <View style={styles.container}>
-
-            <View>
+        <SafeAreaView style={styles.container}>
+        <ScrollView>
                 <ImageBackground style={styles.banner} source={require('../assets/imagesKlean/BannerCleanwalk.jpg')}>
-                    <ButtonElement style={styles.backButton} typeButton="back" />
+                    <ButtonElement style={styles.backButton} typeButton="back" onPress={() => props.navigation.navigate('ConnectedMapScreen')}/>
                     <ButtonElement style={styles.goButton} typeButton="go" />
                 </ImageBackground>
-            </View>
 
             <View style={styles.generalInfoCleanwalk}>
                 <Text style={typography.h2}>Nettoyage de la plage de Santa Giulia</Text>
@@ -51,10 +47,7 @@ function ConnectedEventDetailMapStack(props) {
             </View>
 
             <View style={styles.badges}>
-                <Badges type="green"/> 
-                <Badges type="green"/> 
-                <Badges type="green"/> 
-                <Badges type="green"/> 
+                <BadgesList />
             </View>
 
             <View>
@@ -68,17 +61,18 @@ function ConnectedEventDetailMapStack(props) {
                 </View>
 
                 <View style={styles.chat}>
-                    <ButtonElement typeButton="chat"/>
+                    <ButtonElement typeButton="chat" onPress={() => props.navigation.navigate('ChatMapStack')}/>
                 </View>
             </View>
 
             <View style={styles.confirmButton}>
-                <ButtonElement typeButton="middleSecondary" text="Me désinscrire"/>
+                <ButtonElement typeButton="middleSecondary" text="Participer" onPress={() => props.navigation.navigate('Profil')}/>
             </View>
 
 
+        </ScrollView>
+        </SafeAreaView>
 
-        </View>
     );
 }
 
@@ -111,6 +105,7 @@ const styles = StyleSheet.create({
         paddingRight: 17,
         flexDirection: 'row',
         alignItems: 'center',
+        marginTop: StatusBar.currentHeight || 0,
     },
     backButton: {
         position: 'absolute', 
@@ -125,10 +120,6 @@ const styles = StyleSheet.create({
         marginBottom: 11,
         marginLeft: 18,
     },
-    cleanwalkTitle: {
-        fontFamily: 'Lato_400Regular',
-        fontSize: 18,
-    },
     descriptionCleanwalk: {
         marginBottom: 11,
         marginLeft: 18,
@@ -137,16 +128,12 @@ const styles = StyleSheet.create({
         marginRight: 18,
     },
     badges: {
-        marginTop: 11,
-        marginBottom: 11,
-        marginLeft: 18,
-        marginRight: 18,
-        flexDirection: 'row',
-        justifyContent: 'space-around',
+        marginBottom: 11, 
     },
     participantsContainer:{
         flexDirection: 'row',
         justifyContent: 'space-between',
+        height: 300,
     },
     participantsList: {
         marginTop: 11,
@@ -159,6 +146,7 @@ const styles = StyleSheet.create({
     confirmButton: {
         flexDirection: 'row',
         justifyContent: 'center',
+        marginBottom: 11,
     }
 });
 

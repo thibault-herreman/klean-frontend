@@ -74,7 +74,7 @@ function EventFillInfo(props) {
               style={styles.registerButton}
               typeButton="middleSecondary"
               text="Organiser"
-              onPress={() => props.navigation.navigate("ChatMapStack")}
+              onPress={() => props.navigation.navigate("Profil")}
             />
           </View>
         </ScrollView>

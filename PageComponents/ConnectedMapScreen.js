@@ -98,7 +98,7 @@ function ConnectedMapScreen(props) {
             title="Nettoyage de rue en bas de chez moi à Paris près de Wagram"
             desc="Je vous propose que l’on nettoye ensemble la rue car des jeunes ont laissé leur poubelle et c'est dangereux pour les enfants"
             nameOrga="J. Doe"
-            onPress={() => props.navigation.navigate('InvitedEventDetail')}
+            onPress={() => props.navigation.navigate('ConnectedEventDetailMapStack')}
             visible={isVisiblePreview}
         />
       <ButtonElement typeButton="geoloc" />
