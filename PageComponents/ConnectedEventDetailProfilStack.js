@@ -1,12 +1,13 @@
 import React from 'react';
-import { StyleSheet, Text, View, ImageBackground } from 'react-native';
+import { StyleSheet, Text, View, ImageBackground, SafeAreaView, ScrollView, StatusBar } from 'react-native';
 import { connect } from 'react-redux';
-import Badges from "../lib/Badges.js";
 import ScreenTitles from '../lib/ScreenTitles.js';
 import ButtonElement from "../lib/ButtonElement";
 import Participants from "../lib/Participants";
+import BadgesList from '../lib/BadgesList.js';
 import {windowDimensions} from '../lib/windowDimensions.js';
 import {typography} from '../lib/typography.js';
+
 
 function ConnectedEventDetailMapStack(props) {
 
@@ -26,15 +27,12 @@ function ConnectedEventDetailMapStack(props) {
         // </View>
 
 
-
-        <View style={styles.container}>
-
-            <View>
+        <SafeAreaView style={styles.container}>
+        <ScrollView>
                 <ImageBackground style={styles.banner} source={require('../assets/imagesKlean/BannerCleanwalk.jpg')}>
                     <ButtonElement style={styles.backButton} typeButton="back" onPress={() => props.navigation.navigate('Profil')}/>
                     <ButtonElement style={styles.goButton} typeButton="go" />
                 </ImageBackground>
-            </View>
 
             <View style={styles.generalInfoCleanwalk}>
                 <Text style={typography.h2}>Nettoyage de la plage de Santa Giulia</Text>
@@ -51,10 +49,7 @@ function ConnectedEventDetailMapStack(props) {
             </View>
 
             <View style={styles.badges}>
-                <Badges type="green" text="crème solaire" margeR={true}/> 
-                <Badges type="green" text="gants" margeR={true}/> 
-                <Badges type="green" text="sacs poubelle" margeR={true}/> 
-                <Badges type="green" text="pince" margeR={true}/> 
+                <BadgesList />
             </View>
 
             <View>
@@ -77,8 +72,8 @@ function ConnectedEventDetailMapStack(props) {
             </View>
 
 
-
-        </View>
+        </ScrollView>
+        </SafeAreaView>
     );
 }
 
@@ -111,6 +106,7 @@ const styles = StyleSheet.create({
         paddingRight: 17,
         flexDirection: 'row',
         alignItems: 'center',
+        marginTop: StatusBar.currentHeight || 0,
     },
     backButton: {
         position: 'absolute', 
@@ -133,16 +129,12 @@ const styles = StyleSheet.create({
         marginRight: 18,
     },
     badges: {
-        marginTop: 11,
-        marginBottom: 11,
-        marginLeft: 18,
-        marginRight: 18,
-        flexDirection: 'row',
-        flexWrap: "wrap",
+        marginBottom: 11, 
     },
     participantsContainer:{
         flexDirection: 'row',
         justifyContent: 'space-between',
+        height: 300,
     },
     participantsList: {
         marginTop: 11,
@@ -155,6 +147,7 @@ const styles = StyleSheet.create({
     confirmButton: {
         flexDirection: 'row',
         justifyContent: 'center',
+        marginBottom: 11,
     }
 });
 
