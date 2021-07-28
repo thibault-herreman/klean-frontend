@@ -88,8 +88,6 @@ function InvitedMapScreen(props) {
             >
                 <Marker draggable
                     coordinate={{ latitude: position.latitude, longitude:  position.longitude }}
-                    title="Hello"
-                    description="I am here"
                     image={pinSmall}
                     anchor={{ x: 0.5, y: 1 }}
                     centerOffset={{ x: 0.5, y: 1 }}
