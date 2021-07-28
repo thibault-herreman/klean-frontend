@@ -16,7 +16,7 @@ function InvitedMapScreen(props) {
 
     const [position, setPosition] = useState({ latitude: 0, longitude: 0 });
     const [isVisiblePreview, setIsVisiblePreview] = useState(false);
-    const [date, setDate] = useState(new Date());
+    const [dateSearch, setDateSearch] = useState(new Date());
     const [adress, setAdress] = useState("")
     const [autoComplete, setAutoComplete] = useState([])
     const [showAutoComplete, setShowAutoComplete] = useState(false)
@@ -34,6 +34,10 @@ function InvitedMapScreen(props) {
         }
         askPermissions();
     }, []);
+
+    useEffect(() => {
+        console.log('dateParent', dateSearch);
+    }, [dateSearch])
 
     useEffect(() => {
         async function loadData() {
@@ -55,8 +59,14 @@ function InvitedMapScreen(props) {
 
                 <SearchBarElement
                     type='date'
-                    date={date}
-                    setDate={setDate}
+                    dateSearch={dateSearch}
+                    setDateSearch={setDateSearch}
+                />
+
+                <SearchBarElement 
+                    type='time'
+                    dateSearch={dateSearch}
+                    setDateSearch={setDateSearch}
                 />
 
             </View>
