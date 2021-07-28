@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -19,6 +19,49 @@ import InputElement from "../lib/InputElement";
 import LogoKlean from "../assets/imagesKlean/LogoKlean.png";
 
 function SignUp(props) {
+
+  const [userExists, setUserExists] = useState(false);
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [city, setCity] = useState("");
+  const [password, setPassword] = useState("");
+
+  const [listErrorSignup, setListErrorSignup] = useState([]);
+
+  async function register() {
+    props.login("monsupertokenchercheenbdd");
+
+    let data = await fetch("/users/sign-up", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: `firstName=${firstName}&lastName=${lastName}&email=${email}&city=${city}&password=${password}`,
+    });
+
+    let body = await data.json();
+    console.log("body", body);
+    if (body.result == true){
+      // props.login(body.token);
+      setUserExists(true);
+    } else{
+      setListErrorSignup(body.error);
+    }
+  }
+
+  let changeState = (name, value) => {
+    if (name == "firstName") {
+      setFirstName(value);
+    } else if (name == "lastName") {
+      setLastName(value);
+    } else if (name == "email") {
+      setEmail(value);
+    } else if (name == "city") {
+      setCity(value);
+    } else if (name == "password") {
+      setPassword(value);
+    }
+  };
+
   return (
     <SafeAreaView style={styles.safeArea}>
       <ScrollView>
@@ -39,20 +82,33 @@ function SignUp(props) {
           <ScrollView>
             <View style={styles.inputFields}>
               <InputElement
+                name="firstName"
+                setState={changeState}
                 placeholder="Prénom"
                 type="simpleInput"
               ></InputElement>
-              <InputElement placeholder="Nom" type="simpleInput"></InputElement>
               <InputElement
+                name="lastName"
+                setState={changeState}
+                placeholder="Nom"
+                type="simpleInput"
+              ></InputElement>
+              <InputElement
+                name="email"
+                setState={changeState}
                 placeholder="Email"
                 type="simpleInput"
               ></InputElement>
               <InputElement
-                placeholder="Password"
+                name="city"
+                setState={changeState}
+                placeholder="Ville"
                 type="simpleInput"
               ></InputElement>
               <InputElement
-                placeholder="Ville"
+                name="password"
+                setState={changeState}
+                placeholder="Password"
                 type="simpleInput"
               ></InputElement>
             </View>
@@ -62,7 +118,7 @@ function SignUp(props) {
                 style={styles.registerButton}
                 typeButton="middleSecondary"
                 text="M'inscrire"
-                onPress={() => props.login("monsupertokenchercheenbdd")}
+                onPress={() => register()}
               />
               <View style={styles.textContainer}>
                 <Text style={typography.body}>Vous avez déjà un compte?</Text>
