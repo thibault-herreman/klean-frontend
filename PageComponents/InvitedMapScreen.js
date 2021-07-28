@@ -44,12 +44,16 @@ function InvitedMapScreen(props) {
             let rawResponse = await fetch(PROXY + '/autocomplete-search', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                body: `adress=${adress.replace(" " , "+")}`
+                body: `adress=${adress.replace(" ", "+")}`
             });
             let response = await rawResponse.json();
             setAutoComplete(response.response)
         };
-        loadData();
+        if (adress.length != null) {
+            loadData()
+        } else {
+
+        };
     }, [adress])
 
     return (
@@ -63,7 +67,7 @@ function InvitedMapScreen(props) {
                     setDateSearch={setDateSearch}
                 />
 
-                <SearchBarElement 
+                <SearchBarElement
                     type='time'
                     dateSearch={dateSearch}
                     setDateSearch={setDateSearch}
