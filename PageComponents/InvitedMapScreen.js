@@ -130,7 +130,8 @@ function InvitedMapScreen(props) {
                 title={previewInfo.cleanwalkTitle}
                 desc={previewInfo.cleanwalkDescription}
                 toolBadge={previewInfo.toolBadge}
-                nameOrga={previewInfo.admin}
+                nameOrga={previewInfo.admin.lastName}
+                firstnameOrga={previewInfo.admin.firstName}
                 onPress={() => props.navigation.navigate('InvitedEventDetail')}
                 visible={isVisiblePreview}
             />
