@@ -28,12 +28,10 @@ function InvitedEventDetail(props) {
         const responseCleanwalk = await fetch(PROXY + `/load-cleanwalk/${idCW}`);
         const jsonResponseCleanwalk = await responseCleanwalk.json();
 
-        // console.log("test", jsonResponseCleanwalk);
-
-        setCleanwalk(jsonResponseCleanwalk.cleanwalk);
-        }
-        loadData();
-    }, []);
+      setCleanwalk(jsonResponseCleanwalk.cleanwalk);
+    }
+    loadData();
+  }, []);
 
 //   let cleanwalkIdFromButton = cleanwalk._id;
     let cleanwalkIdFromButton = idCW;

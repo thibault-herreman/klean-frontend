@@ -9,72 +9,103 @@ import { colors } from "../lib/colors";
 import pinSmall from "../assets/imagesKlean/pinSmall.png";
 import { windowDimensions } from "../lib/windowDimensions";
 import PreviewEvent from './PreviewEvent';
-import DateTimePicker from '@react-native-community/datetimepicker';
+import AutoComplete from '../lib/AutoComplete';
+import PROXY from '../proxy';
 
 function ConnectedMapScreen(props) {
-  const [position, setPosition] = useState({ latitude: 0, longitude: 0 });
-  const [isVisiblePreview, setIsVisiblePreview] = useState(false);
-  const [date, setDate] = useState(new Date(1598051730000));
-  const [mode, setMode] = useState('date');
-  const [show, setShow] = useState(false);
-
-  const onChange = (event, selectedDate) => {
-      const currentDate = selectedDate || date;
-      setShow(Platform.OS === 'ios');
-      setDate(currentDate);
-  };
   
-  const showMode = (currentMode) => {
-      setShow(true);
-      setMode(currentMode);
-  };
-
-  const showDatepicker = () => {
-      showMode('date');
-  };
-
-  const showTimepicker = () => {
-      showMode('time');
-  };
+  const [isVisiblePreview, setIsVisiblePreview] = useState(false);
+  const [dateSearch, setDateSearch] = useState(new Date());
+  const [adress, setAdress] = useState("");
+  const [autoComplete, setAutoComplete] = useState([]);
+  const [showAutoComplete, setShowAutoComplete] = useState(false);
+  const [currentRegion, setCurrentRegion] = useState({
+    latitude: 48.866667,
+    longitude: 2.333333,
+    latitudeDelta: 0.0922,
+    longitudeDelta: 0.0421,
+  });
+  const [listPositionCW, setListPositionCW] = useState([]);
+  const [previewInfo, setPreviewInfo] = useState(null)
 
   useEffect(() => {
-    async function askPermissions() {
-      let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status === 'granted') {
-        Location.watchPositionAsync({ distanceInterval: 10 },
-          (location) => {
-            setPosition({ latitude: location.coords.latitude, longitude: location.coords.longitude });
+      async function askPermissions() {
+          let { status } = await Location.requestForegroundPermissionsAsync();
+          if (status === 'granted') {
+              Location.watchPositionAsync({ distanceInterval: 10 },
+                  (location) => {
+                      setCurrentRegion({ 
+                          latitude: location.coords.latitude, 
+                          longitude: location.coords.longitude,
+                          latitudeDelta: 0.0922,
+                          longitudeDelta: 0.0421
+                      });
+                  }
+              );
           }
-        );
       }
-    }
-    askPermissions();
+      askPermissions();
   }, []);
+
+  useEffect(() => {
+      loadCleanwalk(currentRegion, dateSearch);
+  }, [dateSearch])
+
+  useEffect(() => {
+      async function loadData() {
+          let rawResponse = await fetch(PROXY + '/autocomplete-search', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+              body: `adress=${adress.replace(" ", "+")}`
+          });
+          let response = await rawResponse.json();
+          setAutoComplete(response.response)
+      };
+      if (adress.length != null) {
+          loadData()
+      } else {
+
+      };
+  }, [adress]);
+
+  const loadCleanwalk = async (currentRegion, dateSearch) => {
+
+      let rawResponse = await fetch(PROXY + '/load-pin-on-change-region', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: `coordinate=${JSON.stringify(currentRegion)}&date=${dateSearch}&token=${props.tokenObj.token}`
+      });
+      let response = await rawResponse.json();
+      setListPositionCW(response.cleanWalkArray);
+  }
+
+  const markers = listPositionCW.map((marker, i) => {
+      return (
+          <Marker 
+              key={i}
+              coordinate={{ latitude: marker.cleanwalkCoordinates.latitude, longitude: marker.cleanwalkCoordinates.longitude }}
+              image={pinSmall}
+              anchor={{ x: 0.5, y: 1 }}
+              centerOffset={{ x: 0.5, y: 1 }}
+              onPress={() => { setPreviewInfo(listPositionCW[i]); setIsVisiblePreview(!isVisiblePreview) }}
+          />
+      )
+  });
 
   return (
     <SafeAreaView style={{flex:1}}>
       <View style={styles.contentSearchBar}>
-        <SearchBarElement placeholder="Où ? (adresse)" />
-        
-          <View>
-            <View>
-                <Button onPress={showDatepicker} title="Show date picker!" />
-            </View>
-            <View>
-                <Button onPress={showTimepicker} title="Show time picker!" />
-            </View>
-            {show && (
-                <DateTimePicker
-                    testID="dateTimePicker"
-                    value={date}
-                    mode={mode}
-                    is24Hour={true}
-                    display="default"
-                    onChange={onChange}
-                />
-            )}
-          </View>
+        <SearchBarElement adress={adress} setAdress={setAdress} onChangeShowAutoComplete={setShowAutoComplete} placeholder="Où ? (adresse)" />
 
+        <SearchBarElement
+            type='date'
+            dateSearch={dateSearch}
+            setDateSearch={setDateSearch}
+        />
+
+      </View>
+      <View>
+        {showAutoComplete ? <AutoComplete data={autoComplete} onPress={setAdress} setShowAutoComplete={setShowAutoComplete} regionSetter={setCurrentRegion} /> : null}
       </View>
       <MapView
         style={styles.container}
@@ -85,22 +116,26 @@ function ConnectedMapScreen(props) {
           latitudeDelta: 0.0922,
           longitudeDelta: 0.0421,
         }}
+        region={currentRegion}
+        onRegionChangeComplete={ (newRegion) => {
+            setCurrentRegion(newRegion)
+            loadCleanwalk(newRegion, dateSearch)
+          }
+        }
       >
-        <Marker draggable
-            coordinate={{ latitude: position.latitude, longitude:  position.longitude }}
-            image={pinSmall}
-            anchor={{ x: 0.5, y: 1 }}
-            centerOffset={{ x: 0.5, y: 1 }}
-            onPress={() => setIsVisiblePreview(!isVisiblePreview)}
-        />
+        {markers}
+       
       </MapView>
-      <PreviewEvent 
-            title="Nettoyage de rue en bas de chez moi à Paris près de Wagram"
-            desc="Je vous propose que l’on nettoye ensemble la rue car des jeunes ont laissé leur poubelle et c'est dangereux pour les enfants"
-            nameOrga="J. Doe"
-            onPress={() => props.navigation.navigate('ConnectedEventDetailMapStack')}
-            visible={isVisiblePreview}
-        />
+      {previewInfo ? (<PreviewEvent
+          title={previewInfo.cleanwalkTitle}
+          desc={previewInfo.cleanwalkDescription}
+          toolBadge={previewInfo.toolBadge}
+          nameOrga={previewInfo.admin.lastName}
+          firstnameOrga={previewInfo.admin.firstName}
+          onPress={() => props.navigation.navigate('InvitedEventDetail')}
+          visible={isVisiblePreview}
+      />
+      ):(null)}
       <ButtonElement typeButton="geoloc" />
     </SafeAreaView>
 
