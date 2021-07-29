@@ -3,6 +3,7 @@ import { Text, View, StyleSheet, Image, Pressable } from 'react-native';
 import { colors } from "../lib/colors";
 import { windowDimensions } from "../lib/windowDimensions";
 import Badges from '../lib/Badges';
+import BadgesList from '../lib/BadgesList'
 import { typography } from "../lib/typography";
 
 function PreviewEvent(props) {
@@ -30,13 +31,14 @@ function PreviewEvent(props) {
         },
         ctBadges: {
             flexDirection: "row",
-            marginVertical: 10,
+            marginVertical: 20,
             flexWrap: "wrap"
         },
         ctOrga: {
             width: '35%',
             alignItems: "center",
-            paddingTop: 70
+            paddingTop: 70,
+            paddingBottom: 20
         },
         imgPreviewEvent: {
             width: 80,
@@ -50,59 +52,43 @@ function PreviewEvent(props) {
     });
 
     let nameOrga = '';
-    if(props.nameOrga.length > 10) {
+    if (props.nameOrga.length > 10) {
         nameOrga = `${props.nameOrga.substr(0, 10)}...`;
     } else {
         nameOrga = props.nameOrga;
     }
 
     let titlePreviewEvent = '';
-    if(props.title.length > 30) {
+    if (props.title.length > 30) {
         titlePreviewEvent = `${props.title.substr(0, 30)}...`;
     } else {
         titlePreviewEvent = props.title;
     }
 
     let descPreviewEvent = '';
-    if(props.desc.length > 60) {
+    if (props.desc.length > 60) {
         descPreviewEvent = `${props.desc.substr(0, 60)}...`;
     } else {
         descPreviewEvent = props.desc;
     }
 
     return (
-        <Pressable 
+        <View
             style={styles.previewEvent}
-            onPress={props.onPress}
         >
-            <Text style={styles.previewEventTitle}>
-                {titlePreviewEvent}
-            </Text>
+            <Pressable
+                onPress={props.onPress}>
+                <Text style={styles.previewEventTitle}>
+                    {titlePreviewEvent}
+                </Text>
+            </Pressable>
             <View style={styles.ctPreviewEvent}>
                 <View style={styles.ctPreviewEventTxt}>
                     <Text style={styles.previewEventDesc}>
                         {descPreviewEvent}
                     </Text>
                     <View style={styles.ctBadges}>
-                        <Badges 
-                            type="green"
-                            text="Gants"
-                            margeR={true}
-                        />
-                        <Badges 
-                            type="green"
-                            text="Sac poubelles"
-                            margeR={true}
-                        />
-                        <Badges 
-                            type="green"
-                            text="Crème solaire"
-                            margeR={true}
-                        />
-                        <Badges 
-                            type="green"
-                            text="Crème solaire"
-                        />
+                        <BadgesList data={props.toolBadge} />
                     </View>
                 </View>
                 <View style={styles.ctOrga}>
@@ -114,7 +100,7 @@ function PreviewEvent(props) {
                     <Badges type="orange" />
                 </View>
             </View>
-        </Pressable>
+        </View>
     )
 }
 

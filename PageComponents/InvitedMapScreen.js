@@ -26,6 +26,7 @@ function InvitedMapScreen(props) {
         longitudeDelta: 0.0421,
     });
     const [listPositionCW, setListPositionCW] = useState([]);
+    const [previewInfo, setPreviewInfo] = useState(null)
 
     useEffect(() => {
         async function askPermissions() {
@@ -47,7 +48,7 @@ function InvitedMapScreen(props) {
     }, []);
 
     useEffect(() => {
-        console.log('dateParent', dateSearch);
+        loadCleanwalk(currentRegion, dateSearch);
     }, [dateSearch])
 
     useEffect(() => {
@@ -86,7 +87,7 @@ function InvitedMapScreen(props) {
                 image={pinSmall}
                 anchor={{ x: 0.5, y: 1 }}
                 centerOffset={{ x: 0.5, y: 1 }}
-                onPress={() => setIsVisiblePreview(!isVisiblePreview)}
+                onPress={() => { setPreviewInfo(listPositionCW[i]); setIsVisiblePreview(!isVisiblePreview) }}
             />
         )
     });
@@ -98,12 +99,6 @@ function InvitedMapScreen(props) {
 
                 <SearchBarElement
                     type='date'
-                    dateSearch={dateSearch}
-                    setDateSearch={setDateSearch}
-                />
-
-                <SearchBarElement
-                    type='time'
                     dateSearch={dateSearch}
                     setDateSearch={setDateSearch}
                 />
@@ -128,24 +123,18 @@ function InvitedMapScreen(props) {
                     }
                 }
             >
-                {/* <Marker 
-                    coordinate={{ latitude: position.latitude, longitude: position.longitude }}
-                    image={pinSmall}
-                    anchor={{ x: 0.5, y: 1 }}
-                    centerOffset={{ x: 0.5, y: 1 }}
-                    onPress={() => setIsVisiblePreview(!isVisiblePreview)}
-                /> */}
-
                 {markers}
 
             </MapView>
-            <PreviewEvent
-                title="Nettoyage de rue en bas de chez moi à Paris près de Wagram"
-                desc="Je vous propose que l’on nettoye ensemble la rue car des jeunes ont laissé leur poubelle et c'est dangereux pour les enfants"
-                nameOrga="J. Doe"
+            {previewInfo ? (<PreviewEvent
+                title={previewInfo.cleanwalkTitle}
+                desc={previewInfo.cleanwalkDescription}
+                toolBadge={previewInfo.toolBadge}
+                nameOrga={previewInfo.admin}
                 onPress={() => props.navigation.navigate('InvitedEventDetail')}
                 visible={isVisiblePreview}
             />
+            ):(null)}
             <ButtonElement
                 typeButton='fullFat'
                 backgroundColor={colors.primary}
