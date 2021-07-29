@@ -26,22 +26,26 @@ function InvitedMapScreen(props) {
         longitudeDelta: 0.0421,
     });
     const [listPositionCW, setListPositionCW] = useState([]);
-    const [previewInfo, setPreviewInfo] = useState(null)
+    const [previewInfo, setPreviewInfo] = useState(null);
+
+    const geoLoc = () => {
+        Location.watchPositionAsync({ distanceInterval: 10 },
+            (location) => {
+                setCurrentRegion({ 
+                    latitude: location.coords.latitude, 
+                    longitude: location.coords.longitude,
+                    latitudeDelta: 0.0922,
+                    longitudeDelta: 0.0421
+                });
+            }
+        );
+    }
 
     useEffect(() => {
         async function askPermissions() {
             let { status } = await Location.requestForegroundPermissionsAsync();
             if (status === 'granted') {
-                Location.watchPositionAsync({ distanceInterval: 10 },
-                    (location) => {
-                        setCurrentRegion({ 
-                            latitude: location.coords.latitude, 
-                            longitude: location.coords.longitude,
-                            latitudeDelta: 0.0922,
-                            longitudeDelta: 0.0421
-                        });
-                    }
-                );
+                geoLoc();
             }
         }
         askPermissions();
