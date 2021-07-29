@@ -96,7 +96,7 @@ function PreviewEvent(props) {
                         source={require('../assets/imagesKlean/Organisator.jpg')}
                         style={styles.imgPreviewEvent}
                     />
-                    <Text>{nameOrga}</Text>
+                    <Text>{props.firstnameOrga.toUpperCase().substr(0, 1)}. {nameOrga}</Text>
                     <Badges type="orange" />
                 </View>
             </View>
