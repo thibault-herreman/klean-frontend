@@ -4,6 +4,7 @@ import {
   Text,
   View,
   KeyboardAvoidingView,
+  Modal,
   ScrollView,
 } from "react-native";
 import { connect } from "react-redux";
