@@ -25,11 +25,24 @@ function Login(props) {
   const [userExists, setUserExists] = useState(false);
   const [listErrorLogin, setListErrorLogin] = useState([]);
 
+
+
   async function login() {
+    let bodyWithoutID = `emailFromFront=${email}&passwordFromFront=${password}`;
+    let bodyWithId = `emailFromFront=${email}&passwordFromFront=${password}&cleanwalkIdFromFront=${props.idCleanwalk}`;
+    let finalBody;
+    
+    console.log("login");
+    if (props.idCleanwalk == null) {
+      finalBody = bodyWithoutID;
+    }
+    if (props.idCleanwalk != null) {
+      finalBody = bodyWithId;
+    }
     let data = await fetch(PROXY + "/users/sign-in", {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: `emailFromFront=${email}&passwordFromFront=${password}`,
+      body: finalBody,
     });
 
     let body = await data.json();
@@ -56,6 +69,27 @@ function Login(props) {
     }
   };
 
+  let button;
+  if (props.idCleanwalk == null) {
+    button = (
+      <ButtonElement
+        style={styles.registerButton}
+        typeButton="middleSecondary"
+        text="Se connecter."
+        onPress={() => login()}
+      />
+    );
+  }
+  if (props.idCleanwalk) {
+    button = (
+      <ButtonElement
+        style={styles.registerButton}
+        typeButton="middleSecondary"
+        text="Se connecter et rejoindre."
+        onPress={() => login()}
+      />
+    );
+  }
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.mainView}>
@@ -91,12 +125,7 @@ function Login(props) {
           <View style={styles.error}>{errorsLogin}</View>
 
           <View style={styles.register}>
-            <ButtonElement
-              style={styles.registerButton}
-              typeButton="middleSecondary"
-              text="Se connecter"
-              onPress={() => login()}
-            />
+            {button}
             <View style={styles.textContainer}>
               <Text style={typography.body}>Vous n'avez pas de compte?</Text>
               <Text
@@ -130,7 +159,10 @@ function mapDispatchToProps(dispatch) {
 }
 
 function mapStateToProps(state) {
-  return { tokenObj: state.tokenObj };
+  return {
+    idCleanwalk: state.participateCleanwalk,
+    tokenObj: state.tokenObj,
+  };
 }
 
 const styles = StyleSheet.create({
