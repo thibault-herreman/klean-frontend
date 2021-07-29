@@ -5,6 +5,7 @@ import ScreenTitles from '../lib/ScreenTitles.js';
 import ButtonElement from "../lib/ButtonElement";
 import Participants from "../lib/Participants";
 import BadgesList from '../lib/BadgesList.js';
+import changeDateFormat from '../lib/changeDateFormat.js';
 import {windowDimensions} from '../lib/windowDimensions.js';
 import {typography} from '../lib/typography.js';
 
@@ -72,8 +73,8 @@ function InvitedEventDetail(props) {
             <View style={styles.generalInfoCleanwalk}>
                 <Text style={typography.h2}>{cleanwalk.cleanwalkTitle}</Text>
                 <Text style={typography.bodyLight}>{cleanwalk.cleanwalkCity.cityName}</Text> 
-                <Text style={typography.bodyLight}>Début : {cleanwalk.startingDate}</Text>
-                <Text style={typography.bodyLight}>Fin : {cleanwalk.endingDate}</Text>
+                <Text style={typography.bodyLight}>Début : {changeDateFormat(cleanwalk.startingDate)}</Text>
+                <Text style={typography.bodyLight}>Fin : {changeDateFormat(cleanwalk.endingDate)}</Text>
             </View>
 
             <View style={styles.descriptionCleanwalk}>
