@@ -47,7 +47,7 @@ function InvitedMapScreen(props) {
     }, []);
 
     useEffect(() => {
-        console.log('dateParent', dateSearch);
+        loadCleanwalk(currentRegion, dateSearch);
     }, [dateSearch])
 
     useEffect(() => {
@@ -102,12 +102,6 @@ function InvitedMapScreen(props) {
                     setDateSearch={setDateSearch}
                 />
 
-                <SearchBarElement
-                    type='time'
-                    dateSearch={dateSearch}
-                    setDateSearch={setDateSearch}
-                />
-
             </View>
             <View>
                 {showAutoComplete ? <AutoComplete data={autoComplete} onPress={setAdress} setShowAutoComplete={setShowAutoComplete} regionSetter={setCurrentRegion} /> : null}
@@ -128,14 +122,6 @@ function InvitedMapScreen(props) {
                     }
                 }
             >
-                {/* <Marker 
-                    coordinate={{ latitude: position.latitude, longitude: position.longitude }}
-                    image={pinSmall}
-                    anchor={{ x: 0.5, y: 1 }}
-                    centerOffset={{ x: 0.5, y: 1 }}
-                    onPress={() => setIsVisiblePreview(!isVisiblePreview)}
-                /> */}
-
                 {markers}
 
             </MapView>
