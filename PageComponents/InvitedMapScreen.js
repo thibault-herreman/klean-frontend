@@ -20,6 +20,12 @@ function InvitedMapScreen(props) {
     const [adress, setAdress] = useState("")
     const [autoComplete, setAutoComplete] = useState([])
     const [showAutoComplete, setShowAutoComplete] = useState(false)
+    const [currentRegion, setCurrentRegion] = useState({
+        latitude: 48.866667,
+        longitude: 2.333333,
+        latitudeDelta: 0.0922,
+        longitudeDelta: 0.0421,
+    })
 
     useEffect(() => {
         async function askPermissions() {
@@ -86,6 +92,8 @@ function InvitedMapScreen(props) {
                     latitudeDelta: 0.0922,
                     longitudeDelta: 0.0421,
                 }}
+                region={currentRegion}
+                onRegionChangeComplete={()=>console.log('Region has changed')}
             >
                 <Marker draggable
                     coordinate={{ latitude: position.latitude, longitude: position.longitude }}
