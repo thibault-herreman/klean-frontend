@@ -114,7 +114,7 @@ function InvitedMapScreen(props) {
 
             </View>
             <View>
-                {showAutoComplete ? <AutoComplete data={autoComplete} onPress={setAdress} setShowAutoComplete={setShowAutoComplete} /> : null}
+                {showAutoComplete ? <AutoComplete data={autoComplete} onPress={setAdress} setShowAutoComplete={setShowAutoComplete} regionSetter={setCurrentRegion} /> : null}
             </View>
             <MapView
                 style={styles.container}
