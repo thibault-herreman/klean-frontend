@@ -29,11 +29,21 @@ function SignUp(props) {
   const [userExists, setUserExists] = useState(false);
   const [listErrorSignup, setListErrorSignup] = useState([]);
 
+  let bodyWithoutID = `firstNameFromFront=${firstName}&lastNameFromFront=${lastName}&emailFromFront=${email}&cityFromFront=${city}&passwordFromFront=${password}`;
+  let bodyWithId = `firstNameFromFront=${firstName}&lastNameFromFront=${lastName}&emailFromFront=${email}&cityFromFront=${city}&passwordFromFront=${password}&cleanwalkIdFromFront=${props.idCleanwalk}`;
+  let finalBody;
+
   async function register() {
+    if(props.idCleanwalk == null){
+      finalBody = bodyWithoutID
+    }
+    if (props.idCleanwalk != null){
+      finalBody = bodyWithId
+    }
     let data = await fetch(PROXY + "/users/sign-up", {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: `firstNameFromFront=${firstName}&lastNameFromFront=${lastName}&emailFromFront=${email}&cityFromFront=${city}&passwordFromFront=${password}`,
+      body: finalBody,
     });
 
     let body = await data.json();
@@ -63,28 +73,27 @@ function SignUp(props) {
     }
   };
 
-  // let button;
-
-  // if (id) {
-  //   return (
-  //     <ButtonElement
-  //       style={styles.registerButton}
-  //       typeButton="middleSecondary"
-  //       text="M'inscrire et rejoindre "
-  //       onPress={() => registerAndParticipate()}
-  //     />
-  //   );
-  // }
-  // if (id == null) {
-  //   return (
-  //     <ButtonElement
-  //       style={styles.registerButton}
-  //       typeButton="middleSecondary"
-  //       text="M'inscrire"
-  //       onPress={() => register()}
-  //     />
-  //   );
-  // }
+  let button;
+  if (props.idCleanwalk == null) {
+    button = (
+      <ButtonElement
+        style={styles.registerButton}
+        typeButton="middleSecondary"
+        text="M'inscrire"
+        onPress={() => register()}
+      />
+    );
+  }
+  if (props.idCleanwalk) {
+    button = (
+      <ButtonElement
+        style={styles.registerButton}
+        typeButton="middleSecondary"
+        text="M'inscrire et rejoindre"
+        onPress={() => register()}
+      />
+    );
+  }
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -139,13 +148,7 @@ function SignUp(props) {
             <View style={styles.error}>{errorsRegister}</View>
 
             <View style={styles.register}>
-              {/* {button} */}
-              <ButtonElement
-                style={styles.registerButton}
-                typeButton="middleSecondary"
-                text="M'inscrire"
-                onPress={() => register()}
-              />
+              {button}
               <View style={styles.textContainer}>
                 <Text style={typography.body}>Vous avez déjà un compte?</Text>
                 <Text
@@ -181,7 +184,7 @@ function mapDispatchToProps(dispatch) {
 
 function mapStateToProps(state) {
   return {
-    // idCleanwalk: state.idCleanWalk,
+    idCleanwalk: state.participateCleanwalk,
     tokenObj: state.tokenObj,
   };
 }
@@ -219,7 +222,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   registerButton: {
-    paddingBottom: 10,
+    // paddingBottom: 10,
   },
   textContainer: {
     justifyContent: "center",
