@@ -9,36 +9,41 @@ import {windowDimensions} from '../lib/windowDimensions.js';
 import {typography} from '../lib/typography.js';
 
 import PROXY from '../proxy.js';
+import { colors } from '../lib/colors.js';
 
 function InvitedEventDetail(props) {
 
-    const [cleanwalk, setCleanwalk] = useState([])
+    let idCW = "61017ac720f07d486871be0b";
+
+    const [cleanwalk, setCleanwalk] = useState(null)
+
+    const dataParticipants = (admin, participants) => {
+        participants.unshift(admin)
+
+        return participants
+    }
 
     useEffect(() => {
         async function loadData() {
     
-            const responseCleanwalk = await fetch(PROXY + "/load-cleanwalk")
+            const responseCleanwalk = await fetch(PROXY + `/load-cleanwalk/${idCW}`)
             const jsonResponseCleanwalk = await responseCleanwalk.json()
             
-            console.log("test", jsonResponseCleanwalk.cleanwalk)
+            console.log("test", jsonResponseCleanwalk)
 
             setCleanwalk(jsonResponseCleanwalk.cleanwalk)
-            
+
         }
         loadData();
       }, [])
 
+    if(cleanwalk === null) {
+        return (
+            <View style={{flex: 1, backgroundColor: colors.white}}>
 
-    // var badgesList = cleanwalk.toolBadge.map((badge, i) => {
-    //     return (
-
-    //         <View style={styles.badges}>
-    //             <BadgesList /> 
-    //         </View>
-
-    //     )
-    // })
-
+            </View>
+        )
+    } else {
 
     return (
         // <View style={styles.container}>
@@ -66,7 +71,7 @@ function InvitedEventDetail(props) {
 
             <View style={styles.generalInfoCleanwalk}>
                 <Text style={typography.h2}>{cleanwalk.cleanwalkTitle}</Text>
-                {/* <Text style={typography.bodyLight}>{cleanwalk.cleanwalkCity.cityName}</Text> */}
+                <Text style={typography.bodyLight}>{cleanwalk.cleanwalkCity.cityName}</Text> 
                 <Text style={typography.bodyLight}>Début : {cleanwalk.startingDate}</Text>
                 <Text style={typography.bodyLight}>Fin : {cleanwalk.endingDate}</Text>
             </View>
@@ -78,10 +83,8 @@ function InvitedEventDetail(props) {
                 </View>
             </View>
 
-            {/* {badgesList} */}
-
             <View style={styles.badges}>
-                <BadgesList />
+                <BadgesList data={cleanwalk.toolBadge}/>
             </View>
 
             <View>
@@ -91,7 +94,7 @@ function InvitedEventDetail(props) {
 
             <View style={styles.participantsContainer}>
                 <View style={styles.participantsList}>
-                    <Participants />
+                    <Participants data={dataParticipants(cleanwalk.admin, cleanwalk.participantsList)}/>
                 </View>
 
                 <View style={styles.chat}>
@@ -108,7 +111,10 @@ function InvitedEventDetail(props) {
         </SafeAreaView>
 
     );
+
+    }
 }
+
 
 
 function mapDispatchToProps(dispatch) {
@@ -181,6 +187,7 @@ const styles = StyleSheet.create({
     confirmButton: {
         flexDirection: 'row',
         justifyContent: 'center',
+        marginTop: 11, 
         marginBottom: 11,
     }
 });
