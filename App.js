@@ -6,9 +6,10 @@ import AppLoading from 'expo-app-loading';
 import { Provider } from 'react-redux';
 import { createStore, combineReducers } from 'redux';
 import tokenObj from './Reducers/token.reducer'
+import participateCleanwalk from "./Reducers/participateCleanwalk"
 import Nav from './NavComponents/Nav'
 
-const store = createStore(combineReducers({ tokenObj }));
+const store = createStore(combineReducers({ tokenObj, participateCleanwalk }));
 
 export default function App() {
 
