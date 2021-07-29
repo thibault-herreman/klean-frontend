@@ -28,6 +28,8 @@ function SignUp(props) {
 
   const [userExists, setUserExists] = useState(false);
   const [listErrorSignup, setListErrorSignup] = useState([]);
+  const [listErrorRegister, setListErrorRegister] = useState([]);
+  const [listErrorNetwork, setListErrorNetwork] = useState([]);
 
   let bodyWithoutID = `firstNameFromFront=${firstName}&lastNameFromFront=${lastName}&emailFromFront=${email}&cityFromFront=${city}&passwordFromFront=${password}`;
   let bodyWithId = `firstNameFromFront=${firstName}&lastNameFromFront=${lastName}&emailFromFront=${email}&cityFromFront=${city}&passwordFromFront=${password}&cleanwalkIdFromFront=${props.idCleanwalk}`;
@@ -45,8 +47,10 @@ function SignUp(props) {
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
       body: finalBody,
     });
+    
 
     let body = await data.json();
+    console.log("body: ", body)
     if (body.result == true) {
       setUserExists(true);
       props.login(body.token);
