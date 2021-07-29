@@ -4,6 +4,7 @@ import {
   Text,
   View,
   KeyboardAvoidingView,
+  Modal,
   ScrollView,
 } from "react-native";
 import { connect } from "react-redux";
@@ -122,11 +123,11 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     width: windowDimensions.width,
     height: windowDimensions.height * 0.1,
-    marginBottom: "8%",
+    marginBottom: 11,
   },
   backButton: {
     position: "absolute",
-    left: "10%",
+    left: 10,
     zIndex: 10,
   },
   title: {

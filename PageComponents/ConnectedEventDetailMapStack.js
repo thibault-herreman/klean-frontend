@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from "react";
 import { StyleSheet, Text, View, ImageBackground, SafeAreaView, ScrollView, StatusBar } from 'react-native';
 import { connect } from 'react-redux';
 import ScreenTitles from '../lib/ScreenTitles.js';
@@ -7,88 +7,145 @@ import Participants from "../lib/Participants";
 import BadgesList from '../lib/BadgesList.js';
 import {windowDimensions} from '../lib/windowDimensions.js';
 import {typography} from '../lib/typography.js';
+import { colors } from "../lib/colors.js";
+import changeDateFormat from "../lib/changeDateFormat"
+
+import PROXY from "../proxy.js";
 
 function ConnectedEventDetailMapStack(props) {
 
+    let idCW = "61017ac720f07d486871be0b";
+
+    const [cleanwalk, setCleanwalk] = useState(null);
+
+    const dataParticipants = (admin, participants) => {
+        participants.unshift(admin);
+
+        return participants;
+    };
+
+    useEffect(() => {
+        async function loadData() {
+        const responseCleanwalk = await fetch(PROXY + `/load-cleanwalk/${idCW}`);
+        const jsonResponseCleanwalk = await responseCleanwalk.json();
+
+        // console.log("test", jsonResponseCleanwalk);
+
+        setCleanwalk(jsonResponseCleanwalk.cleanwalk);
+        }
+        loadData();
+    }, []);
+
+//   let cleanwalkIdFromButton = cleanwalk._id;
+    let cleanwalkIdFromButton = idCW;
+
+    let participate = () => {
+    props.participateCleanwalk(cleanwalkIdFromButton);
+    props.navigation.navigate("SignUp");
+    };
+
+    if (cleanwalk === null) {
+        return <View style={{ flex: 1, backgroundColor: colors.white }}></View>;
+    } else {
+
     return (
-        
-        // <View style={styles.container}>
-        //     <Text>ConnectedEventDetail-MapStack</Text>
-        //     <Text>{`${props.token}`}</Text>
-        //     <Button title="login" onPress={() => props.login("monsupertokenchercheenbdd")} />
-        //     <Button title="signOut" onPress={() => props.signOut()} />
-        //     <Button title="ConnectedMapScreen"
-        //         onPress={() => props.navigation.navigate('ConnectedMapScreen')} />
-        //     <Button title="ConnectedEventDetail"
-        //         onPress={() => props.navigation.navigate('ConnectedEventDetailMapStack')} />
-        //     <Button title="Chat"
-        //         onPress={() => props.navigation.navigate('ChatMapStack')} />
-        // </View>
 
         <SafeAreaView style={styles.container}>
-        <ScrollView>
-                <ImageBackground style={styles.banner} source={require('../assets/imagesKlean/BannerCleanwalk.jpg')}>
-                    <ButtonElement style={styles.backButton} typeButton="back" onPress={() => props.navigation.navigate('ConnectedMapScreen')}/>
-                    <ButtonElement style={styles.goButton} typeButton="go" />
+            <ScrollView>
+
+                <ImageBackground 
+                    style={styles.banner} 
+                    source={require('../assets/imagesKlean/BannerCleanwalk.jpg')}
+                >
+                    <ButtonElement 
+                    style={styles.backButton} 
+                    typeButton="back" 
+                    onPress={() => props.navigation.navigate('ConnectedMapScreen')}
+                    />
+                    <ButtonElement 
+                    style={styles.goButton} 
+                    typeButton="go" 
+                    disabled={true}
+                    />
                 </ImageBackground>
 
-            <View style={styles.generalInfoCleanwalk}>
-                <Text style={typography.h2}>Nettoyage de la plage de Santa Giulia</Text>
-                <Text style={typography.bodyLight}>Corse du Sud</Text>
-                <Text style={typography.bodyLight}>Début : Samedi 8 août 2021 à 11h30</Text>
-                <Text style={typography.bodyLight}>Fin : Dimanche 9 août 2021 à 12h30</Text>
-            </View>
-
-            <View style={styles.descriptionCleanwalk}>
-                <Text style={typography.h3}>Description</Text>
-                <View style={styles.cleanwakDescriptionContainer}>
-                    <Text style={typography.bodyLight}>Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum</Text> 
-                </View>
-            </View>
-
-            <View style={styles.badges}>
-                <BadgesList />
-            </View>
-
-            <View>
-                <ScreenTitles titleType="secondary" 
-                title={"Participants"}/>
-            </View>
-
-            <View style={styles.participantsContainer}>
-                <View style={styles.participantsList}>
-                    <Participants />
+                <View style={styles.generalInfoCleanwalk}>
+                    <Text style={typography.h2}>
+                        {cleanwalk.cleanwalkTitle}
+                    </Text>
+                    <Text style={typography.bodyLight}>
+                        {cleanwalk.cleanwalkCity.cityName}
+                    </Text>
+                    <Text style={typography.bodyLight}>
+                        Début : {changeDateFormat(cleanwalk.startingDate)}
+                    </Text>
+                    <Text style={typography.bodyLight}>
+                        Fin : {changeDateFormat(cleanwalk.endingDate)}
+                    </Text>
                 </View>
 
-                <View style={styles.chat}>
-                    <ButtonElement typeButton="chat" onPress={() => props.navigation.navigate('ChatMapStack')}/>
+                <View style={styles.descriptionCleanwalk}>
+                    <Text style={typography.h3}>Description</Text>
+                    <View style={styles.cleanwakDescriptionContainer}>
+                        <Text style={typography.bodyLight}>
+                            {cleanwalk.cleanwalkDescription}
+                        </Text>
+                    </View>
                 </View>
-            </View>
 
-            <View style={styles.confirmButton}>
-                <ButtonElement typeButton="middleSecondary" text="Participer" onPress={() => props.navigation.navigate('Profil')}/>
-            </View>
+                <View style={styles.badges}>
+                    <BadgesList data={cleanwalk.toolBadge} />
+                </View>
 
+                <View>
+                    <ScreenTitles titleType="secondary" title={"Participants"} />
+                </View>
 
-        </ScrollView>
+                <View style={styles.participantsContainer}>
+                    <View style={styles.participantsList}>
+                        <Participants data={dataParticipants(cleanwalk.admin, cleanwalk.participantsList)}/>
+                    </View>
+
+                    <View style={styles.chat}>
+                        <ButtonElement 
+                        typeButton="chat" 
+                        disabled={true}
+                        onPress={() => props.navigation.navigate('ChatMapStack')}
+                        />
+                    </View>
+                </View>
+
+                <View style={styles.confirmButton}>
+                    <ButtonElement 
+                    typeButton="middleSecondary" 
+                    text="Participer"
+                    onPress={() => props.navigation.navigate('Profil')}
+                    />
+                </View>
+
+            </ScrollView>
         </SafeAreaView>
 
     );
+    }
 }
 
 function mapDispatchToProps(dispatch) {
     return {
         login: function (token) {
-            dispatch({ type: 'login', token })
+        dispatch({ type: "login", token });
         },
         signOut: function () {
-            dispatch({ type: 'signOut' })
-        }
-    }
+        dispatch({ type: "signOut" });
+        },
+        participateCleanwalk: function (cleanwalkId) {
+        dispatch({ type: "participate", cleanwalkIdFromButton: cleanwalkId });
+        },
+    };
 }
 
 function mapStateToProps(state) {
-    return { tokenObj: state.tokenObj }
+    return { tokenObj: state.tokenObj };
 }
 
 const styles = StyleSheet.create({
@@ -154,3 +211,17 @@ export default connect(
     mapStateToProps,
     mapDispatchToProps
 )(ConnectedEventDetailMapStack);
+
+
+        // <View style={styles.container}>
+        //     <Text>ConnectedEventDetail-MapStack</Text>
+        //     <Text>{`${props.token}`}</Text>
+        //     <Button title="login" onPress={() => props.login("monsupertokenchercheenbdd")} />
+        //     <Button title="signOut" onPress={() => props.signOut()} />
+        //     <Button title="ConnectedMapScreen"
+        //         onPress={() => props.navigation.navigate('ConnectedMapScreen')} />
+        //     <Button title="ConnectedEventDetail"
+        //         onPress={() => props.navigation.navigate('ConnectedEventDetailMapStack')} />
+        //     <Button title="Chat"
+        //         onPress={() => props.navigation.navigate('ChatMapStack')} />
+        // </View>
