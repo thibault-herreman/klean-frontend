@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   Text,
@@ -18,6 +18,7 @@ import ButtonElement from "../lib/ButtonElement";
 import InputElement from "../lib/InputElement";
 import LogoKlean from "../assets/imagesKlean/LogoKlean.png";
 import PROXY from "../proxy";
+import AutoComplete from "../lib/AutoComplete";
 
 function SignUp(props) {
   const [firstName, setFirstName] = useState("");
@@ -31,33 +32,43 @@ function SignUp(props) {
   const [listErrorRegister, setListErrorRegister] = useState([]);
   const [listErrorNetwork, setListErrorNetwork] = useState([]);
 
+  const [autoComplete, setAutoComplete] = useState([]);
+  const [showAutoComplete, setShowAutoComplete] = useState(true);
 
+  useEffect(() => {
+    async function loadData() {
+      let rawResponse = await fetch(PROXY + "/autocomplete-search-city-only", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: `city=${city.replace(" ", "+")}`,
+      });
+      let response = await rawResponse.json();
+      setAutoComplete(response.newResponse);
+    }
+    if (city.length > 1) {
+      loadData();
+    } else {
+    }
+  }, [city]);
 
   async function register() {
-
     let bodyWithoutID = `firstNameFromFront=${firstName}&lastNameFromFront=${lastName}&emailFromFront=${email}&cityFromFront=${city}&passwordFromFront=${password}`;
     let bodyWithId = `firstNameFromFront=${firstName}&lastNameFromFront=${lastName}&emailFromFront=${email}&cityFromFront=${city}&passwordFromFront=${password}&cleanwalkIdFromFront=${props.idCleanwalk}`;
     let finalBody;
-    
-    console.log("1")
-    if(props.idCleanwalk == null){
-      finalBody = bodyWithoutID
+
+    if (props.idCleanwalk == null) {
+      finalBody = bodyWithoutID;
     }
-    if (props.idCleanwalk != null){
-      finalBody = bodyWithId
+    if (props.idCleanwalk != null) {
+      finalBody = bodyWithId;
     }
-    console.log("2")
     let data = await fetch(PROXY + "/users/sign-up", {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
       body: finalBody,
     });
-    console.log("3")
-
-    
 
     let body = await data.json();
-    console.log("body: ", body)
     if (body.result == true) {
       setUserExists(true);
       props.login(body.token);
@@ -146,9 +157,19 @@ function SignUp(props) {
               <InputElement
                 name="city"
                 setState={changeState}
+                setShowAutoComplete={setShowAutoComplete}
+                value={city}
                 placeholder="Ville"
                 type="simpleInput"
               ></InputElement>
+              {showAutoComplete ? (
+                <AutoComplete
+                  data={autoComplete}
+                  onPress={setCity}
+                  setShowAutoComplete={setShowAutoComplete}
+                />
+              ) : null}
+
               <InputElement
                 name="password"
                 setState={changeState}
