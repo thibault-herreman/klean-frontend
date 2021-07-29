@@ -9,7 +9,7 @@ import { colors } from '../lib/colors';
 import pinSmall from '../assets/imagesKlean/pinSmall.png';
 import PreviewEvent from './PreviewEvent';
 import AutoComplete from '../lib/AutoComplete';
-import PROXY from '../proxy'
+import PROXY from '../proxy';
 
 
 function InvitedMapScreen(props) {
@@ -142,22 +142,8 @@ function InvitedMapScreen(props) {
                 text='Se connecter'
                 onPress={() => props.navigation.navigate('Login')}
             />
+            <ButtonElement typeButton="geoloc" />
         </SafeAreaView>
-
-        // <View style={styles.container}>
-        //     <Text>invitedMapScreen</Text>
-        //     <Text>{`${props.token}`}</Text>
-        //     <Button title="login" onPress={() => props.login("monsupertokenchercheenbdd")} />
-        //     <Button title="signOut" onPress={() => props.signOut()} />
-        //     <Button title="InvitedMapScreen"
-        //         onPress={() => props.navigation.navigate('InvitedMapScreen')} />
-        //     <Button title="InvitedEventDetail"
-        //         onPress={() => props.navigation.navigate('InvitedEventDetail')} />
-        //     <Button title="Login"
-        //         onPress={() => props.navigation.navigate('Login')} />
-        //     <Button title="SignUp"
-        //         onPress={() => props.navigation.navigate('SignUp')} />
-        // </View>
     );
 }
 
