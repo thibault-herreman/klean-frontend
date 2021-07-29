@@ -14,18 +14,18 @@ import PROXY from '../proxy'
 
 function InvitedMapScreen(props) {
 
-    const [position, setPosition] = useState({ latitude: 0, longitude: 0 });
     const [isVisiblePreview, setIsVisiblePreview] = useState(false);
     const [dateSearch, setDateSearch] = useState(new Date());
-    const [adress, setAdress] = useState("")
-    const [autoComplete, setAutoComplete] = useState([])
-    const [showAutoComplete, setShowAutoComplete] = useState(false)
+    const [adress, setAdress] = useState("");
+    const [autoComplete, setAutoComplete] = useState([]);
+    const [showAutoComplete, setShowAutoComplete] = useState(false);
     const [currentRegion, setCurrentRegion] = useState({
         latitude: 48.866667,
         longitude: 2.333333,
         latitudeDelta: 0.0922,
         longitudeDelta: 0.0421,
-    })
+    });
+    const [listPositionCW, setListPositionCW] = useState([]);
 
     useEffect(() => {
         async function askPermissions() {
@@ -33,7 +33,12 @@ function InvitedMapScreen(props) {
             if (status === 'granted') {
                 Location.watchPositionAsync({ distanceInterval: 10 },
                     (location) => {
-                        setPosition({ latitude: location.coords.latitude, longitude: location.coords.longitude });
+                        setCurrentRegion({ 
+                            latitude: location.coords.latitude, 
+                            longitude: location.coords.longitude,
+                            latitudeDelta: 0.0922,
+                            longitudeDelta: 0.0421
+                        });
                     }
                 );
             }
@@ -60,7 +65,35 @@ function InvitedMapScreen(props) {
         } else {
 
         };
-    }, [adress])
+    }, [adress]);
+
+    const loadCleanwalk = async (currentRegion, dateSearch) => {
+
+        // console.log('lancement');
+        let rawResponse = await fetch(PROXY + '/load-pin-on-change-region', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: `coordinate=${JSON.stringify(currentRegion)}&date=${dateSearch}&token=${props.tokenObj.token}`
+        });
+        let response = await rawResponse.json();
+        //console.log('responseFront', response.cleanWalkArray);
+        setListPositionCW(response.cleanWalkArray);
+    }
+
+    //console.log('listPositionCW', listPositionCW);
+
+    const markers = listPositionCW.map((marker, i) => {
+        return (
+            <Marker 
+                key={i}
+                coordinate={{ latitude: marker.cleanwalkCoordinates.latitude, longitude: marker.cleanwalkCoordinates.longitude }}
+                image={pinSmall}
+                anchor={{ x: 0.5, y: 1 }}
+                centerOffset={{ x: 0.5, y: 1 }}
+                onPress={() => setIsVisiblePreview(!isVisiblePreview)}
+            />
+        )
+    });
 
     return (
         <SafeAreaView style={{ flex: 1 }}>
@@ -93,15 +126,22 @@ function InvitedMapScreen(props) {
                     longitudeDelta: 0.0421,
                 }}
                 region={currentRegion}
-                onRegionChangeComplete={()=>console.log('Region has changed')}
+                onRegionChangeComplete={ (newRegion) => {
+                        setCurrentRegion(newRegion)
+                        loadCleanwalk(newRegion, dateSearch)
+                    }
+                }
             >
-                <Marker draggable
+                {/* <Marker 
                     coordinate={{ latitude: position.latitude, longitude: position.longitude }}
                     image={pinSmall}
                     anchor={{ x: 0.5, y: 1 }}
                     centerOffset={{ x: 0.5, y: 1 }}
                     onPress={() => setIsVisiblePreview(!isVisiblePreview)}
-                />
+                /> */}
+
+                {markers}
+
             </MapView>
             <PreviewEvent
                 title="Nettoyage de rue en bas de chez moi à Paris près de Wagram"
