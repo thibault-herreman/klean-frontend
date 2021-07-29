@@ -16,7 +16,7 @@ import BadgesList from "../lib/BadgesList.js";
 import { windowDimensions } from "../lib/windowDimensions.js";
 import { typography } from "../lib/typography.js";
 import { colors } from "../lib/colors.js";
-import changeDateFormat from "../lib/changeDateFormat"
+import changeDateFormat from "../lib/changeDateFormat";
 
 import PROXY from "../proxy.js";
 
@@ -36,17 +36,15 @@ function InvitedEventDetail(props) {
       const responseCleanwalk = await fetch(PROXY + `/load-cleanwalk/${idCW}`);
       const jsonResponseCleanwalk = await responseCleanwalk.json();
 
-      console.log("test", jsonResponseCleanwalk);
+      //   console.log("test", jsonResponseCleanwalk);
 
       setCleanwalk(jsonResponseCleanwalk.cleanwalk);
     }
     loadData();
   }, []);
 
-//   let cleanwalkIdFromButton = cleanwalk._id;
+  //   let cleanwalkIdFromButton = cleanwalk._id;
   let cleanwalkIdFromButton = idCW;
-
-
 
   let participate = () => {
     props.participateCleanwalk(cleanwalkIdFromButton);

@@ -31,22 +31,29 @@ function SignUp(props) {
   const [listErrorRegister, setListErrorRegister] = useState([]);
   const [listErrorNetwork, setListErrorNetwork] = useState([]);
 
-  let bodyWithoutID = `firstNameFromFront=${firstName}&lastNameFromFront=${lastName}&emailFromFront=${email}&cityFromFront=${city}&passwordFromFront=${password}`;
-  let bodyWithId = `firstNameFromFront=${firstName}&lastNameFromFront=${lastName}&emailFromFront=${email}&cityFromFront=${city}&passwordFromFront=${password}&cleanwalkIdFromFront=${props.idCleanwalk}`;
-  let finalBody;
+
 
   async function register() {
+
+    let bodyWithoutID = `firstNameFromFront=${firstName}&lastNameFromFront=${lastName}&emailFromFront=${email}&cityFromFront=${city}&passwordFromFront=${password}`;
+    let bodyWithId = `firstNameFromFront=${firstName}&lastNameFromFront=${lastName}&emailFromFront=${email}&cityFromFront=${city}&passwordFromFront=${password}&cleanwalkIdFromFront=${props.idCleanwalk}`;
+    let finalBody;
+    
+    console.log("1")
     if(props.idCleanwalk == null){
       finalBody = bodyWithoutID
     }
     if (props.idCleanwalk != null){
       finalBody = bodyWithId
     }
+    console.log("2")
     let data = await fetch(PROXY + "/users/sign-up", {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
       body: finalBody,
     });
+    console.log("3")
+
     
 
     let body = await data.json();
