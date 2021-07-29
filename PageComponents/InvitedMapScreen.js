@@ -69,18 +69,14 @@ function InvitedMapScreen(props) {
 
     const loadCleanwalk = async (currentRegion, dateSearch) => {
 
-        // console.log('lancement');
         let rawResponse = await fetch(PROXY + '/load-pin-on-change-region', {
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             body: `coordinate=${JSON.stringify(currentRegion)}&date=${dateSearch}&token=${props.tokenObj.token}`
         });
         let response = await rawResponse.json();
-        //console.log('responseFront', response.cleanWalkArray);
         setListPositionCW(response.cleanWalkArray);
     }
-
-    //console.log('listPositionCW', listPositionCW);
 
     const markers = listPositionCW.map((marker, i) => {
         return (
