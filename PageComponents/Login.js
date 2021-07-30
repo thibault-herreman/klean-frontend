@@ -25,17 +25,14 @@ function Login(props) {
   const [userExists, setUserExists] = useState(false);
   const [listErrorLogin, setListErrorLogin] = useState([]);
 
-
-
   async function login() {
     let bodyWithoutID = `emailFromFront=${email}&passwordFromFront=${password}`;
     let bodyWithId = `emailFromFront=${email}&passwordFromFront=${password}&cleanwalkIdFromFront=${props.cleanwalkId}`;
     let finalBody;
-    
+
     console.log("login");
     if (props.cleanwalkId == null) {
       finalBody = bodyWithoutID;
-      
     }
     if (props.cleanwalkId != null) {
       finalBody = bodyWithId;
@@ -112,14 +109,15 @@ function Login(props) {
             <InputElement
               name="email"
               setState={changeState}
-              placeholder="Email"
+              placeholder="Email *"
               type="simpleInput"
             ></InputElement>
             <InputElement
               name="password"
               setState={changeState}
-              placeholder="Password"
+              placeholder="Password *"
               type="simpleInput"
+              secureTextEntry={true}
             ></InputElement>
           </View>
 

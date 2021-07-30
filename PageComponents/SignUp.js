@@ -182,6 +182,7 @@ function SignUp(props) {
                 setState={changeState}
                 placeholder="Password *"
                 type="simpleInput"
+                secureTextEntry={true}
               ></InputElement>
             </View>
             <View style={styles.error}>{errorsRegister}</View>
