@@ -14,7 +14,7 @@ import PROXY from "../proxy.js";
 
 function ConnectedEventDetailProfilStack(props) {
 
-    let idCW = "61017ac720f07d486871be0b";
+    let idCW = "6103ae3bb8248aa764dcd44a";
 
     const [cleanwalk, setCleanwalk] = useState(null);
 
@@ -29,20 +29,10 @@ function ConnectedEventDetailProfilStack(props) {
         const responseCleanwalk = await fetch(PROXY + `/load-cleanwalk/${idCW}`);
         const jsonResponseCleanwalk = await responseCleanwalk.json();
 
-        // console.log("test", jsonResponseCleanwalk);
-
         setCleanwalk(jsonResponseCleanwalk.cleanwalk);
         }
         loadData();
     }, []);
-
-//   let cleanwalkIdFromButton = cleanwalk._id;
-    let cleanwalkIdFromButton = idCW;
-
-    let participate = () => {
-    props.participateCleanwalk(cleanwalkIdFromButton);
-    props.navigation.navigate("SignUp");
-    };
 
     if (cleanwalk === null) {
         return <View style={{ flex: 1, backgroundColor: colors.white }}></View>;
