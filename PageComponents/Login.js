@@ -35,6 +35,7 @@ function Login(props) {
     console.log("login");
     if (props.cleanwalkId == null) {
       finalBody = bodyWithoutID;
+      
     }
     if (props.cleanwalkId != null) {
       finalBody = bodyWithId;
