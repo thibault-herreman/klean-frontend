@@ -2,7 +2,7 @@ export default function (tokenObj = { token: "XeDLD?Mr3!U4HSJ?Sl74HJpKD!", IsFir
 
     if (action.type == 'login') {
         console.log("login in reducer")
-        return { token: action.token, IsFirstVisit: false };
+        return { token: "gBzHa7pYcI013YM1IMSGnzLqLkgekND4", IsFirstVisit: false };
 
     } else if (action.type == 'signOut') {
         console.log("signOut in reducer")
