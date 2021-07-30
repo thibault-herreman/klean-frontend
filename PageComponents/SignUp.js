@@ -98,6 +98,12 @@ function SignUp(props) {
     }
   };
 
+
+  function backArrow() {
+    props.resetIdCl();
+    props.navigation.navigate("InvitedMapScreen");
+  }
+
   let button;
   if (props.cleanwalkId == null) {
     button = (
@@ -128,7 +134,7 @@ function SignUp(props) {
             <View style={styles.backButton}>
               <ButtonElement
                 typeButton="back"
-                onPress={() => props.navigation.navigate("InvitedMapScreen")}
+                onPress={() => backArrow()}
               />
             </View>
             <View style={styles.title}>
@@ -218,6 +224,9 @@ function mapDispatchToProps(dispatch) {
     },
     signOut: function () {
       dispatch({ type: "signOut" });
+    },
+    resetIdCl: function () {
+      dispatch({ type: "resetIdCl" });
     },
   };
 }

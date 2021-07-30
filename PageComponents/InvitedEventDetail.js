@@ -43,6 +43,11 @@ function InvitedEventDetail(props) {
     loadData();
   }, []);
 
+  function backArrow() {
+    props.resetIdCl();
+    props.navigation.navigate("InvitedMapScreen");
+  }
+
   if (cleanwalk === null) {
     return <View style={{ flex: 1, backgroundColor: colors.white }}></View>;
   } else {
@@ -56,7 +61,7 @@ function InvitedEventDetail(props) {
             <ButtonElement
               style={styles.backButton}
               typeButton="back"
-              onPress={() => props.navigation.navigate("InvitedMapScreen")}
+              onPress={() => backArrow()}
             />
             <ButtonElement
               style={styles.goButton}
@@ -138,11 +143,14 @@ function mapDispatchToProps(dispatch) {
     signOut: function () {
       dispatch({ type: "signOut" });
     },
+    resetIdCl: function () {
+      dispatch({ type: "resetIdCl" });
+    },
   };
 }
 
 function mapStateToProps(state) {
-  return { tokenObj: state.tokenObj,  cleanwalkId: state.cleanwalkId };
+  return { tokenObj: state.tokenObj, cleanwalkId: state.cleanwalkId };
 }
 
 const styles = StyleSheet.create({
