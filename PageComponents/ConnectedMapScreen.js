@@ -28,20 +28,24 @@ function ConnectedMapScreen(props) {
   const [listPositionCW, setListPositionCW] = useState([]);
   const [previewInfo, setPreviewInfo] = useState(null)
 
+  const geoLoc = () => {
+    Location.watchPositionAsync({ distanceInterval: 10 },
+        (location) => {
+            setCurrentRegion({ 
+                latitude: location.coords.latitude, 
+                longitude: location.coords.longitude,
+                latitudeDelta: 0.0922,
+                longitudeDelta: 0.0421
+            });
+        }
+    );
+  }
+
   useEffect(() => {
       async function askPermissions() {
           let { status } = await Location.requestForegroundPermissionsAsync();
           if (status === 'granted') {
-              Location.watchPositionAsync({ distanceInterval: 10 },
-                  (location) => {
-                      setCurrentRegion({ 
-                          latitude: location.coords.latitude, 
-                          longitude: location.coords.longitude,
-                          latitudeDelta: 0.0922,
-                          longitudeDelta: 0.0421
-                      });
-                  }
-              );
+            geoLoc();
           }
       }
       askPermissions();
@@ -132,11 +136,17 @@ function ConnectedMapScreen(props) {
           toolBadge={previewInfo.toolBadge}
           nameOrga={previewInfo.admin.lastName}
           firstnameOrga={previewInfo.admin.firstName}
-          onPress={() => props.navigation.navigate('InvitedEventDetail')}
+          onPress={() => {
+            props.setIdCW(previewInfo._id);
+            props.navigation.navigate('ConnectedEventDetailMapStack')
+          }}
           visible={isVisiblePreview}
       />
       ):(null)}
-      <ButtonElement typeButton="geoloc" />
+      <ButtonElement 
+        typeButton="geoloc" 
+        onPress={ () => geoLoc() }
+      />
     </SafeAreaView>
 
   );
@@ -150,6 +160,9 @@ function mapDispatchToProps(dispatch) {
     signOut: function () {
       dispatch({ type: "signOut" });
     },
+    setIdCW: function (cleanwalkId) {
+      dispatch({ type: "setIdCW", cleanwalkId: cleanwalkId });
+  },
   };
 }
 

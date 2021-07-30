@@ -136,7 +136,11 @@ function InvitedMapScreen(props) {
                 toolBadge={previewInfo.toolBadge}
                 nameOrga={previewInfo.admin.lastName}
                 firstnameOrga={previewInfo.admin.firstName}
-                onPress={() => props.navigation.navigate('InvitedEventDetail')}
+                onPress={() => {
+                    props.setIdCW(previewInfo._id);
+                    props.navigation.navigate('InvitedEventDetail');
+                }}
+
                 visible={isVisiblePreview}
             />
             ):(null)}
@@ -146,7 +150,10 @@ function InvitedMapScreen(props) {
                 text='Se connecter'
                 onPress={() => props.navigation.navigate('Login')}
             />
-            <ButtonElement typeButton="geoloc" />
+            <ButtonElement 
+                typeButton="geoloc"
+                onPress={ () => geoLoc() }
+            />
         </SafeAreaView>
     );
 }
@@ -159,7 +166,10 @@ function mapDispatchToProps(dispatch) {
         },
         signOut: function () {
             dispatch({ type: 'signOut' })
-        }
+        }, 
+        setIdCW: function (cleanwalkId) {
+            dispatch({ type: "setIdCW", cleanwalkId: cleanwalkId });
+        },
     }
 }
 
