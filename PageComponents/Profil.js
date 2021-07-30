@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, StatusBar, Image, SafeAreaView } from 'react-native';
 
 import ScreenTitles from '../lib/ScreenTitles';
@@ -17,6 +17,16 @@ function Profil(props) {
 
     const [isCwOnOrganize, setIsCwOnOrganize] = useState(true);
     const [isStatOnPerso, setIsStatOnPerso] = useState(true);
+
+    // useEffect(() => {
+    //     const loadProfil = async () => {
+    //         let rawResponse = await fetch(`${PROXY}/load-profile&token=${props.token}`);
+    //         let response = await rawResponse.json();
+    //         console.log('responseProfil', response);
+    //         //setListPositionCW(response.cleanWalkArray);
+    //     }
+    //     loadProfil();
+    // }, []);
 
     return (
         <View style={styles.container}>
