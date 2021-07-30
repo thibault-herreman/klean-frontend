@@ -136,7 +136,11 @@ function InvitedMapScreen(props) {
                 toolBadge={previewInfo.toolBadge}
                 nameOrga={previewInfo.admin.lastName}
                 firstnameOrga={previewInfo.admin.firstName}
-                onPress={() => props.navigation.navigate('InvitedEventDetail')}
+                onPress={() => {
+                    props.setIdCW(previewInfo._id);
+                    props.navigation.navigate('InvitedEventDetail');
+                }}
+
                 visible={isVisiblePreview}
             />
             ):(null)}
@@ -159,7 +163,10 @@ function mapDispatchToProps(dispatch) {
         },
         signOut: function () {
             dispatch({ type: 'signOut' })
-        }
+        }, 
+        setIdCW: function (cleanwalkId) {
+            dispatch({ type: "setIdCW", cleanwalkId: cleanwalkId });
+        },
     }
 }
 
