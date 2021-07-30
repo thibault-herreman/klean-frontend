@@ -56,13 +56,13 @@ function SignUp(props) {
 
   async function register() {
     let bodyWithoutID = `firstNameFromFront=${firstName}&lastNameFromFront=${lastName}&emailFromFront=${email}&cityFromFront=${city}&passwordFromFront=${password}&cityInfo=${JSON.stringify(cityInfo)}`;
-    let bodyWithId = `firstNameFromFront=${firstName}&lastNameFromFront=${lastName}&emailFromFront=${email}&cityFromFront=${city}&passwordFromFront=${password}&cityInfo=${JSON.stringify(cityInfo)}&cleanwalkIdFromFront=${props.idCleanwalk}`;
+    let bodyWithId = `firstNameFromFront=${firstName}&lastNameFromFront=${lastName}&emailFromFront=${email}&cityFromFront=${city}&passwordFromFront=${password}&cityInfo=${JSON.stringify(cityInfo)}&cleanwalkIdFromFront=${props.cleanwalkId}`;
     let finalBody;
 
-    if (props.idCleanwalk == null) {
+    if (props.cleanwalkId == null) {
       finalBody = bodyWithoutID;
     }
-    if (props.idCleanwalk != null) {
+    if (props.cleanwalkId != null) {
       finalBody = bodyWithId;
     }
     let data = await fetch(PROXY + "/users/sign-up", {
@@ -99,7 +99,7 @@ function SignUp(props) {
   };
 
   let button;
-  if (props.idCleanwalk == null) {
+  if (props.cleanwalkId == null) {
     button = (
       <ButtonElement
         style={styles.registerButton}
@@ -109,7 +109,7 @@ function SignUp(props) {
       />
     );
   }
-  if (props.idCleanwalk) {
+  if (props.cleanwalkId) {
     button = (
       <ButtonElement
         style={styles.registerButton}
@@ -223,7 +223,7 @@ function mapDispatchToProps(dispatch) {
 
 function mapStateToProps(state) {
   return {
-    idCleanwalk: state.participateCleanwalk,
+    cleanwalkId: state.cleanwalkId,
     tokenObj: state.tokenObj,
   };
 }

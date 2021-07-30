@@ -29,14 +29,14 @@ function Login(props) {
 
   async function login() {
     let bodyWithoutID = `emailFromFront=${email}&passwordFromFront=${password}`;
-    let bodyWithId = `emailFromFront=${email}&passwordFromFront=${password}&cleanwalkIdFromFront=${props.idCleanwalk}`;
+    let bodyWithId = `emailFromFront=${email}&passwordFromFront=${password}&cleanwalkIdFromFront=${props.cleanwalkId}`;
     let finalBody;
     
     console.log("login");
-    if (props.idCleanwalk == null) {
+    if (props.cleanwalkId == null) {
       finalBody = bodyWithoutID;
     }
-    if (props.idCleanwalk != null) {
+    if (props.cleanwalkId != null) {
       finalBody = bodyWithId;
     }
     let data = await fetch(PROXY + "/users/sign-in", {
@@ -70,7 +70,7 @@ function Login(props) {
   };
 
   let button;
-  if (props.idCleanwalk == null) {
+  if (props.cleanwalkId == null) {
     button = (
       <ButtonElement
         style={styles.registerButton}
@@ -80,7 +80,7 @@ function Login(props) {
       />
     );
   }
-  if (props.idCleanwalk) {
+  if (props.cleanwalkId) {
     button = (
       <ButtonElement
         style={styles.registerButton}
@@ -160,7 +160,7 @@ function mapDispatchToProps(dispatch) {
 
 function mapStateToProps(state) {
   return {
-    idCleanwalk: state.participateCleanwalk,
+    cleanwalkId: state.cleanwalkId,
     tokenObj: state.tokenObj,
   };
 }
