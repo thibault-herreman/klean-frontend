@@ -11,7 +11,7 @@ import PROXY from '../proxy';
 
 function CitiesRanking(props) {
 
-    let token = "gBzHa7pYcI013YM1IMSGnzLqLkgekND4"
+    let token = props.tokenObj.token
     const [listCities, setListCities] = useState(null)
 
     useEffect(() => {
