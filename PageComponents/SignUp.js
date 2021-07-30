@@ -35,6 +35,9 @@ function SignUp(props) {
   const [autoComplete, setAutoComplete] = useState([]);
   const [showAutoComplete, setShowAutoComplete] = useState(true);
 
+  const [cityInfo, setCityInfo] = useState({})
+  console.log(cityInfo, "cityInfo");
+
   useEffect(() => {
     async function loadData() {
       let rawResponse = await fetch(PROXY + "/autocomplete-search-city-only", {
@@ -52,8 +55,8 @@ function SignUp(props) {
   }, [city]);
 
   async function register() {
-    let bodyWithoutID = `firstNameFromFront=${firstName}&lastNameFromFront=${lastName}&emailFromFront=${email}&cityFromFront=${city}&passwordFromFront=${password}`;
-    let bodyWithId = `firstNameFromFront=${firstName}&lastNameFromFront=${lastName}&emailFromFront=${email}&cityFromFront=${city}&passwordFromFront=${password}&cleanwalkIdFromFront=${props.idCleanwalk}`;
+    let bodyWithoutID = `firstNameFromFront=${firstName}&lastNameFromFront=${lastName}&emailFromFront=${email}&cityFromFront=${city}&passwordFromFront=${password}&cityInfo=${JSON.stringify(cityInfo)}`;
+    let bodyWithId = `firstNameFromFront=${firstName}&lastNameFromFront=${lastName}&emailFromFront=${email}&cityFromFront=${city}&passwordFromFront=${password}&cityInfo=${JSON.stringify(cityInfo)}&cleanwalkIdFromFront=${props.idCleanwalk}`;
     let finalBody;
 
     if (props.idCleanwalk == null) {
@@ -139,19 +142,22 @@ function SignUp(props) {
               <InputElement
                 name="firstName"
                 setState={changeState}
-                placeholder="Prénom"
+                value= {firstName}
+                placeholder="Prénom *"
                 type="simpleInput"
               ></InputElement>
               <InputElement
                 name="lastName"
                 setState={changeState}
-                placeholder="Nom"
+                value = {lastName}
+                placeholder="Nom *"
                 type="simpleInput"
               ></InputElement>
               <InputElement
                 name="email"
                 setState={changeState}
-                placeholder="Email"
+                value = {email}
+                placeholder="Email *"
                 type="simpleInput"
               ></InputElement>
               <InputElement
@@ -159,7 +165,7 @@ function SignUp(props) {
                 setState={changeState}
                 setShowAutoComplete={setShowAutoComplete}
                 value={city}
-                placeholder="Ville"
+                placeholder="Ville *"
                 type="simpleInput"
               ></InputElement>
               {showAutoComplete ? (
@@ -167,13 +173,14 @@ function SignUp(props) {
                   data={autoComplete}
                   onPress={setCity}
                   setShowAutoComplete={setShowAutoComplete}
+                  cityInfoSetter = {setCityInfo}
                 />
               ) : null}
 
               <InputElement
                 name="password"
                 setState={changeState}
-                placeholder="Password"
+                placeholder="Password *"
                 type="simpleInput"
               ></InputElement>
             </View>

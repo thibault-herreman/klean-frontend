@@ -150,7 +150,10 @@ function InvitedMapScreen(props) {
                 text='Se connecter'
                 onPress={() => props.navigation.navigate('Login')}
             />
-            <ButtonElement typeButton="geoloc" />
+            <ButtonElement 
+                typeButton="geoloc"
+                onPress={ () => geoLoc() }
+            />
         </SafeAreaView>
     );
 }
