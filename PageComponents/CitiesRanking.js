@@ -16,7 +16,7 @@ function CitiesRanking(props) {
 
     useEffect(() => {
         async function loadData() {
-            let rawResponse = await fetch(PROXY + `/load-cleanwalk?token=${token}`);
+            let rawResponse = await fetch(PROXY + `/load-cities-ranking?token=${token}`);
             let response = await rawResponse.json();
             if (response.result) {
                 setListCities(response.ranking)
