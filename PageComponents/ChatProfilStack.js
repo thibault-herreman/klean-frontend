@@ -16,60 +16,43 @@ function ChatProfilStack(props) {
     return (
 
         <SafeAreaView style={styles.safeArea}>
-            <View style={styles.mainView}>
-                <View style={styles.topBanner}>
-                    <View style={styles.backButton}>
-                        <ButtonElement
+
+            <View style={styles.topBanner}>
+                <View style={styles.backButton}>
+                    <ButtonElement
                         typeButton="back"
                         onPress={() => props.navigation.navigate("Profil")}
-                        />
-                    </View>
-                    <View style={styles.title}>
-                        <Text style={typography.h1}>CHAT</Text>
-                    </View>
+                    />
                 </View>
-
-                <View>
-                    <ScreenTitles
-                        titleType="secondary"
-                        title="Discussion groupe"
-                    ></ScreenTitles>
+                <View style={styles.title}>
+                    <Text style={typography.h1}>CHAT</Text>
                 </View>
+            </View>
 
-                <ScrollView style={styles.scrollView}>
-                    <View>
-                        <ChatList></ChatList>
-                    </View>
-                </ScrollView>
+            <View>
+                <ScreenTitles
+                    titleType="secondary"
+                    title="Discussion groupe"
+                />
+            </View>
 
-                <View style={styles.inputField}>
+            <ChatList />
+            <KeyboardAvoidingView style={styles.messageElements}>
+                <View style={styles.input}>
                     <InputElement
                         type="messageInput"
                         placeholder="votre message"
-                    ></InputElement>
+                    />
                 </View>
 
                 <ButtonElement
-                style={styles.envoyerButton}
-                typeButton="fullFine"
-                text="Envoyer"
-                onPress={() => props.navigation.navigate("ChatMapStack")}
+                    typeButton="fullFine"
+                    text="Envoyer"
+                    onPress={() => props.navigation.navigate("ChatMapStack")}
                 />
-            </View>
-        </SafeAreaView>
+            </KeyboardAvoidingView>
 
-        // <View style={styles.container}>
-        //     <Text>Chat-ProfilStack</Text>
-        //     <Text>{`${props.token}`}</Text>
-        //     <Button title="login" onPress={() => props.login("monsupertokenchercheenbdd")} />
-        //     <Button title="signOut" onPress={() => props.signOut()} />
-        //     <Button title="Profil"
-        //         onPress={() => props.navigation.navigate('Profil')} />
-        //     <Button title="ConnectedEventDetailProfilStack"
-        //         onPress={() => props.navigation.navigate('ConnectedEventDetailProfilStack')} />
-        //     <Button title="ChatProfilStack"
-        //         onPress={() => props.navigation.navigate('ChatProfilStack')} />
-        // </View>
+        </SafeAreaView>
     );
 }
 
@@ -91,15 +74,12 @@ function mapStateToProps(state) {
 const styles = StyleSheet.create({
     safeArea: {
         flex: 1,
-        alignItems: "center",
         backgroundColor: colors.white,
-        justifyContent: "center",
-        alignItems: "center",
+        alignItems: "center"
     },
     topBanner: {
         justifyContent: "center",
         alignItems: "center",
-        flexDirection: "row",
         width: windowDimensions.width,
         height: windowDimensions.height * 0.1,
     },
@@ -112,13 +92,12 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
     },
-    inputField: {
-        marginBottom: windowDimensions.height * 0.02,
-        alignItems: "center",
+    messageElements: {
+        alignItems: "center"
     },
-    envoyerButton: {
-        
-    },
+    input: {
+        marginBottom: 15,
+    }
 });
 
 export default connect(
