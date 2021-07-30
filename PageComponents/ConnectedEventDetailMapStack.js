@@ -36,14 +36,6 @@ function ConnectedEventDetailMapStack(props) {
         loadData();
     }, []);
 
-//   let cleanwalkIdFromButton = cleanwalk._id;
-    let cleanwalkIdFromButton = idCW;
-
-    let participate = () => {
-    props.participateCleanwalk(cleanwalkIdFromButton);
-    props.navigation.navigate("SignUp");
-    };
-
     if (cleanwalk === null) {
         return <View style={{ flex: 1, backgroundColor: colors.white }}></View>;
     } else {
@@ -119,7 +111,10 @@ function ConnectedEventDetailMapStack(props) {
                     <ButtonElement 
                     typeButton="middleSecondary" 
                     text="Participer"
-                    onPress={() => props.navigation.navigate('Profil')}
+                    onPress={() => {
+                        props.cleanwalkId;
+                        props.navigation.navigate("Profil");
+                    }}
                     />
                 </View>
 
@@ -137,9 +132,6 @@ function mapDispatchToProps(dispatch) {
         },
         signOut: function () {
         dispatch({ type: "signOut" });
-        },
-        participateCleanwalk: function (cleanwalkId) {
-        dispatch({ type: "participate", cleanwalkIdFromButton: cleanwalkId });
         },
     };
 }
