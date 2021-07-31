@@ -8,7 +8,8 @@ function OnBoarding(props) {
         <View style={styles.container}>
             <Text>OnBoarding</Text>
             <Text>{`${props.token}`}</Text>
-            <Button title="login" onPress={() => props.login("gBzHa7pYcI013YM1IMSGnzLqLkgekND4")} />
+            <Button title="login" onPress={() => props.login("31Iv7EqAbpLpFoHXHh1J8maZqFeLGGDF")} />
+            {/* <Button title="login" onPress={() => props.login("OtVPQSFIbGaiPNHsgqMr1B1mSXBY3OEa")} /> */}
             <Button title="signOut" onPress={() => props.signOut()} />
             <Button title="InvitedMapScreen"
                 onPress={() => props.navigation.navigate('InvitedMapScreen')} />
