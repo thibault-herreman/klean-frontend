@@ -8,6 +8,7 @@ import { connect } from 'react-redux';
 import { colors } from '../lib/colors';
 import { typography } from '../lib/typography';
 import { windowDimensions } from '../lib/windowDimensions';
+import ChangePassword from './ChangePassword';
 
 import { FontAwesome } from '@expo/vector-icons';
 import CleanwalkList from '../lib/CleanwalkList';
@@ -18,6 +19,7 @@ function Profil(props) {
 
     const [isCwOnOrganize, setIsCwOnOrganize] = useState(true);
     const [isStatOnPerso, setIsStatOnPerso] = useState(true);
+    const [modalVisible, setModalVisible] = useState(false);
 
     useEffect(() => {
         const loadProfil = async () => {
@@ -29,6 +31,11 @@ function Profil(props) {
         }
         loadProfil();
     }, []);
+
+    function modal(){
+        setModalVisible(false);
+    }
+
 
     return (
         <View style={styles.container}>
@@ -112,7 +119,10 @@ function Profil(props) {
                         <Text style={styles.statBodyText}>Mika</Text>
                         <Text style={styles.statBodyText}>Doe</Text>
                         <Text style={styles.statBodyText}>mika.doe@gmail.com</Text>
-                        <ButtonElement text="Modifier mot de passe" typeButton="password" />
+                        <ButtonElement text="Modifier mot de passe" typeButton="password"
+                        onPress={() => setModalVisible(true)}
+                        />
+                        <ChangePassword visible={modalVisible} close={modal}/>
                     </View>
                 </View>
             </ScrollView>

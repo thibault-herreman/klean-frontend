@@ -9,10 +9,9 @@ import {
   ScrollView,
 } from "react-native";
 import { connect } from "react-redux";
-import { Dimensions } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { colors } from "../lib/colors";
-import { windowDimensions } from "../lib/windowDimensions";
+import { windowDimensions, screenDimensions } from "../lib/windowDimensions";
 import { typography, Typography } from "../lib/typography";
 import ButtonElement from "../lib/ButtonElement";
 import InputElement from "../lib/InputElement";
@@ -35,7 +34,7 @@ function SignUp(props) {
   const [autoComplete, setAutoComplete] = useState([]);
   const [showAutoComplete, setShowAutoComplete] = useState(true);
 
-  const [cityInfo, setCityInfo] = useState({})
+  const [cityInfo, setCityInfo] = useState({});
   console.log(cityInfo, "cityInfo");
 
   useEffect(() => {
@@ -55,8 +54,12 @@ function SignUp(props) {
   }, [city]);
 
   async function register() {
-    let bodyWithoutID = `firstNameFromFront=${firstName}&lastNameFromFront=${lastName}&emailFromFront=${email}&cityFromFront=${city}&passwordFromFront=${password}&cityInfo=${JSON.stringify(cityInfo)}`;
-    let bodyWithId = `firstNameFromFront=${firstName}&lastNameFromFront=${lastName}&emailFromFront=${email}&cityFromFront=${city}&passwordFromFront=${password}&cityInfo=${JSON.stringify(cityInfo)}&cleanwalkIdFromFront=${props.cleanwalkId}`;
+    let bodyWithoutID = `firstNameFromFront=${firstName}&lastNameFromFront=${lastName}&emailFromFront=${email}&cityFromFront=${city}&passwordFromFront=${password}&cityInfo=${JSON.stringify(
+      cityInfo
+    )}`;
+    let bodyWithId = `firstNameFromFront=${firstName}&lastNameFromFront=${lastName}&emailFromFront=${email}&cityFromFront=${city}&passwordFromFront=${password}&cityInfo=${JSON.stringify(
+      cityInfo
+    )}&cleanwalkIdFromFront=${props.cleanwalkId}`;
     let finalBody;
 
     if (props.cleanwalkId == null) {
@@ -98,6 +101,11 @@ function SignUp(props) {
     }
   };
 
+  function backArrow() {
+    props.resetIdCl();
+    props.navigation.navigate("InvitedMapScreen");
+  }
+
   let button;
   if (props.cleanwalkId == null) {
     button = (
@@ -122,41 +130,37 @@ function SignUp(props) {
 
   return (
     <SafeAreaView style={styles.safeArea}>
-      <ScrollView>
+      {/* <ScrollView style={{height:windowDimensions.height}}> */}
         <View style={styles.mainView}>
           <View style={styles.topBanner}>
             <View style={styles.backButton}>
-              <ButtonElement
-                typeButton="back"
-                onPress={() => props.navigation.navigate("InvitedMapScreen")}
-              />
+              <ButtonElement typeButton="back" onPress={() => backArrow()} />
             </View>
             <View style={styles.title}>
               <Text style={typography.h1}>INSCRIPTION</Text>
             </View>
           </View>
 
-          {/* <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} > */}
           <ScrollView>
             <View style={styles.inputFields}>
               <InputElement
                 name="firstName"
                 setState={changeState}
-                value= {firstName}
+                value={firstName}
                 placeholder="Prénom *"
                 type="simpleInput"
               ></InputElement>
               <InputElement
                 name="lastName"
                 setState={changeState}
-                value = {lastName}
+                value={lastName}
                 placeholder="Nom *"
                 type="simpleInput"
               ></InputElement>
               <InputElement
                 name="email"
                 setState={changeState}
-                value = {email}
+                value={email}
                 placeholder="Email *"
                 type="simpleInput"
               ></InputElement>
@@ -173,7 +177,7 @@ function SignUp(props) {
                   data={autoComplete}
                   onPress={setCity}
                   setShowAutoComplete={setShowAutoComplete}
-                  cityInfoSetter = {setCityInfo}
+                  cityInfoSetter={setCityInfo}
                 />
               ) : null}
 
@@ -182,6 +186,7 @@ function SignUp(props) {
                 setState={changeState}
                 placeholder="Password *"
                 type="simpleInput"
+                secureTextEntry={true}
               ></InputElement>
             </View>
             <View style={styles.error}>{errorsRegister}</View>
@@ -199,13 +204,12 @@ function SignUp(props) {
               </View>
             </View>
           </ScrollView>
-          {/* </KeyboardAvoidingView> */}
 
           <View style={styles.logoContainer}>
             <Image source={LogoKlean} style={styles.logo} />
           </View>
         </View>
-      </ScrollView>
+      {/* </ScrollView> */}
     </SafeAreaView>
   );
 }
@@ -217,6 +221,9 @@ function mapDispatchToProps(dispatch) {
     },
     signOut: function () {
       dispatch({ type: "signOut" });
+    },
+    resetIdCl: function () {
+      dispatch({ type: "resetIdCl" });
     },
   };
 }
@@ -231,6 +238,7 @@ function mapStateToProps(state) {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
+    height: screenDimensions.height,
     alignItems: "center",
     backgroundColor: colors.white,
   },
@@ -275,9 +283,9 @@ const styles = StyleSheet.create({
     paddingTop: 10,
   },
   logoContainer: {
-    flex: 1,
+    position: "absolute",
+    bottom: 0,
     width: windowDimensions.width,
-    justifyContent: "flex-end",
     alignItems: "center",
   },
   logo: {
