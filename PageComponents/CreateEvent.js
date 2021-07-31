@@ -11,24 +11,31 @@ import { windowDimensions } from "../lib/windowDimensions";
 import { typography } from "../lib/typography";
 
 function CreateEvent(props) {
+
+  const [currentLatitude, setCurrentLatitude] = useState ();
+  const [currentLongitude, setCurrentLongitude] = useState(0);
+
+  const [latitudeOnClick, setLatitudeOnClick] = useState(0);
+  const [longitudeOnClick, setLongitudeOnClick] = useState(0);
+
+  const [cleanwalk, setCleanwalk] = useState([]);
+
   // à terminer pour géolocaliser le user au clic sur le picto géoloc
   useEffect(() => {
     async function getLocation() {
       let { status } = await Location.requestForegroundPermissionsAsync();
       if (status === "granted") {
-        let location = await Location.watchPositionAsync(
-          { distanceInterval: 10 },
-          (location) => {}
+        let location = await Location.watchPositionAsync({ distanceInterval: 10 }, (location) => {
+            setCurrentLatitude(location.coords.latitude);
+            setCurrentLongitude(location.coords.longitude);
+          }
         );
       }
     }
     getLocation();
   }, []);
 
-  const [latitudeOnClick, setLatitudeOnClick] = useState(0);
-  const [longitudeOnClick, setLongitudeOnClick] = useState(0);
 
-  const [cleanwalk, setCleanwalk] = useState([]);
 
   let newMarker = cleanwalk.map(function (marker, i) {
     return (
@@ -53,6 +60,8 @@ function CreateEvent(props) {
     console.log("lat: ", latitudeOnClick, "lon: ", longitudeOnClick);
   }
 
+  function centerOnUser() {}
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={styles.contentSearchBar}>
@@ -76,7 +85,7 @@ function CreateEvent(props) {
 
       <View style={styles.information}>
         <View>
-          <ButtonElement typeButton="geoloc" />
+          <ButtonElement typeButton="geoloc" onPress={() => centerOnUser()} />
         </View>
 
         <Text style={styles.textInfo}>
@@ -151,8 +160,7 @@ const styles = StyleSheet.create({
 });
 export default connect(mapStateToProps, mapDispatchToProps)(CreateEvent);
 
-{
-  /* <MapView
+/* <MapView
 style={styles.container}
 provider={PROVIDER_GOOGLE}
 initialRegion={{
@@ -162,7 +170,6 @@ initialRegion={{
   longitudeDelta: 0.0421,
 }}
 ></MapView> */
-}
 
 // const [position, setPosition] = useState({ latitude: 0, longitude: 0 });
 
