@@ -5,6 +5,7 @@ import {
   View,
   KeyboardAvoidingView,
   Modal,
+  Pressable,
   ScrollView,
 } from "react-native";
 import { connect } from "react-redux";
@@ -23,6 +24,7 @@ function EventFillInfo(props) {
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.mainView}>
+
         <View style={styles.topBanner}>
           <View style={styles.backButton}>
             <ButtonElement
@@ -57,17 +59,55 @@ function EventFillInfo(props) {
               placeholder="Matériel 1, matériel 2, matériel 3; ... (respecter la mise en forme)"
               type="multilineInput"
             ></InputElement>
+
+
             <View style={styles.guide}>
               <Text style={typography.body}>Guide pour l'organisateur</Text>
+
               <ButtonElement
                 style={styles.infoIcon}
-                // onPress={() => setModalVisible(!modalVisible)}
+                onPress={() => setModalVisible(!modalVisible)}
                 typeButton="info"
               />
-              {/* <EventGuide
-                visible={modalVisible}
-              ></EventGuide> */}
+              
+              {/* <View style={styles.modal}>
+                <Modal
+                  animationType="slide"
+                  transparent={true}
+                  visible={modalVisible}
+                  onRequestClose={() => {
+                    Alert.alert("Modal has been closed.");
+                    props.onPress;
+                      setModalVisible(!modalVisible);
+                  }}
+                >
+                  <View>
+                    <View>
+                      <Text>Votre cleanwalk.</Text>
+                      <Text>
+                        lorem ipsum lorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem
+                        ipsumlorem ipsumlorem ipsumlorem ipsum
+                      </Text>
+                      <Pressable
+                        style={[styles.button, styles.buttonClose]}
+                        onPress={() => setModalVisible(!modalVisible)}
+                      >
+                        <Text style={styles.textStyle}>Hide Modal</Text>
+                      </Pressable>
+                    </View>
+                  </View>
+                </Modal>
+                <Pressable
+                  style={[styles.button, styles.buttonOpen]}
+                  onPress={() => setModalVisible(true)}
+                >
+                  <Text style={styles.textStyle}>Show Modal</Text>
+                </Pressable>
+
+              </View> */}
+              
             </View>
+
           </View>
 
           <View style={styles.register}>
@@ -78,6 +118,7 @@ function EventFillInfo(props) {
               onPress={() => props.navigation.navigate("Profil")}
             />
           </View> 
+
         </ScrollView>
         {/* </KeyboardAvoidingView> */}
       </View>
