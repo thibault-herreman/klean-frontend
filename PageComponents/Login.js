@@ -25,17 +25,14 @@ function Login(props) {
   const [userExists, setUserExists] = useState(false);
   const [listErrorLogin, setListErrorLogin] = useState([]);
 
-
-
   async function login() {
     let bodyWithoutID = `emailFromFront=${email}&passwordFromFront=${password}`;
     let bodyWithId = `emailFromFront=${email}&passwordFromFront=${password}&cleanwalkIdFromFront=${props.cleanwalkId}`;
     let finalBody;
-    
+
     console.log("login");
     if (props.cleanwalkId == null) {
       finalBody = bodyWithoutID;
-      
     }
     if (props.cleanwalkId != null) {
       finalBody = bodyWithId;
@@ -70,6 +67,11 @@ function Login(props) {
     }
   };
 
+  function backArrow() {
+    props.resetIdCl();
+    props.navigation.navigate("InvitedMapScreen");
+  }
+
   let button;
   if (props.cleanwalkId == null) {
     button = (
@@ -96,10 +98,7 @@ function Login(props) {
       <View style={styles.mainView}>
         <View style={styles.topBanner}>
           <View style={styles.backButton}>
-            <ButtonElement
-              typeButton="back"
-              onPress={() => props.navigation.navigate("InvitedMapScreen")}
-            />
+            <ButtonElement typeButton="back" onPress={() => backArrow()} />
           </View>
           <View style={styles.title}>
             <Text style={typography.h1}>CONNEXION</Text>
@@ -112,14 +111,15 @@ function Login(props) {
             <InputElement
               name="email"
               setState={changeState}
-              placeholder="Email"
+              placeholder="Email *"
               type="simpleInput"
             ></InputElement>
             <InputElement
               name="password"
               setState={changeState}
-              placeholder="Password"
+              placeholder="Password *"
               type="simpleInput"
+              secureTextEntry={true}
             ></InputElement>
           </View>
 
@@ -155,6 +155,9 @@ function mapDispatchToProps(dispatch) {
     },
     signOut: function () {
       dispatch({ type: "signOut" });
+    },
+    resetIdCl: function () {
+      dispatch({ type: "resetIdCl" });
     },
   };
 }
