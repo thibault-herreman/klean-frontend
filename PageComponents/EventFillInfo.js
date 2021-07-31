@@ -1,7 +1,6 @@
 import React, { useState } from "react";
-import { StyleSheet, Text, View, KeyboardAvoidingView, Pressable, ScrollView } from "react-native";
+import { StyleSheet, Text, View, KeyboardAvoidingView, ScrollView } from "react-native";
 import { connect } from "react-redux";
-import { Dimensions } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { colors } from "../lib/colors";
 import { windowDimensions } from "../lib/windowDimensions";
@@ -9,14 +8,38 @@ import { typography } from "../lib/typography";
 import ButtonElement from "../lib/ButtonElement";
 import InputElement from "../lib/InputElement";
 import EventGuide from "../lib/EventGuide";
+import PROXY from "../proxy";
 
 function EventFillInfo(props) {
+
+  const [title, setTitle] = useState ("");
+  const [city, setCity] = useState ("");
+  const [startingDate, setStartingDate] = useState ("");
+  const [endingDate, setEndingDate] = useState ("");
+  const [description, setDescription] = useState ("");
+  const [tool, setTool] = useState ([]);
 
   const [modalVisible, setModalVisible] = useState(false);
 
   function modal(){
     setModalVisible(false);
-}
+  }
+
+  let changeState = (name, value) => {
+    if (name == "title") {
+      setTitle(value);
+    } else if (name == "city") {
+      setCity(value);
+    } else if (name == "startingDate") {
+      setStartingDate(value);
+    } else if (name == "endingDate") {
+      setEndingDate(value);
+    } else if (name == "description") {
+      setDescription(value);
+    } else if (name == "tool") {
+      setTool(value);
+    }
+  };
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -34,27 +57,49 @@ function EventFillInfo(props) {
         <ScrollView>
           <View style={styles.inputFields}>
 
-            <InputElement placeholder="Titre" type="simpleInput"></InputElement>
+            <InputElement 
+              placeholder="Titre" 
+              type="simpleInput"
+              name="title"
+              setState={changeState}
+              value={title}
+              
+            />
             <InputElement
               placeholder="Ville"
               type="simpleInputDisabled"
-            ></InputElement>
+              name="city"
+              setState={changeState}
+              value={city}
+            />
             <InputElement
               placeholder="Date et heure de début"
               type="simpleInput"
-            ></InputElement>
+              name="startingDate"
+              setState={changeState}
+              value={startingDate}
+            />
             <InputElement
               placeholder="Date et heure de fin"
               type="simpleInput"
-            ></InputElement>
+              name="endingDate"
+              setState={changeState}
+              value={endingDate}
+            />
             <InputElement
               placeholder="Description"
               type="multilineInput"
-            ></InputElement>
+              name="description"
+              setState={changeState}
+              value={description}
+            />
             <InputElement
               placeholder="Matériel 1, matériel 2, matériel 3; ... (respecter la mise en forme)"
               type="multilineInput"
-            ></InputElement>
+              name="tool"
+              setState={changeState}
+              value={tool}
+            />
 
             <View style={styles.guide}>
               <Text style={typography.body}>Guide pour l'organisateur</Text>
@@ -73,7 +118,10 @@ function EventFillInfo(props) {
               style={styles.registerButton}
               typeButton="middleSecondary"
               text="Organiser"
-              onPress={() => props.navigation.navigate("Profil")}
+              onPress={() => {
+                submitCW()
+                props.navigation.navigate("Profil")
+              }}
             />
           </View> 
 
