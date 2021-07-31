@@ -27,8 +27,8 @@ const Stack = createStackNavigator();
 export default function ConnectedFlow() {
   return (
     <Tab.Navigator screenOptions={({ route }) => ({
+      unmountOnBlur: true,
       tabBarIcon: ({ color }) => {
-        let iconName;
 
         if (route.name === 'Chercher') {
           return <Ionicons name="earth" size={25} color={color} />;
@@ -72,6 +72,7 @@ export default function ConnectedFlow() {
 /* STACKS FOR EACH MAIN TAB*/
 
 function ConnectedMapStack() {
+
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="ConnectedMapScreen" component={ConnectedMapScreen} />
@@ -82,6 +83,7 @@ function ConnectedMapStack() {
 }
 
 function CreateEventStack() {
+
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="CreateEvent" component={CreateEvent} />
@@ -91,6 +93,7 @@ function CreateEventStack() {
 }
 
 function ProfilStack() {
+
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="Profil" component={Profil} />
