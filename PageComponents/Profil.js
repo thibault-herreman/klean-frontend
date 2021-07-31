@@ -12,21 +12,23 @@ import { windowDimensions } from '../lib/windowDimensions';
 import { FontAwesome } from '@expo/vector-icons';
 import CleanwalkList from '../lib/CleanwalkList';
 import { ScrollView } from 'react-native-gesture-handler';
+import PROXY from '../proxy';
 
 function Profil(props) {
 
     const [isCwOnOrganize, setIsCwOnOrganize] = useState(true);
     const [isStatOnPerso, setIsStatOnPerso] = useState(true);
 
-    // useEffect(() => {
-    //     const loadProfil = async () => {
-    //         let rawResponse = await fetch(`${PROXY}/load-profile&token=${props.token}`);
-    //         let response = await rawResponse.json();
-    //         console.log('responseProfil', response);
-    //         //setListPositionCW(response.cleanWalkArray);
-    //     }
-    //     loadProfil();
-    // }, []);
+    useEffect(() => {
+        const loadProfil = async () => {
+            let rawResponse = await fetch(`${PROXY}/load-profil/${props.tokenObj.token}`);
+            //let rawResponse = await fetch(PROXY + `/load-cities-ranking?token=${token}`);
+            let response = await rawResponse.json();
+            console.log('responseProfil', response);
+            //setListPositionCW(response.cleanWalkArray);
+        }
+        loadProfil();
+    }, []);
 
     return (
         <View style={styles.container}>
