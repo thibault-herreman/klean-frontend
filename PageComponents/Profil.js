@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, StatusBar, Image, SafeAreaView } from 'react-native';
 
 import ScreenTitles from '../lib/ScreenTitles';
@@ -8,6 +8,7 @@ import { connect } from 'react-redux';
 import { colors } from '../lib/colors';
 import { typography } from '../lib/typography';
 import { windowDimensions } from '../lib/windowDimensions';
+import ChangePassword from './ChangePassword';
 
 import { FontAwesome } from '@expo/vector-icons';
 import CleanwalkList from '../lib/CleanwalkList';
@@ -17,6 +18,23 @@ function Profil(props) {
 
     const [isCwOnOrganize, setIsCwOnOrganize] = useState(true);
     const [isStatOnPerso, setIsStatOnPerso] = useState(true);
+
+    const [modalVisible, setModalVisible] = useState(false);
+
+    // useEffect(() => {
+    //     const loadProfil = async () => {
+    //         let rawResponse = await fetch(`${PROXY}/load-profile&token=${props.token}`);
+    //         let response = await rawResponse.json();
+    //         console.log('responseProfil', response);
+    //         //setListPositionCW(response.cleanWalkArray);
+    //     }
+    //     loadProfil();
+    // }, []);
+
+    function modal(){
+        setModalVisible(false);
+    }
+
 
     return (
         <View style={styles.container}>
@@ -100,7 +118,10 @@ function Profil(props) {
                         <Text style={styles.statBodyText}>Mika</Text>
                         <Text style={styles.statBodyText}>Doe</Text>
                         <Text style={styles.statBodyText}>mika.doe@gmail.com</Text>
-                        <ButtonElement text="Modifier mot de passe" typeButton="password" />
+                        <ButtonElement text="Modifier mot de passe" typeButton="password"
+                        onPress={() => setModalVisible(true)}
+                        />
+                        <ChangePassword visible={modalVisible} close={modal}/>
                     </View>
                 </View>
             </ScrollView>
