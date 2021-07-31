@@ -1,28 +1,49 @@
 import React, { useState } from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  KeyboardAvoidingView,
-  Modal,
-  ScrollView,
-} from "react-native";
+import { StyleSheet, Text, View, KeyboardAvoidingView, ScrollView } from "react-native";
 import { connect } from "react-redux";
-import { Dimensions } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { colors } from "../lib/colors";
 import { windowDimensions } from "../lib/windowDimensions";
-import { typography, Typography } from "../lib/typography";
+import { typography } from "../lib/typography";
 import ButtonElement from "../lib/ButtonElement";
 import InputElement from "../lib/InputElement";
 import EventGuide from "../lib/EventGuide";
+import PROXY from "../proxy";
 
 function EventFillInfo(props) {
+
+  const [title, setTitle] = useState ("");
+  const [city, setCity] = useState ("");
+  const [startingDate, setStartingDate] = useState ("");
+  const [endingDate, setEndingDate] = useState ("");
+  const [description, setDescription] = useState ("");
+  const [tool, setTool] = useState ([]);
+
   const [modalVisible, setModalVisible] = useState(false);
+
+  function modal(){
+    setModalVisible(false);
+  }
+
+  let changeState = (name, value) => {
+    if (name == "title") {
+      setTitle(value);
+    } else if (name == "city") {
+      setCity(value);
+    } else if (name == "startingDate") {
+      setStartingDate(value);
+    } else if (name == "endingDate") {
+      setEndingDate(value);
+    } else if (name == "description") {
+      setDescription(value);
+    } else if (name == "tool") {
+      setTool(value);
+    }
+  };
 
   return (
     <SafeAreaView style={styles.safeArea}>
-      <View style={styles.mainView}>
+
         <View style={styles.topBanner}>
           <View style={styles.backButton}>
             <ButtonElement
@@ -30,44 +51,66 @@ function EventFillInfo(props) {
               onPress={() => props.navigation.navigate("CreateEvent")}
             />
           </View>
-          <View style={styles.title}></View>
         </View>
 
         {/* <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} > */}
         <ScrollView>
           <View style={styles.inputFields}>
-            <InputElement placeholder="Titre" type="simpleInput"></InputElement>
+
+            <InputElement 
+              placeholder="Titre" 
+              type="simpleInput"
+              name="title"
+              setState={changeState}
+              value={title}
+              
+            />
             <InputElement
               placeholder="Ville"
               type="simpleInputDisabled"
-            ></InputElement>
+              name="city"
+              setState={changeState}
+              value={city}
+            />
             <InputElement
               placeholder="Date et heure de début"
               type="simpleInput"
-            ></InputElement>
+              name="startingDate"
+              setState={changeState}
+              value={startingDate}
+            />
             <InputElement
               placeholder="Date et heure de fin"
               type="simpleInput"
-            ></InputElement>
+              name="endingDate"
+              setState={changeState}
+              value={endingDate}
+            />
             <InputElement
               placeholder="Description"
               type="multilineInput"
-            ></InputElement>
+              name="description"
+              setState={changeState}
+              value={description}
+            />
             <InputElement
               placeholder="Matériel 1, matériel 2, matériel 3; ... (respecter la mise en forme)"
               type="multilineInput"
-            ></InputElement>
+              name="tool"
+              setState={changeState}
+              value={tool}
+            />
+
             <View style={styles.guide}>
               <Text style={typography.body}>Guide pour l'organisateur</Text>
               <ButtonElement
                 style={styles.infoIcon}
-                // onPress={() => setModalVisible(!modalVisible)}
+                onPress={() => setModalVisible(true)}
                 typeButton="info"
               />
-              {/* <EventGuide
-                visible={modalVisible}
-              ></EventGuide> */}
+              <EventGuide visible={modalVisible} close={modal}/>
             </View>
+
           </View>
 
           <View style={styles.register}>
@@ -75,25 +118,17 @@ function EventFillInfo(props) {
               style={styles.registerButton}
               typeButton="middleSecondary"
               text="Organiser"
-              onPress={() => props.navigation.navigate("Profil")}
+              onPress={() => {
+                submitCW()
+                props.navigation.navigate("Profil")
+              }}
             />
           </View> 
+
         </ScrollView>
         {/* </KeyboardAvoidingView> */}
-      </View>
     </SafeAreaView>
   );
-
-  // <View style={styles.container}>
-  //     <Text>EventFillInfo</Text>
-  //     <Text>{`${props.token}`}</Text>
-  //     <Button title="login" onPress={() => props.login("monsupertokenchercheenbdd")} />
-  //     <Button title="signOut" onPress={() => props.signOut()} />
-  //     <Button title="CreateEvent"
-  //         onPress={() => props.navigation.navigate('CreateEvent')} />
-  //     <Button title="EventFillInfo"
-  //         onPress={() => props.navigation.navigate('EventFillInfo')} />
-  // </View>
 }
 
 function mapDispatchToProps(dispatch) {
@@ -130,10 +165,6 @@ const styles = StyleSheet.create({
     left: 10,
     zIndex: 10,
   },
-  title: {
-    justifyContent: "center",
-    alignItems: "center",
-  },
   inputFields: {
     justifyContent: "center",
     alignItems: "center",
@@ -155,3 +186,15 @@ const styles = StyleSheet.create({
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(EventFillInfo);
+
+
+  // <View style={styles.container}>
+  //     <Text>EventFillInfo</Text>
+  //     <Text>{`${props.token}`}</Text>
+  //     <Button title="login" onPress={() => props.login("monsupertokenchercheenbdd")} />
+  //     <Button title="signOut" onPress={() => props.signOut()} />
+  //     <Button title="CreateEvent"
+  //         onPress={() => props.navigation.navigate('CreateEvent')} />
+  //     <Button title="EventFillInfo"
+  //         onPress={() => props.navigation.navigate('EventFillInfo')} />
+  // </View>
