@@ -1,29 +1,25 @@
 import React, { useState } from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  KeyboardAvoidingView,
-  Modal,
-  Pressable,
-  ScrollView,
-} from "react-native";
+import { StyleSheet, Text, View, KeyboardAvoidingView, Pressable, ScrollView } from "react-native";
 import { connect } from "react-redux";
 import { Dimensions } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { colors } from "../lib/colors";
 import { windowDimensions } from "../lib/windowDimensions";
-import { typography, Typography } from "../lib/typography";
+import { typography } from "../lib/typography";
 import ButtonElement from "../lib/ButtonElement";
 import InputElement from "../lib/InputElement";
 import EventGuide from "../lib/EventGuide";
 
 function EventFillInfo(props) {
+
   const [modalVisible, setModalVisible] = useState(false);
+
+  function modal(){
+    setModalVisible(false);
+}
 
   return (
     <SafeAreaView style={styles.safeArea}>
-      <View style={styles.mainView}>
 
         <View style={styles.topBanner}>
           <View style={styles.backButton}>
@@ -32,12 +28,12 @@ function EventFillInfo(props) {
               onPress={() => props.navigation.navigate("CreateEvent")}
             />
           </View>
-          <View style={styles.title}></View>
         </View>
 
         {/* <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} > */}
         <ScrollView>
           <View style={styles.inputFields}>
+
             <InputElement placeholder="Titre" type="simpleInput"></InputElement>
             <InputElement
               placeholder="Ville"
@@ -60,52 +56,14 @@ function EventFillInfo(props) {
               type="multilineInput"
             ></InputElement>
 
-
             <View style={styles.guide}>
               <Text style={typography.body}>Guide pour l'organisateur</Text>
-
               <ButtonElement
                 style={styles.infoIcon}
-                onPress={() => setModalVisible(!modalVisible)}
+                onPress={() => setModalVisible(true)}
                 typeButton="info"
               />
-              
-              {/* <View style={styles.modal}>
-                <Modal
-                  animationType="slide"
-                  transparent={true}
-                  visible={modalVisible}
-                  onRequestClose={() => {
-                    Alert.alert("Modal has been closed.");
-                    props.onPress;
-                      setModalVisible(!modalVisible);
-                  }}
-                >
-                  <View>
-                    <View>
-                      <Text>Votre cleanwalk.</Text>
-                      <Text>
-                        lorem ipsum lorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem
-                        ipsumlorem ipsumlorem ipsumlorem ipsum
-                      </Text>
-                      <Pressable
-                        style={[styles.button, styles.buttonClose]}
-                        onPress={() => setModalVisible(!modalVisible)}
-                      >
-                        <Text style={styles.textStyle}>Hide Modal</Text>
-                      </Pressable>
-                    </View>
-                  </View>
-                </Modal>
-                <Pressable
-                  style={[styles.button, styles.buttonOpen]}
-                  onPress={() => setModalVisible(true)}
-                >
-                  <Text style={styles.textStyle}>Show Modal</Text>
-                </Pressable>
-
-              </View> */}
-              
+              <EventGuide visible={modalVisible} close={modal}/>
             </View>
 
           </View>
@@ -121,20 +79,8 @@ function EventFillInfo(props) {
 
         </ScrollView>
         {/* </KeyboardAvoidingView> */}
-      </View>
     </SafeAreaView>
   );
-
-  // <View style={styles.container}>
-  //     <Text>EventFillInfo</Text>
-  //     <Text>{`${props.token}`}</Text>
-  //     <Button title="login" onPress={() => props.login("monsupertokenchercheenbdd")} />
-  //     <Button title="signOut" onPress={() => props.signOut()} />
-  //     <Button title="CreateEvent"
-  //         onPress={() => props.navigation.navigate('CreateEvent')} />
-  //     <Button title="EventFillInfo"
-  //         onPress={() => props.navigation.navigate('EventFillInfo')} />
-  // </View>
 }
 
 function mapDispatchToProps(dispatch) {
@@ -171,10 +117,6 @@ const styles = StyleSheet.create({
     left: 10,
     zIndex: 10,
   },
-  title: {
-    justifyContent: "center",
-    alignItems: "center",
-  },
   inputFields: {
     justifyContent: "center",
     alignItems: "center",
@@ -196,3 +138,15 @@ const styles = StyleSheet.create({
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(EventFillInfo);
+
+
+  // <View style={styles.container}>
+  //     <Text>EventFillInfo</Text>
+  //     <Text>{`${props.token}`}</Text>
+  //     <Button title="login" onPress={() => props.login("monsupertokenchercheenbdd")} />
+  //     <Button title="signOut" onPress={() => props.signOut()} />
+  //     <Button title="CreateEvent"
+  //         onPress={() => props.navigation.navigate('CreateEvent')} />
+  //     <Button title="EventFillInfo"
+  //         onPress={() => props.navigation.navigate('EventFillInfo')} />
+  // </View>

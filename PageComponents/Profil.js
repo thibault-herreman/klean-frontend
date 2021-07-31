@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 import { colors } from '../lib/colors';
 import { typography } from '../lib/typography';
 import { windowDimensions } from '../lib/windowDimensions';
-import ChangePassword from './ChangePassword';
+import ChangePassword from '../lib/ChangePassword';
 
 import { FontAwesome } from '@expo/vector-icons';
 import CleanwalkList from '../lib/CleanwalkList';
