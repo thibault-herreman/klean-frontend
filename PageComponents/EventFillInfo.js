@@ -17,7 +17,7 @@ function EventFillInfo(props) {
   const [startingDate, setStartingDate] = useState ("");
   const [endingDate, setEndingDate] = useState ("");
   const [description, setDescription] = useState ("");
-  const [tool, setTool] = useState ([]);
+  const [tool, setTool] = useState ("");
 
   const [modalVisible, setModalVisible] = useState(false);
 
@@ -40,6 +40,18 @@ function EventFillInfo(props) {
       setTool(value);
     }
   };
+
+  var addCW = async () => {
+  
+    const dataCW = await fetch(PROXY + "/create-cw", {
+      method: 'POST',
+      headers: {'Content-Type':'application/x-www-form-urlencoded'},
+      body: `title=${title}&city=${JSON.stringify(props.cityInfo)}&description=${description}&tool=${tool.split(",")}`
+    })
+
+    // body: `title=${title}&city=${city}&startingDate=${startingDate}&endingDate=${endingDate}&description=${description}&tool=${tool}`
+    
+  }
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -119,7 +131,7 @@ function EventFillInfo(props) {
               typeButton="middleSecondary"
               text="Organiser"
               onPress={() => {
-                submitCW()
+                addCW()
                 props.navigation.navigate("Profil")
               }}
             />
@@ -143,7 +155,7 @@ function mapDispatchToProps(dispatch) {
 }
 
 function mapStateToProps(state) {
-  return { tokenObj: state.tokenObj };
+  return { tokenObj: state.tokenObj, cityInfo: state.cityInfo };
 }
 
 const styles = StyleSheet.create({

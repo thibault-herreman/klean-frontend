@@ -9,10 +9,11 @@ import { colors } from "../lib/colors";
 import pinSmall from "../assets/imagesKlean/pinSmall.png";
 import { windowDimensions } from "../lib/windowDimensions";
 import { typography } from "../lib/typography";
+import PROXY from "../proxy";
+
 
 function CreateEvent(props) {
-
-  const [currentLatitude, setCurrentLatitude] = useState ();
+  const [currentLatitude, setCurrentLatitude] = useState();
   const [currentLongitude, setCurrentLongitude] = useState(0);
 
   const [latitudeOnClick, setLatitudeOnClick] = useState(0);
@@ -25,7 +26,9 @@ function CreateEvent(props) {
     async function getLocation() {
       let { status } = await Location.requestForegroundPermissionsAsync();
       if (status === "granted") {
-        let location = await Location.watchPositionAsync({ distanceInterval: 10 }, (location) => {
+        let location = await Location.watchPositionAsync(
+          { distanceInterval: 10 },
+          (location) => {
             setCurrentLatitude(location.coords.latitude);
             setCurrentLongitude(location.coords.longitude);
           }
@@ -34,8 +37,6 @@ function CreateEvent(props) {
     }
     getLocation();
   }, []);
-
-
 
   let newMarker = cleanwalk.map(function (marker, i) {
     return (
@@ -60,7 +61,29 @@ function CreateEvent(props) {
     console.log("lat: ", latitudeOnClick, "lon: ", longitudeOnClick);
   }
 
-  function centerOnUser() {}
+  // function centerOnUser() {}
+
+  async function continueToForm() {
+    let data = await fetch(PROXY + "/get-city-from-coordinates", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: `latFromFront=${latitudeOnClick}&lonFromFront=${longitudeOnClick}`,
+    });
+    let response = await data.json();
+
+    // let infoFromApi = response.response.features[0].properties;
+    // let coordinates = response.response.features[0].geometry.coordinates;
+    // let cleanwalkCoordinates = { latitudeOnClick, longitudeOnClick };
+    // let cityInfo = { infoFromApi, coordinates, cleanwalkCoordinates };
+    
+    props.sendCityInfo({
+      infoFromApi: response.response.features[0].properties,
+      coordinates: response.response.features[0].geometry.coordinates,
+      cleanwalkCoordinates: { lat: latitudeOnClick, lon: longitudeOnClick },
+    });
+
+    props.navigation.navigate("EventFillInfo");
+  }
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -68,8 +91,6 @@ function CreateEvent(props) {
         <SearchBarElement placeholder="Où ? (adresse)" />
       </View>
       <MapView
-        // onPress={() => console.log("done")}
-        // onLongPress={() => console.log("step 2")}
         style={styles.container}
         provider={PROVIDER_GOOGLE}
         initialRegion={{
@@ -99,7 +120,7 @@ function CreateEvent(props) {
         typeButton="fullFine"
         backgroundColor={colors.secondary}
         text="Continuer"
-        onPress={() => props.navigation.navigate("EventFillInfo")}
+        onPress={() => continueToForm()}
       />
     </SafeAreaView>
 
@@ -123,6 +144,9 @@ function mapDispatchToProps(dispatch) {
     },
     signOut: function () {
       dispatch({ type: "signOut" });
+    },
+    sendCityInfo: function (cityInfo) {
+      dispatch({ type: "sendCityInfo", payLoad: cityInfo });
     },
   };
 }

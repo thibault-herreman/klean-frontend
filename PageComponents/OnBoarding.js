@@ -1,32 +1,21 @@
 import React from 'react';
 import { StyleSheet, Text, View, Button } from 'react-native';
 import { connect } from 'react-redux';
+import CarrousselOnboarding from '../lib/CarrousselOnboarding';
+import ButtonElement from '../lib/ButtonElement';
 
 function OnBoarding(props) {
 
     return (
         <View style={styles.container}>
-            <Text>OnBoarding</Text>
-            <Text>{`${props.token}`}</Text>
-            
-            {/* token avec des participations à des cleanwalks  */}
-            <Button title="login" onPress={() => props.login("31Iv7EqAbpLpFoHXHh1J8maZqFeLGGDF")} />
-            
-            {/* token sans participations à des cleanwalks  */}
-            {/* <Button title="login" onPress={() => props.login("OtVPQSFIbGaiPNHsgqMr1B1mSXBY3OEa")} /> */}
-            
-            {/* token avec des orgas à des cleanwalks  */}
-            {/* <Button title="login" onPress={() => props.login("vsnfQC8qERq43EyILeE3QtewFtZRyzz0")} /> */}
-            
-            <Button title="signOut" onPress={() => props.signOut()} />
-            <Button title="InvitedMapScreen"
-                onPress={() => props.navigation.navigate('InvitedMapScreen')} />
-            <Button title="InvitedEventDetail"
-                onPress={() => props.navigation.navigate('InvitedEventDetail')} />
-            <Button title="Login"
-                onPress={() => props.navigation.navigate('Login')} />
-            <Button title="SignUp"
-                onPress={() => props.navigation.navigate('SignUp')} />
+            <CarrousselOnboarding />
+            <View style={styles.button}>
+                <ButtonElement
+                    text='Skip'
+                    typeButton='middleSecondary'
+                    onPress={() => props.navigation.navigate('AdminPanel')}
+                />
+            </View>
         </View>
     );
 }
@@ -51,12 +40,27 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#fff',
-        alignItems: 'center',
-        justifyContent: 'center',
+        alignItems: "center"
     },
+    button: {
+        marginBottom: 50
+    }
 });
 
 export default connect(
     mapStateToProps,
     mapDispatchToProps
 )(OnBoarding);
+
+{/*<Text>OnBoarding</Text>
+            <Text>{`${props.token}`}</Text>
+            <Button title="login" onPress={() => props.login("gBzHa7pYcI013YM1IMSGnzLqLkgekND4")} />
+            <Button title="signOut" onPress={() => props.signOut()} />
+            <Button title="InvitedMapScreen"
+                onPress={() => props.navigation.navigate('InvitedMapScreen')} />
+            <Button title="InvitedEventDetail"
+                onPress={() => props.navigation.navigate('InvitedEventDetail')} />
+            <Button title="Login"
+                onPress={() => props.navigation.navigate('Login')} />
+            <Button title="SignUp"
+                onPress={() => props.navigation.navigate('SignUp')} />*/}
