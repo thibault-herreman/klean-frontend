@@ -7,6 +7,14 @@ function AdminPanel(props) {
 
     return (
         <View style={styles.container}>
+
+            {/* token sans participations à des cleanwalks  */}
+            {/* <Button title="login" onPress={() => props.login("OtVPQSFIbGaiPNHsgqMr1B1mSXBY3OEa")} /> */}
+            
+            {/* token avec des orgas à des cleanwalks  */}
+            {/* <Button title="login" onPress={() => props.login("vsnfQC8qERq43EyILeE3QtewFtZRyzz0")} /> */}
+
+            
             <Button title="login" onPress={() => props.login("gBzHa7pYcI013YM1IMSGnzLqLkgekND4")} />
             <Button title="signOut" onPress={() => props.signOut()} />
             <Button title="InvitedMapScreen"
