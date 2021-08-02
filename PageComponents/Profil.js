@@ -20,8 +20,9 @@ function Profil(props) {
     const [isCwOnOrganize, setIsCwOnOrganize] = useState(true);
     const [isStatOnPerso, setIsStatOnPerso] = useState(true);
     const [modalVisible, setModalVisible] = useState(false);
-    const [listCWparticipate, setListCWparticipate] = useState(null);
-    const [infosUser, setInfosUser] = useState(null);
+    const [listCWparticipate, setListCWparticipate] = useState([]);
+    const [listCWorganize, setListCWorganize] = useState([]);
+    const [infosUser, setInfosUser] = useState('');
 
     useEffect(() => {
         const loadProfil = async () => {
@@ -29,6 +30,7 @@ function Profil(props) {
             let response = await rawResponse.json();
             if (response.result) {
                 setListCWparticipate(response.infosCWparticipate);
+                setListCWorganize(response.infosCWorganize);
                 setInfosUser(response.infosUser);
             }
         }
@@ -39,11 +41,18 @@ function Profil(props) {
         setModalVisible(false);
     }
 
-    let cwListParticipate = null;
+    let cwListParticipate;
     if (listCWparticipate.length > 0) {
-        cwListParticipate = <View style={styles.list}><CleanwalkList onPress={() => props.navigation.navigate('ConnectedEventDetailProfilStack')} listCWparticipate={listCWparticipate} /></View>;
+        cwListParticipate = <View style={styles.list}><CleanwalkList onPress={() => props.navigation.navigate('ConnectedEventDetailProfilStack')} listCW={listCWparticipate} /></View>;
     } else {
         cwListParticipate = <View style={styles.ctTextNoCw}><Text style={styles.textNoCw}>Vous ne participez à aucune cleanwalk :(</Text></View>;
+    }
+
+    let cwListOrganize;
+    if (listCWorganize.length > 0) {
+        cwListOrganize = <View style={styles.list}><CleanwalkList onPress={() => props.navigation.navigate('ConnectedEventDetailProfilStack')} listCW={listCWorganize} /></View>;
+    } else {
+        cwListOrganize = <View style={styles.ctTextNoCw}><Text style={styles.textNoCw}>Vous n'organisez pas encore de cleanwalks</Text></View>;
     }
 
 
@@ -65,9 +74,7 @@ function Profil(props) {
                             <ButtonElement text="J'organise" typeButton='middleFine' outline={false} onPress={() => setIsCwOnOrganize(true)} />
                             <ButtonElement text="Je participe" typeButton='middleFine' outline={true} onPress={() => setIsCwOnOrganize(false)} />
                         </View>
-                        <View style={styles.list}>
-                            <CleanwalkList onPress={() => props.navigation.navigate('ConnectedEventDetailProfilStack')} />
-                        </View>
+                        {cwListOrganize}
                     </>
                 ) : (
                     <>
