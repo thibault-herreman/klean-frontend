@@ -17,7 +17,6 @@ function CreateEvent(props) {
 
   const [latitudeOnClick, setLatitudeOnClick] = useState(0);
   const [longitudeOnClick, setLongitudeOnClick] = useState(0);
-  const [cityInfo, setCityInfo] = useState({});
 
   const [cleanwalk, setCleanwalk] = useState([]);
 
@@ -70,9 +69,11 @@ function CreateEvent(props) {
       body: `latFromFront=${latitudeOnClick}&lonFromFront=${longitudeOnClick}`,
     });
     let response = await data.json();
-    setCityInfo(response.response.features[0].properties);
 
-    props.sendCityInfo();
+    let cityInfo = response.response.features[0].properties;
+    props.sendCityInfo(cityInfo);
+
+    props.navigation.navigate("EventFillInfo");
   }
 
   return (
@@ -81,8 +82,6 @@ function CreateEvent(props) {
         <SearchBarElement placeholder="Où ? (adresse)" />
       </View>
       <MapView
-        // onPress={() => console.log("done")}
-        // onLongPress={() => console.log("step 2")}
         style={styles.container}
         provider={PROVIDER_GOOGLE}
         initialRegion={{
@@ -137,9 +136,9 @@ function mapDispatchToProps(dispatch) {
     signOut: function () {
       dispatch({ type: "signOut" });
     },
-    sendCityInfo: function() {
-      dispatch({type: "sendCityInfo", cityInfo: cityInfo})
-    }
+    sendCityInfo: function (cityInfo) {
+      dispatch({ type: "sendCityInfo", cityInfo: cityInfo });
+    },
   };
 }
 

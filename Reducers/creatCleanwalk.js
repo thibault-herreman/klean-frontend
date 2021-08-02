@@ -1,7 +1,8 @@
 export default function (cityInfo = {}, action) {
   if ((action.type = "sendCityInfo")) {
-      return (action.cityInfo);
+    console.log("action reducer: ", action.cityInfo);
+    return action.cityInfo;
   } else {
-      return cityInfo;
+    return cityInfo;
   }
 }
