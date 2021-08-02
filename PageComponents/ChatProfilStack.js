@@ -4,22 +4,22 @@ import { connect } from "react-redux";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { colors } from "../lib/colors";
 import { windowDimensions } from "../lib/windowDimensions";
-import { typography, Typography } from "../lib/typography";
+import { typography } from "../lib/typography";
 import ButtonElement from "../lib/ButtonElement";
 import InputElement from "../lib/InputElement";
-import { FlatList, ScrollView } from "react-native-gesture-handler";
 import ScreenTitles from "../lib/ScreenTitles";
 import ChatList from "../lib/ChatList";
 import PROXY from "../proxy";
+import { useIsFocused } from '@react-navigation/native';
 
 function ChatProfilStack(props) {
-
     let token = props.tokenObj.token
     let cwid = "6103ae3bb8248aa764dcd44a"
-    let loadInterval;
 
+    const isFocused = useIsFocused();
     const [messages, setMessages] = useState(null)
     const [messageEnvoie, setMessageEnvoie] = useState()
+    const [loadInterval, setLoadInterval] = useState()
 
     useEffect(() => {
         async function loadData() {
@@ -29,9 +29,13 @@ function ChatProfilStack(props) {
                 setMessages(response.messages)
             }
         };
-        loadInterval = setInterval(loadData, 5000)
-        return () => clearInterval(loadInterval);
-    }, []);
+        
+        if (isFocused) {
+            setLoadInterval(setInterval(loadData, 5000));
+        } else {
+            clearInterval(loadInterval)
+        }
+    }, [isFocused]);
 
     const sendMessage = async (message) => {
         let requete = await fetch(PROXY + '/save-message', {

@@ -27,7 +27,7 @@ const Stack = createStackNavigator();
 export default function ConnectedFlow() {
   return (
     <Tab.Navigator screenOptions={({ route }) => ({
-      unmountOnBlur: true,
+      unmountOnBlur: false,
       tabBarIcon: ({ color }) => {
 
         if (route.name === 'Chercher') {
