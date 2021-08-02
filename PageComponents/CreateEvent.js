@@ -11,22 +11,56 @@ import { windowDimensions } from "../lib/windowDimensions";
 import { typography } from "../lib/typography";
 
 function CreateEvent(props) {
-  const [position, setPosition] = useState({ latitude: 0, longitude: 0 });
 
+  const [currentLatitude, setCurrentLatitude] = useState ();
+  const [currentLongitude, setCurrentLongitude] = useState(0);
+
+  const [latitudeOnClick, setLatitudeOnClick] = useState(0);
+  const [longitudeOnClick, setLongitudeOnClick] = useState(0);
+
+  const [cleanwalk, setCleanwalk] = useState([]);
+
+  // à terminer pour géolocaliser le user au clic sur le picto géoloc
   useEffect(() => {
-    async function askPermissions() {
+    async function getLocation() {
       let { status } = await Location.requestForegroundPermissionsAsync();
       if (status === "granted") {
-        Location.watchPositionAsync({ distanceInterval: 10 }, (location) => {
-          setPosition({
-            latitude: location.coords.latitude,
-            longitude: location.coords.longitude,
-          });
-        });
+        let location = await Location.watchPositionAsync({ distanceInterval: 10 }, (location) => {
+            setCurrentLatitude(location.coords.latitude);
+            setCurrentLongitude(location.coords.longitude);
+          }
+        );
       }
     }
-    askPermissions();
+    getLocation();
   }, []);
+
+
+
+  let newMarker = cleanwalk.map(function (marker, i) {
+    return (
+      <Marker
+        coordinate={{
+          latitude: latitudeOnClick,
+          longitude: longitudeOnClick,
+        }}
+        image={pinSmall}
+        draggable
+      />
+    );
+  });
+
+  function addCleanwalk(e) {
+    setLatitudeOnClick(e.nativeEvent.coordinate.latitude);
+    setLongitudeOnClick(e.nativeEvent.coordinate.longitude);
+    setCleanwalk([
+      ...cleanwalk,
+      { latitude: latitudeOnClick, longitude: longitudeOnClick },
+    ]);
+    console.log("lat: ", latitudeOnClick, "lon: ", longitudeOnClick);
+  }
+
+  function centerOnUser() {}
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -34,6 +68,8 @@ function CreateEvent(props) {
         <SearchBarElement placeholder="Où ? (adresse)" />
       </View>
       <MapView
+        // onPress={() => console.log("done")}
+        // onLongPress={() => console.log("step 2")}
         style={styles.container}
         provider={PROVIDER_GOOGLE}
         initialRegion={{
@@ -42,28 +78,19 @@ function CreateEvent(props) {
           latitudeDelta: 0.0922,
           longitudeDelta: 0.0421,
         }}
+        onLongPress={(e) => addCleanwalk(e)}
       >
-        <Marker
-          coordinate={{
-            latitude: position.latitude,
-            longitude: position.longitude,
-          }}
-          title="Hello"
-          description="I am here"
-          image={pinSmall}
-          anchor={{ x: 0.5, y: 1 }}
-          centerOffs
-          et={{ x: 0.5, y: 1 }}
-        />
+        {newMarker}
       </MapView>
 
       <View style={styles.information}>
         <View>
-          <ButtonElement typeButton="geoloc" />
+          <ButtonElement typeButton="geoloc" onPress={() => centerOnUser()} />
         </View>
 
         <Text style={styles.textInfo}>
-          - Saisir une adresse OU {"\n"}- appuyer longuement pour ajouter un repère.
+          - Saisir une adresse OU {"\n"}- appuyer longuement pour ajouter un
+          repère.
         </Text>
         {/*<Text style={styles.textInfo}></Text>*/}
       </View>
@@ -128,7 +155,35 @@ const styles = StyleSheet.create({
   textInfo: {
     fontSize: typography.postClInformationText.fontSize,
     fontFamily: typography.postClInformationText.fontFamily,
-    color: colors.white
-  }
+    color: colors.white,
+  },
 });
 export default connect(mapStateToProps, mapDispatchToProps)(CreateEvent);
+
+/* <MapView
+style={styles.container}
+provider={PROVIDER_GOOGLE}
+initialRegion={{
+  latitude: 48.866667,
+  longitude: 2.333333,
+  latitudeDelta: 0.0922,
+  longitudeDelta: 0.0421,
+}}
+></MapView> */
+
+// const [position, setPosition] = useState({ latitude: 0, longitude: 0 });
+
+// useEffect(() => {
+//   async function askPermissions() {
+//     let { status } = await Location.requestForegroundPermissionsAsync();
+//     if (status === "granted") {
+//       Location.watchPositionAsync({ distanceInterval: 10 }, (location) => {
+//         setPosition({
+//           latitude: location.coords.latitude,
+//           longitude: location.coords.longitude,
+//         });
+//       });
+//     }
+//   }
+//   askPermissions();
+// }, []);
