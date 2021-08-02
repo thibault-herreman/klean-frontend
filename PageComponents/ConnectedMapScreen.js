@@ -137,7 +137,7 @@ function ConnectedMapScreen(props) {
           nameOrga={previewInfo.admin.lastName}
           firstnameOrga={previewInfo.admin.firstName}
           onPress={() => {
-            props.setIdCW(previewInfo._id);
+            props.setCwIdMapStack(previewInfo._id);
             props.navigation.navigate('ConnectedEventDetailMapStack')
           }}
           visible={isVisiblePreview}
@@ -160,8 +160,8 @@ function mapDispatchToProps(dispatch) {
     signOut: function () {
       dispatch({ type: "signOut" });
     },
-    setIdCW: function (cleanwalkId) {
-      dispatch({ type: "setIdCW", cleanwalkId: cleanwalkId });
+    setCwIdMapStack: function (id) {
+      dispatch({ type: "setCwIdMapStack", id });
   },
   };
 }

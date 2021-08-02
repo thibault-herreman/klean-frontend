@@ -156,7 +156,7 @@ function InvitedMapScreen(props) {
           nameOrga={previewInfo.admin.lastName}
           firstnameOrga={previewInfo.admin.firstName}
           onPress={() => {
-            props.setIdCW(previewInfo._id);
+            props.setCwIdInvited(previewInfo._id);
             props.navigation.navigate("InvitedEventDetail");
           }}
           visible={isVisiblePreview}
@@ -181,8 +181,8 @@ function mapDispatchToProps(dispatch) {
     signOut: function () {
       dispatch({ type: "signOut" });
     },
-    setIdCW: function (cleanwalkId) {
-      dispatch({ type: "setIdCW", cleanwalkId: cleanwalkId });
+    setCwIdInvited: function (id) {
+      dispatch({ type: "setCwIdInvited", id });
     },
   };
 }
@@ -190,7 +190,6 @@ function mapDispatchToProps(dispatch) {
 function mapStateToProps(state) {
   return {
     tokenObj: state.tokenObj,
-    resetId: state.cleanwalkId,
   };
 }
 

@@ -14,7 +14,7 @@ import PROXY from "../proxy.js";
 
 function ConnectedEventDetailProfilStack(props) {
 
-    let idCW = props.cleanwalkId;
+    let idCW = props.cwIdProfilStack;
 
     const [cleanwalk, setCleanwalk] = useState(null);
 
@@ -136,7 +136,10 @@ function mapDispatchToProps(dispatch) {
 }
 
 function mapStateToProps(state) {
-    return { tokenObj: state.tokenObj, cleanwalkId: state.cleanwalkId };
+    return { 
+        tokenObj: state.tokenObj, 
+        cwIdProfilStack: state.cwIdProfilStack 
+    };
 }
 
 const styles = StyleSheet.create({

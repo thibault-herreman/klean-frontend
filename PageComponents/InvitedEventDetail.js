@@ -21,9 +21,8 @@ import changeDateFormat from "../lib/changeDateFormat";
 import PROXY from "../proxy.js";
 
 function InvitedEventDetail(props) {
-  // let idCW = "6102ee3e2c68c5e13469249c";
 
-  let idCW = props.cleanwalkId;
+  let idCW = props.cwIdInvited;
 
   const [cleanwalk, setCleanwalk] = useState(null);
 
@@ -44,7 +43,7 @@ function InvitedEventDetail(props) {
   }, []);
 
   function backArrow() {
-    props.resetIdCl();
+    props.resetCwIdInvited();
     props.navigation.navigate("InvitedMapScreen");
   }
 
@@ -144,14 +143,16 @@ function mapDispatchToProps(dispatch) {
     signOut: function () {
       dispatch({ type: "signOut" });
     },
-    resetIdCl: function () {
-      dispatch({ type: "resetIdCl" });
+    resetCwIdInvited: function () {
+      dispatch({ type: "resetCwIdInvited" });
     },
   };
 }
 
 function mapStateToProps(state) {
-  return { tokenObj: state.tokenObj, cleanwalkId: state.cleanwalkId };
+  return { 
+    tokenObj: state.tokenObj, 
+    cwIdInvited: state.cwIdInvited };
 }
 
 const styles = StyleSheet.create({
