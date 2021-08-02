@@ -13,26 +13,46 @@ import ChangePassword from '../lib/ChangePassword';
 import { FontAwesome } from '@expo/vector-icons';
 import CleanwalkList from '../lib/CleanwalkList';
 import { ScrollView } from 'react-native-gesture-handler';
+import PROXY from '../proxy';
 
 function Profil(props) {
 
     const [isCwOnOrganize, setIsCwOnOrganize] = useState(true);
     const [isStatOnPerso, setIsStatOnPerso] = useState(true);
-
     const [modalVisible, setModalVisible] = useState(false);
+    const [listCWparticipate, setListCWparticipate] = useState([]);
+    const [listCWorganize, setListCWorganize] = useState([]);
+    const [infosUser, setInfosUser] = useState('');
 
-    // useEffect(() => {
-    //     const loadProfil = async () => {
-    //         let rawResponse = await fetch(`${PROXY}/load-profile&token=${props.token}`);
-    //         let response = await rawResponse.json();
-    //         console.log('responseProfil', response);
-    //         //setListPositionCW(response.cleanWalkArray);
-    //     }
-    //     loadProfil();
-    // }, []);
+    useEffect(() => {
+        const loadProfil = async () => {
+            let rawResponse = await fetch(`${PROXY}/load-profil/${props.tokenObj.token}`);
+            let response = await rawResponse.json();
+            if (response.result) {
+                setListCWparticipate(response.infosCWparticipate);
+                setListCWorganize(response.infosCWorganize);
+                setInfosUser(response.infosUser);
+            }
+        }
+        loadProfil();
+    }, []);
 
     function modal(){
         setModalVisible(false);
+    }
+
+    let cwListParticipate;
+    if (listCWparticipate.length > 0) {
+        cwListParticipate = <View style={styles.list}><CleanwalkList onPress={() => props.navigation.navigate('ConnectedEventDetailProfilStack')} listCW={listCWparticipate} /></View>;
+    } else {
+        cwListParticipate = <View style={styles.ctTextNoCw}><Text style={styles.textNoCw}>Vous ne participez à aucune cleanwalk :(</Text></View>;
+    }
+
+    let cwListOrganize;
+    if (listCWorganize.length > 0) {
+        cwListOrganize = <View style={styles.list}><CleanwalkList onPress={() => props.navigation.navigate('ConnectedEventDetailProfilStack')} listCW={listCWorganize} /></View>;
+    } else {
+        cwListOrganize = <View style={styles.ctTextNoCw}><Text style={styles.textNoCw}>Vous n'organisez pas encore de cleanwalks</Text></View>;
     }
 
 
@@ -54,9 +74,7 @@ function Profil(props) {
                             <ButtonElement text="J'organise" typeButton='middleFine' outline={false} onPress={() => setIsCwOnOrganize(true)} />
                             <ButtonElement text="Je participe" typeButton='middleFine' outline={true} onPress={() => setIsCwOnOrganize(false)} />
                         </View>
-                        <View style={styles.list}>
-                            <CleanwalkList onPress={() => props.navigation.navigate('ConnectedEventDetailProfilStack')} />
-                        </View>
+                        {cwListOrganize}
                     </>
                 ) : (
                     <>
@@ -65,9 +83,7 @@ function Profil(props) {
                             <ButtonElement text="J'organise" typeButton='middleFine' outline={true} onPress={() => setIsCwOnOrganize(true)} />
                             <ButtonElement text="Je participe" typeButton='middleFine' outline={false} onPress={() => setIsCwOnOrganize(false)} />
                         </View>
-                        <View style={styles.list}>
-                            <CleanwalkList onPress={() => props.navigation.navigate('ConnectedEventDetailProfilStack')} />
-                        </View>
+                        {cwListParticipate}
                     </>
                 )}
 
@@ -102,7 +118,7 @@ function Profil(props) {
                                 source={require('../assets/imagesKlean/CityPicto.png')}
                             />
                             <View style={styles.statBody}>
-                                <Text style={styles.statBodyTitle}>Marseille</Text>
+                                <Text style={styles.statBodyTitle}>{infosUser.city}</Text>
                                 <Text style={styles.statBodyText}>1 200 points</Text>
                             </View>
                         </View>
@@ -115,9 +131,9 @@ function Profil(props) {
                         <FontAwesome name="user" size={40} color="white" />
                     </View>
                     <View style={styles.statBody}>
-                        <Text style={styles.statBodyText}>Mika</Text>
-                        <Text style={styles.statBodyText}>Doe</Text>
-                        <Text style={styles.statBodyText}>mika.doe@gmail.com</Text>
+                        <Text style={styles.statBodyText}>{infosUser.firstName}</Text>
+                        <Text style={styles.statBodyText}>{infosUser.lastName}</Text>
+                        <Text style={styles.statBodyText}>{infosUser.email}</Text>
                         <ButtonElement text="Modifier mot de passe" typeButton="password"
                         onPress={() => setModalVisible(true)}
                         />
@@ -207,6 +223,11 @@ const styles = StyleSheet.create({
         height: 120,
         alignItems: "center",
         justifyContent: "center"
+    },
+    ctTextNoCw: {
+        height: windowDimensions.height * 0.10,
+        justifyContent: "center",
+        alignItems: "center"
     }
 });
 
@@ -218,6 +239,9 @@ function mapDispatchToProps(dispatch) {
         },
         signOut: function () {
             dispatch({ type: 'signOut' })
+        },
+        setIdCW: function (cleanwalkId) {
+            dispatch({ type: "setIdCW", cleanwalkId: cleanwalkId });
         }
     }
 }
