@@ -15,7 +15,7 @@ function AdminPanel(props) {
             {/* <Button title="login" onPress={() => props.login("vsnfQC8qERq43EyILeE3QtewFtZRyzz0")} /> */}
 
             
-            <Button title="login" onPress={() => props.login("gBzHa7pYcI013YM1IMSGnzLqLkgekND4")} />
+            <Button title="login" onPress={() => props.login("7SbwmGME6r2decUp5R5NThv2cQevC1ae")} />
             <Button title="signOut" onPress={() => props.signOut()} />
             <Button title="InvitedMapScreen"
                 onPress={() => props.navigation.navigate('InvitedMapScreen')} />
