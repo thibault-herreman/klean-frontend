@@ -55,13 +55,13 @@ function SignUp(props) {
 
   async function register() {
     let bodyWithoutID = `firstNameFromFront=${firstName}&lastNameFromFront=${lastName}&emailFromFront=${email}&cityFromFront=${city}&passwordFromFront=${password}&cityInfo=${JSON.stringify(cityInfo)}`;
-    let bodyWithId = `firstNameFromFront=${firstName}&lastNameFromFront=${lastName}&emailFromFront=${email}&cityFromFront=${city}&passwordFromFront=${password}&cityInfo=${JSON.stringify(cityInfo)}&cleanwalkIdFromFront=${props.cleanwalkId}`;
+    let bodyWithId = `firstNameFromFront=${firstName}&lastNameFromFront=${lastName}&emailFromFront=${email}&cityFromFront=${city}&passwordFromFront=${password}&cityInfo=${JSON.stringify(cityInfo)}&cleanwalkIdFromFront=${props.cwIdInvited}`;
     let finalBody;
 
-    if (props.cleanwalkId == null) {
+    if (props.cwIdInvited == null) {
       finalBody = bodyWithoutID;
     }
-    if (props.cleanwalkId != null) {
+    if (props.cwIdInvited != null) {
       finalBody = bodyWithId;
     }
     let data = await fetch(PROXY + "/users/sign-up", {
@@ -98,12 +98,11 @@ function SignUp(props) {
   };
 
   function backArrow() {
-    props.resetIdCl();
-    props.navigation.navigate("InvitedMapScreen");
+    props.navigation.navigate("InvitedEventDetail");
   }
 
   let button;
-  if (props.cleanwalkId == null) {
+  if (props.cwIdInvited == null) {
     button = (
       <ButtonElement
         style={styles.registerButton}
@@ -113,7 +112,7 @@ function SignUp(props) {
       />
     );
   }
-  if (props.cleanwalkId) {
+  if (props.cwIdInvited) {
     button = (
       <ButtonElement
         style={styles.registerButton}
@@ -218,15 +217,12 @@ function mapDispatchToProps(dispatch) {
     signOut: function () {
       dispatch({ type: "signOut" });
     },
-    resetIdCl: function () {
-      dispatch({ type: "resetIdCl" });
-    },
   };
 }
 
 function mapStateToProps(state) {
   return {
-    cleanwalkId: state.cleanwalkId,
+    cwIdInvited: state.cwIdInvited,
     tokenObj: state.tokenObj,
   };
 }

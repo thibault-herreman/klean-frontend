@@ -27,13 +27,13 @@ function Login(props) {
 
   async function login() {
     let bodyWithoutID = `emailFromFront=${email}&passwordFromFront=${password}`;
-    let bodyWithId = `emailFromFront=${email}&passwordFromFront=${password}&cleanwalkIdFromFront=${props.cleanwalkId}`;
+    let bodyWithId = `emailFromFront=${email}&passwordFromFront=${password}&cleanwalkIdFromFront=${props.cwIdInvited}`;
     let finalBody;
 
-    if (props.cleanwalkId == null) {
+    if (props.cwIdInvited == null) {
       finalBody = bodyWithoutID;
     }
-    if (props.cleanwalkId != null) {
+    if (props.cwIdInvited != null) {
       finalBody = bodyWithId;
     }
     let data = await fetch(PROXY + "/users/sign-in", {
@@ -70,12 +70,11 @@ function Login(props) {
   };
 
   function backArrow() {
-    props.resetIdCl();
     props.navigation.navigate("InvitedMapScreen");
   }
 
   let button;
-  if (props.cleanwalkId == null) {
+  if (props.cwIdInvited == null) {
     button = (
       <ButtonElement
         style={styles.registerButton}
@@ -85,7 +84,7 @@ function Login(props) {
       />
     );
   }
-  if (props.cleanwalkId) {
+  if (props.cwIdInvited) {
     button = (
       <ButtonElement
         style={styles.registerButton}
@@ -158,15 +157,12 @@ function mapDispatchToProps(dispatch) {
     signOut: function () {
       dispatch({ type: "signOut" });
     },
-    resetIdCl: function () {
-      dispatch({ type: "resetIdCl" });
-    },
   };
 }
 
 function mapStateToProps(state) {
   return {
-    cleanwalkId: state.cleanwalkId,
+    cwIdInvited: state.cwIdInvited,
     tokenObj: state.tokenObj,
   };
 }
