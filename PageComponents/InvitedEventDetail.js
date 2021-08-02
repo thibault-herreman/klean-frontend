@@ -97,7 +97,7 @@ function InvitedEventDetail(props) {
           </View>
 
           <View>
-            <ScreenTitles titleType="secondary" title={"Participants"} />
+            <ScreenTitles titleType="secondary" title="Participants" />
           </View>
 
           <View style={styles.participantsContainer}>
@@ -111,6 +111,7 @@ function InvitedEventDetail(props) {
             </View>
 
             <View style={styles.chat}>
+              <ScreenTitles titleType="secondary" title="Chat" />
               <ButtonElement
                 typeButton="chat"
                 disabled={true}
@@ -190,16 +191,16 @@ const styles = StyleSheet.create({
     marginRight: 18,
   },
   badges: {
-    marginBottom: 11,
+    marginLeft: 11,
+    marginBottom: 30,
   },
   participantsContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
+    flexDirection: 'column',
     height: 300,
   },
   participantsList: {
     marginTop: 11,
-    marginBottom: 11,
+    marginBottom: 30,
   },
   chat: {
     marginTop: 11,
