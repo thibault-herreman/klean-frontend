@@ -87,7 +87,7 @@ function ConnectedEventDetailProfilStack(props) {
                     </View>
 
                     <View>
-                        <ScreenTitles titleType="secondary" title={"Participants"} />
+                        <ScreenTitles titleType="secondary" title="Participants" />
                     </View>
 
                     <View style={styles.participantsContainer}>
