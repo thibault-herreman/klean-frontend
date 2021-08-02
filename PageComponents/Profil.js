@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, StatusBar, Image, SafeAreaView } from 'react-native';
+import { StyleSheet, Text, View, StatusBar, Image, SafeAreaView, ActivityIndicator } from 'react-native';
 
 import ScreenTitles from '../lib/ScreenTitles';
 import ButtonElement from '../lib/ButtonElement';
@@ -15,6 +15,9 @@ import CleanwalkList from '../lib/CleanwalkList';
 import { ScrollView } from 'react-native-gesture-handler';
 import PROXY from '../proxy';
 
+
+
+
 function Profil(props) {
 
     const [isCwOnOrganize, setIsCwOnOrganize] = useState(true);
@@ -23,6 +26,13 @@ function Profil(props) {
     const [listCWparticipate, setListCWparticipate] = useState([]);
     const [listCWorganize, setListCWorganize] = useState([]);
     const [infosUser, setInfosUser] = useState('');
+    const [badge, setBadge] = useState({
+        bumblebin: {name: "Bumble Bin", img: require('../assets/imagesKlean/Robot1Carre.png')},
+        optimusklean: {name: "Optimus Klean", img: require('../assets/imagesKlean/Robot2Carre.png')},
+        trashexterminator: {name: "Trash Exterminator", img: require('../assets/imagesKlean/Robot3Carre.png')},
+    })
+    const [statPerso, setStatPerso] = useState(null);
+    const [statCity, setStatCity] = useState(null);
 
     useEffect(() => {
         const loadProfil = async () => {
@@ -32,12 +42,14 @@ function Profil(props) {
                 setListCWparticipate(response.infosCWparticipate);
                 setListCWorganize(response.infosCWorganize);
                 setInfosUser(response.infosUser);
+                setStatPerso(response.statPerso);
+                setStatCity(response.statCity)
             }
         }
         loadProfil();
     }, []);
 
-    function modal(){
+    function modal() {
         setModalVisible(false);
     }
 
@@ -56,93 +68,105 @@ function Profil(props) {
     }
 
 
-    return (
-        <View style={styles.container}>
-            <SafeAreaView style={styles.header}>
-                <View style={styles.dull}></View>
-                <Text style={styles.mainTitle}> MON PROFIL </Text>
-                <View style={styles.logout}>
-                    <ButtonElement typeButton='logout' onPress={() => { props.signOut() }} />
-                </View>
-            </SafeAreaView>
-            <ScrollView>
 
-                {isCwOnOrganize ? (
-                    <>
-                        <ScreenTitles title="Cleanwalks" titleType="secondary" />
-                        <View style={styles.switch}>
-                            <ButtonElement text="J'organise" typeButton='middleFine' outline={false} onPress={() => setIsCwOnOrganize(true)} />
-                            <ButtonElement text="Je participe" typeButton='middleFine' outline={true} onPress={() => setIsCwOnOrganize(false)} />
-                        </View>
-                        {cwListOrganize}
-                    </>
-                ) : (
-                    <>
-                        <ScreenTitles title="Cleanwalks" titleType="secondary" />
-                        <View style={styles.switch}>
-                            <ButtonElement text="J'organise" typeButton='middleFine' outline={true} onPress={() => setIsCwOnOrganize(true)} />
-                            <ButtonElement text="Je participe" typeButton='middleFine' outline={false} onPress={() => setIsCwOnOrganize(false)} />
-                        </View>
-                        {cwListParticipate}
-                    </>
-                )}
 
-                {isStatOnPerso ? (
-                    <>
-                        <ScreenTitles title="Statistiques" titleType="secondary" />
-                        <View style={styles.switch}>
-                            <ButtonElement text="Personnelles" typeButton='middleFine' outline={false} onPress={() => setIsStatOnPerso(true)} />
-                            <ButtonElement text="Ville" typeButton='middleFine' outline={true} onPress={() => setIsStatOnPerso(false)} />
-                        </View>
-                        <View style={styles.stat}>
-                            <Image
-                                style={styles.robot}
-                                source={require('../assets/imagesKlean/Robot3Carre.png')}
-                            />
-                            <View style={styles.statBody}>
-                                <Text style={styles.statBodyTitle}>Trash Exterminator</Text>
-                                <Text style={styles.statBodyText}>50 Cleanwalks réalisées</Text>
-                            </View>
-                        </View>
-                    </>
-                ) : (
-                    <>
-                        <ScreenTitles title="Statistiques" titleType="secondary" />
-                        <View style={styles.switch}>
-                            <ButtonElement text="Personnelles" typeButton='middleFine' outline={true} onPress={() => setIsStatOnPerso(true)} />
-                            <ButtonElement text="Ville" typeButton='middleFine' outline={false} onPress={() => setIsStatOnPerso(false)} />
-                        </View>
-                        <View style={styles.stat}>
-                            <Image
-                                style={styles.robot}
-                                source={require('../assets/imagesKlean/CityPicto.png')}
-                            />
-                            <View style={styles.statBody}>
-                                <Text style={styles.statBodyTitle}>{infosUser.city}</Text>
-                                <Text style={styles.statBodyText}>1 200 points</Text>
-                            </View>
-                        </View>
-                    </>
-                )}
 
-                < ScreenTitles title="Informations personnelles" titleType="secondary" />
-                <View style={styles.infoPerso}>
-                    <View style={styles.avatar}>
-                        <FontAwesome name="user" size={40} color="white" />
+    if (cwListParticipate === null || cwListOrganize === null || statPerso === null || statCity === null) {
+        return (
+            <View style={styles.wait}>
+                <ActivityIndicator size="large" color={colors.primary}/>
+            </View>
+        )
+    } else {
+
+        return (
+            <View style={styles.container}>
+                <SafeAreaView style={styles.header}>
+                    <View style={styles.dull}></View>
+                    <Text style={styles.mainTitle}> MON PROFIL </Text>
+                    <View style={styles.logout}>
+                        <ButtonElement typeButton='logout' onPress={() => { props.signOut() }} />
                     </View>
-                    <View style={styles.statBody}>
-                        <Text style={styles.statBodyText}>{infosUser.firstName}</Text>
-                        <Text style={styles.statBodyText}>{infosUser.lastName}</Text>
-                        <Text style={styles.statBodyText}>{infosUser.email}</Text>
-                        <ButtonElement text="Modifier mot de passe" typeButton="password"
-                        onPress={() => setModalVisible(true)}
-                        />
-                        <ChangePassword visible={modalVisible} close={modal}/>
+                </SafeAreaView>
+                <ScrollView>
+
+                    {isCwOnOrganize ? (
+                        <>
+                            <ScreenTitles title="Cleanwalks" titleType="secondary" />
+                            <View style={styles.switch}>
+                                <ButtonElement text="J'organise" typeButton='middleFine' outline={false} onPress={() => setIsCwOnOrganize(true)} />
+                                <ButtonElement text="Je participe" typeButton='middleFine' outline={true} onPress={() => setIsCwOnOrganize(false)} />
+                            </View>
+                            {cwListOrganize}
+                        </>
+                    ) : (
+                        <>
+                            <ScreenTitles title="Cleanwalks" titleType="secondary" />
+                            <View style={styles.switch}>
+                                <ButtonElement text="J'organise" typeButton='middleFine' outline={true} onPress={() => setIsCwOnOrganize(true)} />
+                                <ButtonElement text="Je participe" typeButton='middleFine' outline={false} onPress={() => setIsCwOnOrganize(false)} />
+                            </View>
+                            {cwListParticipate}
+                        </>
+                    )}
+
+                    {isStatOnPerso ? (
+                        <>
+                            <ScreenTitles title="Statistiques" titleType="secondary" />
+                            <View style={styles.switch}>
+                                <ButtonElement text="Personnelles" typeButton='middleFine' outline={false} onPress={() => setIsStatOnPerso(true)} />
+                                <ButtonElement text="Ville" typeButton='middleFine' outline={true} onPress={() => setIsStatOnPerso(false)} />
+                            </View>
+                            <View style={styles.stat}>
+                                <Image
+                                    style={styles.robot}
+                                    source={statPerso < 20 ? badge.bumblebin.img : (statPerso < 50 ? badge.optimusklean.img : badge.trashexterminator.img)}
+                                />
+                                <View style={styles.statBody}>
+                                    <Text style={styles.statBodyTitle}>{statPerso < 20 ? badge.bumblebin.name : (statPerso < 50 ? badge.optimusklean.name : badge.trashexterminator.name)}</Text>
+                                    <Text style={styles.statBodyText}>{statPerso} Cleanwalks réalisées</Text>
+                                </View>
+                            </View>
+                        </>
+                    ) : (
+                        <>
+                            <ScreenTitles title="Statistiques" titleType="secondary" />
+                            <View style={styles.switch}>
+                                <ButtonElement text="Personnelles" typeButton='middleFine' outline={true} onPress={() => setIsStatOnPerso(true)} />
+                                <ButtonElement text="Ville" typeButton='middleFine' outline={false} onPress={() => setIsStatOnPerso(false)} />
+                            </View>
+                            <View style={styles.stat}>
+                                <Image
+                                    style={styles.robot}
+                                    source={require('../assets/imagesKlean/CityPicto.png')}
+                                />
+                                <View style={styles.statBody}>
+                                    <Text style={styles.statBodyTitle}>{statCity["city_info"][0].cityName}</Text>
+                                    <Text style={styles.statBodyText}>{statCity.points} points</Text>
+                                </View>
+                            </View>
+                        </>
+                    )}
+
+                    < ScreenTitles title="Informations personnelles" titleType="secondary" />
+                    <View style={styles.infoPerso}>
+                        <View style={styles.avatar}>
+                            <FontAwesome name="user" size={40} color="white" />
+                        </View>
+                        <View style={styles.statBody}>
+                            <Text style={styles.statBodyText}>{infosUser.firstName}</Text>
+                            <Text style={styles.statBodyText}>{infosUser.lastName}</Text>
+                            <Text style={styles.statBodyText}>{infosUser.email}</Text>
+                            <ButtonElement text="Modifier mot de passe" typeButton="password"
+                                onPress={() => setModalVisible(true)}
+                            />
+                        </View>
                     </View>
-                </View>
-            </ScrollView>
-        </View>
-    );
+                    <ChangePassword visible={modalVisible} close={modal} />
+                </ScrollView>
+            </View>
+        );
+    }
 }
 
 {/*<Text>Profil</Text>
@@ -156,6 +180,12 @@ function Profil(props) {
                 onPress={() => props.navigation.navigate('ChatProfilStack')} />*/}
 
 const styles = StyleSheet.create({
+    wait: {
+        flex: 1,
+        backgroundColor: colors.white,
+        justifyContent: "center",
+        alignItems: "center"
+    },
     container: {
         flex: 1,
         backgroundColor: colors.white,
