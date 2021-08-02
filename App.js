@@ -6,10 +6,10 @@ import AppLoading from 'expo-app-loading';
 import { Provider } from 'react-redux';
 import { createStore, combineReducers } from 'redux';
 import tokenObj from './Reducers/token.reducer'
-import cwIdInvited from './Reducers/CwIdInvited';
+import cwIdInvited from './Reducers/cwIdInvited';
 import cwIdMapStack from './Reducers/cwIdMapStack';
 import cwIdProfilStack from './Reducers/cwIdProfilStack';
-import cityInfo from './Reducers/creatCleanwalk'
+import cityInfo from './Reducers/createCleanwalk'
 import Nav from './NavComponents/Nav'
 
 const store = createStore(combineReducers({ tokenObj, cwIdInvited, cwIdMapStack, cwIdProfilStack, cityInfo }));

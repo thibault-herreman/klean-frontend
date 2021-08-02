@@ -84,6 +84,7 @@ function CreateEvent(props) {
       cityName: newResponse.newResponse[0].properties.city,
       cityCode: newResponse.newResponse[0].properties.citycode,
       cityCoordinates: newResponse.newResponse[0].geometry.coordinates,
+      cityPopulation: newResponse.newResponse[0].properties.population,
 
       infoFromApi: response.response.features[0].properties,
       cleanwalkCoordinates: { lat: latitudeOnClick, lon: longitudeOnClick },

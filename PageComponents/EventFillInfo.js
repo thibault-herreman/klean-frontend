@@ -25,6 +25,8 @@ function EventFillInfo(props) {
   const [description, setDescription] = useState("");
   const [tool, setTool] = useState("");
 
+  const [error, setError] = useState();
+
   const [modalVisible, setModalVisible] = useState(false);
 
   useEffect(() => {
@@ -57,14 +59,29 @@ function EventFillInfo(props) {
     const dataCW = await fetch(PROXY + "/create-cw", {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: `title=${title}&city=${JSON.stringify(props.cityInfo)}&startingDate=${startingDate}&endingDate=${endingDate}&description=${description}&tool=${tool.split(",")}&token=${props.tokenObj.token}`,
+      body: `title=${title}&city=${JSON.stringify(
+        props.cityInfo
+      )}&startingDate=${startingDate}&endingDate=${endingDate}&description=${description}&tool=${tool.split(
+        ","
+      )}&token=${props.tokenObj.token}`,
     });
+
+    let body = await dataCW.json();
+    setError(body.error);
+    console.log("body: ", body);
+
+    if (body.result == true) {
+      props.navigation.navigate("Profil");
+    }
 
     // body: `title=${title}&city=${city}&startingDate=${startingDate}&endingDate=${endingDate}&description=${description}&tool=${tool}`
   };
 
-  console.log("startingDate: ", startingDate);
-  console.log("endingDate: ", endingDate);
+  let errors = (
+    <View>
+      <Text>{error}</Text>
+    </View>
+  );
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -81,14 +98,14 @@ function EventFillInfo(props) {
       <ScrollView>
         <View style={styles.inputFields}>
           <InputElement
-            placeholder="Titre"
+            placeholder="Titre *"
             type="simpleInput"
             name="title"
             setState={changeState}
             value={title}
           />
           <InputElement
-            placeholder="Ville"
+            placeholder="Ville *"
             type="simpleInputDisabled"
             name="city"
             setState={changeState}
@@ -105,7 +122,6 @@ function EventFillInfo(props) {
             setDateSearch={setStartingDate}
           />
 
-
           <SearchBarElement
             type="date"
             dateSearch={endingDate}
@@ -117,21 +133,22 @@ function EventFillInfo(props) {
             setDateSearch={setEndingDate}
           />
 
-
           <InputElement
-            placeholder="Description"
+            placeholder="Description *"
             type="multilineInput"
             name="description"
             setState={changeState}
             value={description}
           />
           <InputElement
-            placeholder="Matériel 1, matériel 2, matériel 3; ... (respecter la mise en forme)"
+            placeholder="Matériel 1, matériel 2, matériel 3; ... (respecter la mise en forme) *"
             type="multilineInput"
             name="tool"
             setState={changeState}
             value={tool}
           />
+
+          {errors}
 
           <View style={styles.guide}>
             <Text style={typography.body}>Guide pour l'organisateur</Text>
@@ -151,7 +168,6 @@ function EventFillInfo(props) {
             text="Organiser"
             onPress={() => {
               addCW();
-              props.navigation.navigate("Profil");
             }}
           />
         </View>
