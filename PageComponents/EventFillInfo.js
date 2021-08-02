@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, Text, View, KeyboardAvoidingView, ScrollView } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  KeyboardAvoidingView,
+  ScrollView,
+} from "react-native";
 import { connect } from "react-redux";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { colors } from "../lib/colors";
@@ -9,25 +15,23 @@ import ButtonElement from "../lib/ButtonElement";
 import InputElement from "../lib/InputElement";
 import EventGuide from "../lib/EventGuide";
 import PROXY from "../proxy";
+import SearchBarElement from "../lib/SearchBarElement";
 
 function EventFillInfo(props) {
-
-  const [title, setTitle] = useState ("");
-  const [city, setCity] = useState ("");
-  const [startingDate, setStartingDate] = useState ("");
-  const [endingDate, setEndingDate] = useState ("");
-  const [description, setDescription] = useState ("");
-  const [tool, setTool] = useState ("");
+  const [title, setTitle] = useState("");
+  const [city, setCity] = useState("");
+  const [startingDate, setStartingDate] = useState(new Date());
+  const [endingDate, setEndingDate] = useState(new Date());
+  const [description, setDescription] = useState("");
+  const [tool, setTool] = useState("");
 
   const [modalVisible, setModalVisible] = useState(false);
-  
-  // console.log("props: ", props.cityInfo.infoFromApi.city)
 
   useEffect(() => {
     setCity(props.cityInfo.cityName);
-  }, [])
+  }, []);
 
-  function modal(){
+  function modal() {
     setModalVisible(false);
   }
 
@@ -50,105 +54,109 @@ function EventFillInfo(props) {
   console.log("props: ", props.cityInfo);
 
   var addCW = async () => {
-  
     const dataCW = await fetch(PROXY + "/create-cw", {
-      method: 'POST',
-      headers: {'Content-Type':'application/x-www-form-urlencoded'},
-      body: `title=${title}&city=${JSON.stringify(props.cityInfo)}&description=${description}&tool=${tool.split(",")}`
-    })
-
-
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: `title=${title}&city=${JSON.stringify(props.cityInfo)}&startingDate=${startingDate}&endingDate=${endingDate}&description=${description}&tool=${tool.split(",")}&token=${props.tokenObj.token}`,
+    });
 
     // body: `title=${title}&city=${city}&startingDate=${startingDate}&endingDate=${endingDate}&description=${description}&tool=${tool}`
-    
-  }
+  };
+
+  console.log("startingDate: ", startingDate);
+  console.log("endingDate: ", endingDate);
 
   return (
     <SafeAreaView style={styles.safeArea}>
+      <View style={styles.topBanner}>
+        <View style={styles.backButton}>
+          <ButtonElement
+            typeButton="back"
+            onPress={() => props.navigation.navigate("CreateEvent")}
+          />
+        </View>
+      </View>
 
-        <View style={styles.topBanner}>
-          <View style={styles.backButton}>
+      {/* <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} > */}
+      <ScrollView>
+        <View style={styles.inputFields}>
+          <InputElement
+            placeholder="Titre"
+            type="simpleInput"
+            name="title"
+            setState={changeState}
+            value={title}
+          />
+          <InputElement
+            placeholder="Ville"
+            type="simpleInputDisabled"
+            name="city"
+            setState={changeState}
+            value={city}
+          />
+          <SearchBarElement
+            type="date"
+            dateSearch={startingDate}
+            setDateSearch={setStartingDate}
+          />
+          <SearchBarElement
+            type="time"
+            dateSearch={startingDate}
+            setDateSearch={setStartingDate}
+          />
+
+
+          <SearchBarElement
+            type="date"
+            dateSearch={endingDate}
+            setDateSearch={setEndingDate}
+          />
+          <SearchBarElement
+            type="time"
+            dateSearch={endingDate}
+            setDateSearch={setEndingDate}
+          />
+
+
+          <InputElement
+            placeholder="Description"
+            type="multilineInput"
+            name="description"
+            setState={changeState}
+            value={description}
+          />
+          <InputElement
+            placeholder="Matériel 1, matériel 2, matériel 3; ... (respecter la mise en forme)"
+            type="multilineInput"
+            name="tool"
+            setState={changeState}
+            value={tool}
+          />
+
+          <View style={styles.guide}>
+            <Text style={typography.body}>Guide pour l'organisateur</Text>
             <ButtonElement
-              typeButton="back"
-              onPress={() => props.navigation.navigate("CreateEvent")}
+              style={styles.infoIcon}
+              onPress={() => setModalVisible(true)}
+              typeButton="info"
             />
+            <EventGuide visible={modalVisible} close={modal} />
           </View>
         </View>
 
-        {/* <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} > */}
-        <ScrollView>
-          <View style={styles.inputFields}>
-
-            <InputElement 
-              placeholder="Titre" 
-              type="simpleInput"
-              name="title"
-              setState={changeState}
-              value={title}
-              
-            />
-            <InputElement
-              placeholder="Ville"
-              type="simpleInputDisabled"
-              name="city"
-              setState={changeState}
-              value={city}
-            />
-            <InputElement
-              placeholder="Date et heure de début"
-              type="simpleInput"
-              name="startingDate"
-              setState={changeState}
-              value={startingDate}
-            />
-            <InputElement
-              placeholder="Date et heure de fin"
-              type="simpleInput"
-              name="endingDate"
-              setState={changeState}
-              value={endingDate}
-            />
-            <InputElement
-              placeholder="Description"
-              type="multilineInput"
-              name="description"
-              setState={changeState}
-              value={description}
-            />
-            <InputElement
-              placeholder="Matériel 1, matériel 2, matériel 3; ... (respecter la mise en forme)"
-              type="multilineInput"
-              name="tool"
-              setState={changeState}
-              value={tool}
-            />
-
-            <View style={styles.guide}>
-              <Text style={typography.body}>Guide pour l'organisateur</Text>
-              <ButtonElement
-                style={styles.infoIcon}
-                onPress={() => setModalVisible(true)}
-                typeButton="info"
-              />
-              <EventGuide visible={modalVisible} close={modal}/>
-            </View>
-
-          </View>
-
-          <View style={styles.register}>
-            <ButtonElement
-              style={styles.registerButton}
-              typeButton="middleSecondary"
-              text="Organiser"
-              onPress={() => {
-                addCW()
-                props.navigation.navigate("Profil")
-              }}
-            />
-          </View> 
-
-        </ScrollView>
-        {/* </KeyboardAvoidingView> */}
+        <View style={styles.register}>
+          <ButtonElement
+            style={styles.registerButton}
+            typeButton="middleSecondary"
+            text="Organiser"
+            onPress={() => {
+              addCW();
+              props.navigation.navigate("Profil");
+            }}
+          />
+        </View>
+      </ScrollView>
+      {/* </KeyboardAvoidingView> */}
     </SafeAreaView>
   );
 }
@@ -209,14 +217,13 @@ const styles = StyleSheet.create({
 
 export default connect(mapStateToProps, mapDispatchToProps)(EventFillInfo);
 
-
-  // <View style={styles.container}>
-  //     <Text>EventFillInfo</Text>
-  //     <Text>{`${props.token}`}</Text>
-  //     <Button title="login" onPress={() => props.login("monsupertokenchercheenbdd")} />
-  //     <Button title="signOut" onPress={() => props.signOut()} />
-  //     <Button title="CreateEvent"
-  //         onPress={() => props.navigation.navigate('CreateEvent')} />
-  //     <Button title="EventFillInfo"
-  //         onPress={() => props.navigation.navigate('EventFillInfo')} />
-  // </View>
+// <View style={styles.container}>
+//     <Text>EventFillInfo</Text>
+//     <Text>{`${props.token}`}</Text>
+//     <Button title="login" onPress={() => props.login("monsupertokenchercheenbdd")} />
+//     <Button title="signOut" onPress={() => props.signOut()} />
+//     <Button title="CreateEvent"
+//         onPress={() => props.navigation.navigate('CreateEvent')} />
+//     <Button title="EventFillInfo"
+//         onPress={() => props.navigation.navigate('EventFillInfo')} />
+// </View>

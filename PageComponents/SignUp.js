@@ -35,7 +35,6 @@ function SignUp(props) {
   const [showAutoComplete, setShowAutoComplete] = useState(true);
 
   const [cityInfo, setCityInfo] = useState({});
-  console.log(cityInfo, "cityInfo");
 
   useEffect(() => {
     async function loadData() {
