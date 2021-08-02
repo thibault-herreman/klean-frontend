@@ -14,7 +14,7 @@ import { useIsFocused } from '@react-navigation/native';
 
 function ChatProfilStack(props) {
     let token = props.tokenObj.token
-    let cwid = "6103ae3bb8248aa764dcd44a"
+    let cwid = props.cwIdProfilStack
 
     const isFocused = useIsFocused();
     const [messages, setMessages] = useState(null)
@@ -55,7 +55,7 @@ function ChatProfilStack(props) {
                 <View style={styles.backButton}>
                     <ButtonElement
                         typeButton="back"
-                        onPress={() => props.navigation.navigate("Profil")}
+                        onPress={() => props.navigation.navigate("ConnectedEventDetailProfilStack")}
                     />
                 </View>
                 <View style={styles.title}>
@@ -109,7 +109,10 @@ function mapDispatchToProps(dispatch) {
 }
 
 function mapStateToProps(state) {
-    return { tokenObj: state.tokenObj }
+    return { 
+        tokenObj: state.tokenObj,
+        cwIdProfilStack: state.cwIdProfilStack
+     }
 }
 
 const styles = StyleSheet.create({
