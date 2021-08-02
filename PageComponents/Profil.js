@@ -270,9 +270,6 @@ function mapDispatchToProps(dispatch) {
         signOut: function () {
             dispatch({ type: 'signOut' })
         },
-        setIdCW: function (cleanwalkId) {
-            dispatch({ type: "setIdCW", cleanwalkId: cleanwalkId });
-        }
     }
 }
 

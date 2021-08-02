@@ -21,9 +21,8 @@ import changeDateFormat from "../lib/changeDateFormat";
 import PROXY from "../proxy.js";
 
 function InvitedEventDetail(props) {
-  // let idCW = "6102ee3e2c68c5e13469249c";
 
-  let idCW = props.cleanwalkId;
+  let idCW = props.cwIdInvited;
 
   const [cleanwalk, setCleanwalk] = useState(null);
 
@@ -44,7 +43,7 @@ function InvitedEventDetail(props) {
   }, []);
 
   function backArrow() {
-    props.resetIdCl();
+    props.resetCwIdInvited();
     props.navigation.navigate("InvitedMapScreen");
   }
 
@@ -97,7 +96,7 @@ function InvitedEventDetail(props) {
           </View>
 
           <View>
-            <ScreenTitles titleType="secondary" title={"Participants"} />
+            <ScreenTitles titleType="secondary" title="Participants" />
           </View>
 
           <View style={styles.participantsContainer}>
@@ -111,6 +110,7 @@ function InvitedEventDetail(props) {
             </View>
 
             <View style={styles.chat}>
+              <ScreenTitles titleType="secondary" title="Chat" />
               <ButtonElement
                 typeButton="chat"
                 disabled={true}
@@ -143,14 +143,16 @@ function mapDispatchToProps(dispatch) {
     signOut: function () {
       dispatch({ type: "signOut" });
     },
-    resetIdCl: function () {
-      dispatch({ type: "resetIdCl" });
+    resetCwIdInvited: function () {
+      dispatch({ type: "resetCwIdInvited" });
     },
   };
 }
 
 function mapStateToProps(state) {
-  return { tokenObj: state.tokenObj, cleanwalkId: state.cleanwalkId };
+  return { 
+    tokenObj: state.tokenObj, 
+    cwIdInvited: state.cwIdInvited };
 }
 
 const styles = StyleSheet.create({
@@ -190,16 +192,16 @@ const styles = StyleSheet.create({
     marginRight: 18,
   },
   badges: {
-    marginBottom: 11,
+    marginLeft: 11,
+    marginBottom: 30,
   },
   participantsContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
+    flexDirection: 'column',
     height: 300,
   },
   participantsList: {
     marginTop: 11,
-    marginBottom: 11,
+    marginBottom: 30,
   },
   chat: {
     marginTop: 11,

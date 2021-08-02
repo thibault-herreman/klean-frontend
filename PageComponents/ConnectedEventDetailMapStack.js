@@ -5,8 +5,8 @@ import ScreenTitles from '../lib/ScreenTitles.js';
 import ButtonElement from "../lib/ButtonElement";
 import Participants from "../lib/Participants";
 import BadgesList from '../lib/BadgesList.js';
-import {windowDimensions} from '../lib/windowDimensions.js';
-import {typography} from '../lib/typography.js';
+import { windowDimensions } from '../lib/windowDimensions.js';
+import { typography } from '../lib/typography.js';
 import { colors } from "../lib/colors.js";
 import changeDateFormat from "../lib/changeDateFormat"
 
@@ -14,7 +14,7 @@ import PROXY from "../proxy.js";
 
 function ConnectedEventDetailMapStack(props) {
 
-    let idCW = props.cleanwalkId;
+    let idCW = props.cwIdMapStack;
 
     const [cleanwalk, setCleanwalk] = useState(null);
 
@@ -26,12 +26,12 @@ function ConnectedEventDetailMapStack(props) {
 
     useEffect(() => {
         async function loadData() {
-        const responseCleanwalk = await fetch(PROXY + `/load-cleanwalk/${idCW}`);
-        const jsonResponseCleanwalk = await responseCleanwalk.json();
+            const responseCleanwalk = await fetch(PROXY + `/load-cleanwalk/${idCW}`);
+            const jsonResponseCleanwalk = await responseCleanwalk.json();
 
-        // console.log("test", jsonResponseCleanwalk);
+            // console.log("test", jsonResponseCleanwalk);
 
-        setCleanwalk(jsonResponseCleanwalk.cleanwalk);
+            setCleanwalk(jsonResponseCleanwalk.cleanwalk);
         }
         loadData();
     }, []);
@@ -40,104 +40,105 @@ function ConnectedEventDetailMapStack(props) {
         return <View style={{ flex: 1, backgroundColor: colors.white }}></View>;
     } else {
 
-    return (
+        return (
 
-        <SafeAreaView style={styles.container}>
-            <ScrollView>
+            <SafeAreaView style={styles.container}>
+                <ScrollView>
 
-                <ImageBackground 
-                    style={styles.banner} 
-                    source={require('../assets/imagesKlean/BannerCleanwalk.jpg')}
-                >
-                    <ButtonElement 
-                    style={styles.backButton} 
-                    typeButton="back" 
-                    onPress={() => props.navigation.navigate('ConnectedMapScreen')}
-                    />
-                    <ButtonElement 
-                    style={styles.goButton} 
-                    typeButton="go" 
-                    disabled={true}
-                    />
-                </ImageBackground>
+                    <ImageBackground
+                        style={styles.banner}
+                        source={require('../assets/imagesKlean/BannerCleanwalk.jpg')}
+                    >
+                        <ButtonElement
+                            style={styles.backButton}
+                            typeButton="back"
+                            onPress={() => props.navigation.navigate('ConnectedMapScreen')}
+                        />
+                        <ButtonElement
+                            style={styles.goButton}
+                            typeButton="go"
+                            disabled={true}
+                        />
+                    </ImageBackground>
 
-                <View style={styles.generalInfoCleanwalk}>
-                    <Text style={typography.h2}>
-                        {cleanwalk.cleanwalkTitle}
-                    </Text>
-                    <Text style={typography.bodyLight}>
-                        {cleanwalk.cleanwalkCity.cityName}
-                    </Text>
-                    <Text style={typography.bodyLight}>
-                        Début : {changeDateFormat(cleanwalk.startingDate)}
-                    </Text>
-                    <Text style={typography.bodyLight}>
-                        Fin : {changeDateFormat(cleanwalk.endingDate)}
-                    </Text>
-                </View>
-
-                <View style={styles.descriptionCleanwalk}>
-                    <Text style={typography.h3}>Description</Text>
-                    <View style={styles.cleanwakDescriptionContainer}>
+                    <View style={styles.generalInfoCleanwalk}>
+                        <Text style={typography.h2}>
+                            {cleanwalk.cleanwalkTitle}
+                        </Text>
                         <Text style={typography.bodyLight}>
-                            {cleanwalk.cleanwalkDescription}
+                            {cleanwalk.cleanwalkCity.cityName}
+                        </Text>
+                        <Text style={typography.bodyLight}>
+                            Début : {changeDateFormat(cleanwalk.startingDate)}
+                        </Text>
+                        <Text style={typography.bodyLight}>
+                            Fin : {changeDateFormat(cleanwalk.endingDate)}
                         </Text>
                     </View>
-                </View>
 
-                <View style={styles.badges}>
-                    <BadgesList data={cleanwalk.toolBadge} />
-                </View>
-
-                <View>
-                    <ScreenTitles titleType="secondary" title={"Participants"} />
-                </View>
-
-                <View style={styles.participantsContainer}>
-                    <View style={styles.participantsList}>
-                        <Participants data={dataParticipants(cleanwalk.admin, cleanwalk.participantsList)}/>
+                    <View style={styles.descriptionCleanwalk}>
+                        <Text style={typography.h3}>Description</Text>
+                        <View style={styles.cleanwakDescriptionContainer}>
+                            <Text style={typography.bodyLight}>
+                                {cleanwalk.cleanwalkDescription}
+                            </Text>
+                        </View>
                     </View>
 
-                    <View style={styles.chat}>
-                        <ButtonElement 
-                        typeButton="chat" 
-                        disabled={true}
-                        onPress={() => props.navigation.navigate('ChatMapStack')}
+                    <View style={styles.badges}>
+                        <BadgesList data={cleanwalk.toolBadge} />
+                    </View>
+
+                    <View>
+                        <ScreenTitles titleType="secondary" title="Participants" />
+                    </View>
+
+                    <View style={styles.participantsContainer}>
+                        <View style={styles.participantsList}>
+                            <Participants data={dataParticipants(cleanwalk.admin, cleanwalk.participantsList)} />
+                        </View>
+
+                        <View style={styles.chat}>
+                            <ScreenTitles titleType="secondary" title="Chat" />
+                            <ButtonElement
+                                typeButton="chat"
+                                disabled={true}
+                                onPress={() => props.navigation.navigate('ChatMapStack')}
+                            />
+                        </View>
+                    </View>
+
+                    <View style={styles.confirmButton}>
+                        <ButtonElement
+                            typeButton="middleSecondary"
+                            text="Participer"
+                            onPress={() => {
+                                props.cleanwalkId;
+                                props.navigation.navigate("Profil");
+                            }}
                         />
                     </View>
-                </View>
 
-                <View style={styles.confirmButton}>
-                    <ButtonElement 
-                    typeButton="middleSecondary" 
-                    text="Participer"
-                    onPress={() => {
-                        props.cleanwalkId;
-                        props.navigation.navigate("Profil");
-                    }}
-                    />
-                </View>
+                </ScrollView>
+            </SafeAreaView>
 
-            </ScrollView>
-        </SafeAreaView>
-
-    );
+        );
     }
 }
 
 function mapDispatchToProps(dispatch) {
     return {
         login: function (token) {
-        dispatch({ type: "login", token });
+            dispatch({ type: "login", token });
         },
         signOut: function () {
-        dispatch({ type: "signOut" });
+            dispatch({ type: "signOut" });
         },
     };
 }
 
 function mapStateToProps(state) {
-    return { tokenObj: state.tokenObj, cleanwalkId: state.cleanwalkId };
+    return { tokenObj: state.tokenObj, cwIdMapStack: state.cwIdMapStack };
 }
 
 const styles = StyleSheet.create({
@@ -157,11 +158,11 @@ const styles = StyleSheet.create({
         marginTop: StatusBar.currentHeight || 0,
     },
     backButton: {
-        position: 'absolute', 
+        position: 'absolute',
         zIndex: 10,
     },
     goButton: {
-        position: 'absolute', 
+        position: 'absolute',
         zIndex: 10,
     },
     generalInfoCleanwalk: {
@@ -177,16 +178,16 @@ const styles = StyleSheet.create({
         marginRight: 18,
     },
     badges: {
-        marginBottom: 11, 
+        marginLeft: 11,
+        marginBottom: 30,
     },
-    participantsContainer:{
-        flexDirection: 'row',
-        justifyContent: 'space-between',
+    participantsContainer: {
+        flexDirection: 'column',
         height: 300,
     },
     participantsList: {
         marginTop: 11,
-        marginBottom: 11,
+        marginBottom: 30,
     },
     chat: {
         marginTop: 11,
