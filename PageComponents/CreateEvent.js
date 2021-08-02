@@ -70,7 +70,10 @@ function CreateEvent(props) {
     });
     let response = await data.json();
 
-    let cityInfo = response.response.features[0].properties;
+    let infoFromApi = response.response.features[0].properties;
+    let coordinates = response.response.features[0].geometry.coordinates;
+    let cleanwalkCoordinates = { latitudeOnClick, longitudeOnClick };
+    let cityInfo = { infoFromApi, coordinates, cleanwalkCoordinates };
     props.sendCityInfo(cityInfo);
 
     props.navigation.navigate("EventFillInfo");
