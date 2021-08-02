@@ -74,6 +74,7 @@ function CreateEvent(props) {
     let coordinates = response.response.features[0].geometry.coordinates;
     let cleanwalkCoordinates = { latitudeOnClick, longitudeOnClick };
     let cityInfo = { infoFromApi, coordinates, cleanwalkCoordinates };
+    
     props.sendCityInfo(cityInfo);
 
     props.navigation.navigate("EventFillInfo");

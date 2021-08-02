@@ -7,9 +7,10 @@ import { Provider } from 'react-redux';
 import { createStore, combineReducers } from 'redux';
 import tokenObj from './Reducers/token.reducer'
 import cleanwalkId from './Reducers/idCW.reducer'
+import cityInfo from './Reducers/creatCleanwalk'
 import Nav from './NavComponents/Nav'
 
-const store = createStore(combineReducers({ tokenObj, cleanwalkId }));
+const store = createStore(combineReducers({ tokenObj, cleanwalkId, cityInfo }));
 
 export default function App() {
 
