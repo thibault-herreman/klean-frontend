@@ -11,7 +11,6 @@ import { windowDimensions } from "../lib/windowDimensions";
 import { typography } from "../lib/typography";
 import PROXY from "../proxy";
 
-
 function CreateEvent(props) {
   const [currentLatitude, setCurrentLatitude] = useState();
   const [currentLongitude, setCurrentLongitude] = useState(0);
@@ -71,14 +70,22 @@ function CreateEvent(props) {
     });
     let response = await data.json();
 
-    // let infoFromApi = response.response.features[0].properties;
-    // let coordinates = response.response.features[0].geometry.coordinates;
-    // let cleanwalkCoordinates = { latitudeOnClick, longitudeOnClick };
-    // let cityInfo = { infoFromApi, coordinates, cleanwalkCoordinates };
-    
+    let city = response.response.features[0].properties.city;
+
+    let newData = await fetch(PROXY + "/search-city-only", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: `city=${city}`,
+    });
+    let newResponse = await newData.json();
+    console.log("réponse front NEW: ", newResponse);
+
     props.sendCityInfo({
+      cityName: newResponse.newResponse[0].properties.city,
+      cityCode: newResponse.newResponse[0].properties.citycode,
+      cityCoordinates: newResponse.newResponse[0].geometry.coordinates,
+
       infoFromApi: response.response.features[0].properties,
-      coordinates: response.response.features[0].geometry.coordinates,
       cleanwalkCoordinates: { lat: latitudeOnClick, lon: longitudeOnClick },
     });
 

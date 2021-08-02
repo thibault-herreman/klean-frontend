@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, View, KeyboardAvoidingView, ScrollView } from "react-native";
 import { connect } from "react-redux";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -20,6 +20,12 @@ function EventFillInfo(props) {
   const [tool, setTool] = useState ("");
 
   const [modalVisible, setModalVisible] = useState(false);
+  
+  // console.log("props: ", props.cityInfo.infoFromApi.city)
+
+  useEffect(() => {
+    setCity(props.cityInfo.cityName);
+  }, [])
 
   function modal(){
     setModalVisible(false);
@@ -41,6 +47,8 @@ function EventFillInfo(props) {
     }
   };
 
+  console.log("props: ", props.cityInfo);
+
   var addCW = async () => {
   
     const dataCW = await fetch(PROXY + "/create-cw", {
@@ -48,6 +56,8 @@ function EventFillInfo(props) {
       headers: {'Content-Type':'application/x-www-form-urlencoded'},
       body: `title=${title}&city=${JSON.stringify(props.cityInfo)}&description=${description}&tool=${tool.split(",")}`
     })
+
+
 
     // body: `title=${title}&city=${city}&startingDate=${startingDate}&endingDate=${endingDate}&description=${description}&tool=${tool}`
     
