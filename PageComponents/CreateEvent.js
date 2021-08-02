@@ -9,14 +9,15 @@ import { colors } from "../lib/colors";
 import pinSmall from "../assets/imagesKlean/pinSmall.png";
 import { windowDimensions } from "../lib/windowDimensions";
 import { typography } from "../lib/typography";
+import PROXY from "../proxy";
 
 function CreateEvent(props) {
-
-  const [currentLatitude, setCurrentLatitude] = useState ();
+  const [currentLatitude, setCurrentLatitude] = useState();
   const [currentLongitude, setCurrentLongitude] = useState(0);
 
   const [latitudeOnClick, setLatitudeOnClick] = useState(0);
   const [longitudeOnClick, setLongitudeOnClick] = useState(0);
+  const [cityInfo, setCityInfo] = useState({});
 
   const [cleanwalk, setCleanwalk] = useState([]);
 
@@ -25,7 +26,9 @@ function CreateEvent(props) {
     async function getLocation() {
       let { status } = await Location.requestForegroundPermissionsAsync();
       if (status === "granted") {
-        let location = await Location.watchPositionAsync({ distanceInterval: 10 }, (location) => {
+        let location = await Location.watchPositionAsync(
+          { distanceInterval: 10 },
+          (location) => {
             setCurrentLatitude(location.coords.latitude);
             setCurrentLongitude(location.coords.longitude);
           }
@@ -34,8 +37,6 @@ function CreateEvent(props) {
     }
     getLocation();
   }, []);
-
-
 
   let newMarker = cleanwalk.map(function (marker, i) {
     return (
@@ -60,7 +61,19 @@ function CreateEvent(props) {
     console.log("lat: ", latitudeOnClick, "lon: ", longitudeOnClick);
   }
 
-  function centerOnUser() {}
+  // function centerOnUser() {}
+
+  async function continueToForm() {
+    let data = await fetch(PROXY + "/get-city-from-coordinates", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: `latFromFront=${latitudeOnClick}&lonFromFront=${longitudeOnClick}`,
+    });
+    let response = await data.json();
+    setCityInfo(response.response.features[0].properties);
+
+    props.sendCityInfo();
+  }
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -99,7 +112,7 @@ function CreateEvent(props) {
         typeButton="fullFine"
         backgroundColor={colors.secondary}
         text="Continuer"
-        onPress={() => props.navigation.navigate("EventFillInfo")}
+        onPress={() => continueToForm()}
       />
     </SafeAreaView>
 
@@ -124,6 +137,9 @@ function mapDispatchToProps(dispatch) {
     signOut: function () {
       dispatch({ type: "signOut" });
     },
+    sendCityInfo: function() {
+      dispatch({type: "sendCityInfo", cityInfo: cityInfo})
+    }
   };
 }
 

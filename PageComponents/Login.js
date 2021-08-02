@@ -30,7 +30,6 @@ function Login(props) {
     let bodyWithId = `emailFromFront=${email}&passwordFromFront=${password}&cleanwalkIdFromFront=${props.cleanwalkId}`;
     let finalBody;
 
-    console.log("login");
     if (props.cleanwalkId == null) {
       finalBody = bodyWithoutID;
     }
