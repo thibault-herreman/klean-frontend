@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, View, ImageBackground, SafeAreaView, ScrollView, StatusBar } from 'react-native';
+import { StyleSheet, Text, View, ImageBackground, SafeAreaView, ScrollView, StatusBar, ActivityIndicator } from 'react-native';
 import { connect } from 'react-redux';
 import ScreenTitles from '../lib/ScreenTitles.js';
 import ButtonElement from "../lib/ButtonElement";
@@ -9,6 +9,7 @@ import { windowDimensions } from '../lib/windowDimensions.js';
 import { typography } from '../lib/typography.js';
 import { colors } from "../lib/colors.js";
 import changeDateFormat from "../lib/changeDateFormat"
+import {createOpenLink} from 'react-native-open-maps'; 
 
 import PROXY from "../proxy.js";
 
@@ -17,7 +18,8 @@ function ConnectedEventDetailProfilStack(props) {
     let idCW = props.cleanwalkId;
 
     const [cleanwalk, setCleanwalk] = useState(null);
-
+    const [end, setEnd] = useState(null)
+;
     const dataParticipants = (admin, participants) => {
         participants.unshift(admin);
 
@@ -30,12 +32,20 @@ function ConnectedEventDetailProfilStack(props) {
             const jsonResponseCleanwalk = await responseCleanwalk.json();
 
             setCleanwalk(jsonResponseCleanwalk.cleanwalk);
+            setEnd({latitude: jsonResponseCleanwalk.cleanwalk.cleanwalkCoordinates.latitude, longitude: jsonResponseCleanwalk.cleanwalk.cleanwalkCoordinates.longitude})
+            
         }
         loadData();
     }, []);
+    
+    // const end = {latitude: 48.862729, longitude: 2.329997} 
 
-    if (cleanwalk === null) {
-        return <View style={{ flex: 1, backgroundColor: colors.white }}></View>;
+    if (cleanwalk === null || end === null) {
+        return (
+            <View style={styles.wait}>
+                <ActivityIndicator size="large" color={colors.primary}/>
+            </View>
+        )
     } else {
 
         return (
@@ -55,6 +65,7 @@ function ConnectedEventDetailProfilStack(props) {
                         <ButtonElement
                             style={styles.goButton}
                             typeButton="go"
+                            onPress={createOpenLink({ ...end, query: cleanwalk.cleanwalkTitle })}
                         />
                     </ImageBackground>
 
@@ -140,6 +151,12 @@ function mapStateToProps(state) {
 }
 
 const styles = StyleSheet.create({
+    wait: {
+        flex: 1,
+        backgroundColor: colors.white,
+        justifyContent: "center",
+        alignItems: "center"
+    },
     container: {
         flex: 1,
         backgroundColor: '#fff',
