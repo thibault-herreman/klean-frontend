@@ -46,7 +46,7 @@ function EventFillInfo(props) {
     const dataCW = await fetch(PROXY + "/create-cw", {
       method: 'POST',
       headers: {'Content-Type':'application/x-www-form-urlencoded'},
-      body: `title=${title}&description=${description}&tool=${tool.split(",")}`
+      body: `title=${title}&city=${JSON.stringify(props.cityInfo)}&description=${description}&tool=${tool.split(",")}`
     })
 
     // body: `title=${title}&city=${city}&startingDate=${startingDate}&endingDate=${endingDate}&description=${description}&tool=${tool}`
@@ -155,7 +155,7 @@ function mapDispatchToProps(dispatch) {
 }
 
 function mapStateToProps(state) {
-  return { tokenObj: state.tokenObj };
+  return { tokenObj: state.tokenObj, cityInfo: state.cityInfo };
 }
 
 const styles = StyleSheet.create({

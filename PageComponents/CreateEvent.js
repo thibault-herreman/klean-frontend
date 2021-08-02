@@ -11,6 +11,7 @@ import { windowDimensions } from "../lib/windowDimensions";
 import { typography } from "../lib/typography";
 import PROXY from "../proxy";
 
+
 function CreateEvent(props) {
   const [currentLatitude, setCurrentLatitude] = useState();
   const [currentLongitude, setCurrentLongitude] = useState(0);
@@ -70,11 +71,16 @@ function CreateEvent(props) {
     });
     let response = await data.json();
 
-    let infoFromApi = response.response.features[0].properties;
-    let coordinates = response.response.features[0].geometry.coordinates;
-    let cleanwalkCoordinates = { latitudeOnClick, longitudeOnClick };
-    let cityInfo = { infoFromApi, coordinates, cleanwalkCoordinates };
-    props.sendCityInfo(cityInfo);
+    // let infoFromApi = response.response.features[0].properties;
+    // let coordinates = response.response.features[0].geometry.coordinates;
+    // let cleanwalkCoordinates = { latitudeOnClick, longitudeOnClick };
+    // let cityInfo = { infoFromApi, coordinates, cleanwalkCoordinates };
+    
+    props.sendCityInfo({
+      infoFromApi: response.response.features[0].properties,
+      coordinates: response.response.features[0].geometry.coordinates,
+      cleanwalkCoordinates: { lat: latitudeOnClick, lon: longitudeOnClick },
+    });
 
     props.navigation.navigate("EventFillInfo");
   }
@@ -140,7 +146,7 @@ function mapDispatchToProps(dispatch) {
       dispatch({ type: "signOut" });
     },
     sendCityInfo: function (cityInfo) {
-      dispatch({ type: "sendCityInfo", cityInfo: cityInfo });
+      dispatch({ type: "sendCityInfo", payLoad: cityInfo });
     },
   };
 }
