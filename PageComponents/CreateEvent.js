@@ -46,12 +46,12 @@ function CreateEvent(props) {
     });
   }
 
-  async function centerOnUser() {
-    region = {
-      setCurrentLatitude(location.coords.latitude)
-      setCurrentLongitude(location.coords.longitude)
-    }
-  }
+  // async function centerOnUser() {
+  //   region = {
+  //     setCurrentLatitude(location.coords.latitude)
+  //     setCurrentLongitude(location.coords.longitude)
+  //   }
+  // }
 
   async function continueToForm() {
     let data = await fetch(PROXY + "/get-city-from-coordinates", {
