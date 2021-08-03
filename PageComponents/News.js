@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, SafeAreaView, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView, ScrollView, StatusBar } from 'react-native';
 import { connect } from 'react-redux';
 import { colors } from '../lib/colors';
 import { typography } from '../lib/typography';
@@ -112,6 +112,7 @@ function mapStateToProps(state) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        paddingTop: StatusBar.currentHeight,
         backgroundColor: colors.white,
         alignItems: 'center',
         justifyContent: 'center',

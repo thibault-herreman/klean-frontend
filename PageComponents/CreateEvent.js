@@ -159,11 +159,10 @@ function CreateEvent(props) {
           />
         ) : null}
       </MapView>
-
+      <ButtonElement typeButton="geoloc" onPress={() => centerOnUser()} />
       <View style={styles.information}>
         <Text style={styles.textInfo}>
-          <ButtonElement typeButton="geoloc" onPress={() => centerOnUser()} />-
-          Saisir une adresse OU {"\n"}- appuyer longuement pour ajouter un
+          -Saisir une adresse OU {"\n"}- appuyer longuement pour ajouter un
           repère.
         </Text>
       </View>
@@ -175,17 +174,6 @@ function CreateEvent(props) {
         onPress={() => continueToForm()}
       />
     </SafeAreaView>
-
-    // <View style={styles.container}>
-    //     <Text>CreateEvent</Text>
-    //     <Text>{`${props.token}`}</Text>
-    //     <Button title="login" onPress={() => props.login("monsupertokenchercheenbdd")} />
-    //     <Button title="signOut" onPress={() => props.signOut()} />
-    //     <Button title="CreateEvent"
-    //         onPress={() => props.navigation.navigate('CreateEvent')} />
-    //     <Button title="EventFillInfo"
-    //         onPress={() => props.navigation.navigate('EventFillInfo')} />
-    // </View>
   );
 }
 
