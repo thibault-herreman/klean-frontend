@@ -47,11 +47,6 @@ function Profil(props) {
   const [statPerso, setStatPerso] = useState(null);
   const [statCity, setStatCity] = useState(null);
 
-  const [holdPass, setHoldPass] = useState();
-  const [newPass, setNewPass] = useState();
-
-
-
   useEffect(() => {
     const loadProfil = async () => {
       let rawResponse = await fetch(
@@ -67,22 +62,11 @@ function Profil(props) {
       }
     };
     loadProfil();
-  }, []);
+  }, [props.cwsStore]);
 
   function modal() {
     setModalVisible(false);
   }
-
-  let modifyPassword = (name, value) => {
-      if (props.name == "holdPass") {
-          setHoldPass(value);
-      } else if (props.name == "newPass") {
-          setNewPass(value);
-      }
-  }
-  console.log("new: ", newPass);
-  console.log("hold: ", holdPass);
-
 
   let cwListParticipate;
   if (listCWparticipate.length > 0) {
@@ -291,25 +275,13 @@ function Profil(props) {
             </View>
           </View>
           <ChangePassword
-          setState={modifyPassword}
-          visible={modalVisible}
-          close={modal} />
+            visible={modalVisible}
+            close={modal}
+          />
         </ScrollView>
       </View>
     );
   }
-}
-
-{
-  /*<Text>Profil</Text>
-            <Button title="login" onPress={() => props.login("monsupertokenchercheenbdd")} />
-            <Button title="signOut" onPress={() => props.signOut()} />
-            <Button title="Profil"
-                onPress={() => props.navigation.navigate('Profil')} />
-            <Button title="ConnectedEventDetailProfilStack"
-                onPress={() => props.navigation.navigate('ConnectedEventDetailProfilStack')} />
-            <Button title="ChatProfilStack"
-                onPress={() => props.navigation.navigate('ChatProfilStack')} />*/
 }
 
 const styles = StyleSheet.create({
@@ -406,7 +378,7 @@ function mapDispatchToProps(dispatch) {
 }
 
 function mapStateToProps(state) {
-  return { tokenObj: state.tokenObj };
+  return { tokenObj: state.tokenObj, cwsStore: state.cwsStore };
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Profil);

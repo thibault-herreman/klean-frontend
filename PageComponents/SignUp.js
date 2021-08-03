@@ -26,11 +26,8 @@ function SignUp(props) {
   const [city, setCity] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-
   const [userExists, setUserExists] = useState(false);
   const [listErrorSignup, setListErrorSignup] = useState([]);
-  const [listErrorRegister, setListErrorRegister] = useState([]);
-  const [listErrorNetwork, setListErrorNetwork] = useState([]);
 
   const [autoComplete, setAutoComplete] = useState([]);
   const [showAutoComplete, setShowAutoComplete] = useState(true);
