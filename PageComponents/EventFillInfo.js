@@ -53,28 +53,21 @@ function EventFillInfo(props) {
     }
   };
 
-  console.log("props: ", props.cityInfo);
-
   var addCW = async () => {
     const dataCW = await fetch(PROXY + "/create-cw", {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
       body: `title=${title}&city=${JSON.stringify(
         props.cityInfo
-      )}&startingDate=${startingDate}&endingDate=${endingDate}&description=${description}&tool=${tool.split(
-        ","
-      )}&token=${props.tokenObj.token}`,
+      )}&startingDate=${startingDate}&endingDate=${endingDate}&description=${description}&tool=${tool}&token=${props.tokenObj.token}`,
     });
 
     let body = await dataCW.json();
     setError(body.error);
-    console.log("body: ", body);
 
     if (body.result == true) {
       props.navigation.navigate("Profil");
     }
-
-    // body: `title=${title}&city=${city}&startingDate=${startingDate}&endingDate=${endingDate}&description=${description}&tool=${tool}`
   };
 
   let errors = (

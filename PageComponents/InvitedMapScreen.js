@@ -63,7 +63,7 @@ function InvitedMapScreen(props) {
       let rawResponse = await fetch(PROXY + "/autocomplete-search", {
         method: "POST",
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: `adress=${adress.replace(" ", "+")}`,
+        body: `adress=${adress.replace(" ", "+")}&token=${props.tokenObj.token}`,
       });
       let response = await rawResponse.json();
       setAutoComplete(response.response);

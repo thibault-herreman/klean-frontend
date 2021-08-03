@@ -9,7 +9,7 @@ function Nav(props) {
   
   return (
     <NavigationContainer>
-      {props.tokenObj.token === "XeDLD?Mr3!U4HSJ?Sl74HJpKD!" ? <InvitedFlow /> : <ConnectedFlow /> }
+      {props.tokenObj.token === "XeDLDMr3U4HSJSl74HJpKD" ? <InvitedFlow /> : <ConnectedFlow /> }
     </NavigationContainer>
   )
 }

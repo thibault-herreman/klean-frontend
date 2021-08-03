@@ -4,9 +4,9 @@
     "slug": "klean-frontend",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/imagesKlean/icon.png",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/imagesKlean/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -21,7 +21,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/imagesKlean/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
       }
     },
