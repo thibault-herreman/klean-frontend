@@ -8,7 +8,6 @@ import {
   ScrollView,
 } from "react-native";
 import { connect } from "react-redux";
-import { Dimensions } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { colors } from "../lib/colors";
 import { windowDimensions } from "../lib/windowDimensions";
@@ -17,6 +16,7 @@ import ButtonElement from "../lib/ButtonElement";
 import InputElement from "../lib/InputElement";
 import LogoKlean from "../assets/imagesKlean/LogoKlean.png";
 import PROXY from "../proxy";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 function Login(props) {
   const [email, setEmail] = useState("");
@@ -54,6 +54,8 @@ function Login(props) {
       let rawResponse = await fetch(`${PROXY}/load-cw-forstore/${body.token}`);
       let response = await rawResponse.json();
       props.loadCwsStore({ infosCWparticipate: response.infosCWparticipate, infosCWorganize: response.infosCWorganize });
+      AsyncStorage.setItem('token', body.token);
+      AsyncStorage.setItem('cwsUser', JSON.stringify({ infosCWparticipate: response.infosCWparticipate, infosCWorganize: response.infosCWorganize }));
     }
   }
 
