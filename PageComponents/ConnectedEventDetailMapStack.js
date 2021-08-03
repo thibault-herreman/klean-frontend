@@ -29,7 +29,6 @@ function ConnectedEventDetailMapStack(props) {
 
     const dataParticipants = (admin, participants) => {
         participants.unshift(admin);
-
         return participants;
     };
 
@@ -37,8 +36,6 @@ function ConnectedEventDetailMapStack(props) {
         async function loadData() {
             const responseCleanwalk = await fetch(PROXY + `/load-cleanwalk/${idCW}/${props.tokenObj.token}`);
             const jsonResponseCleanwalk = await responseCleanwalk.json();
-
-            // console.log("test", jsonResponseCleanwalk);
 
             setCleanwalk(jsonResponseCleanwalk.cleanwalk);
         }
@@ -221,12 +218,6 @@ function ConnectedEventDetailMapStack(props) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        login: function (token) {
-            dispatch({ type: "login", token });
-        },
-        signOut: function () {
-            dispatch({ type: "signOut" });
-        },
         desinsCws: function (idCW) {
             dispatch({ type: "desinsCws", idCW });
         },

@@ -67,7 +67,7 @@ function Profil(props) {
       }
     };
     loadProfil();
-  }, []);
+  }, [props.cwsStore]);
 
   function modal() {
     setModalVisible(false);
@@ -300,18 +300,6 @@ function Profil(props) {
   }
 }
 
-{
-  /*<Text>Profil</Text>
-            <Button title="login" onPress={() => props.login("monsupertokenchercheenbdd")} />
-            <Button title="signOut" onPress={() => props.signOut()} />
-            <Button title="Profil"
-                onPress={() => props.navigation.navigate('Profil')} />
-            <Button title="ConnectedEventDetailProfilStack"
-                onPress={() => props.navigation.navigate('ConnectedEventDetailProfilStack')} />
-            <Button title="ChatProfilStack"
-                onPress={() => props.navigation.navigate('ChatProfilStack')} />*/
-}
-
 const styles = StyleSheet.create({
   wait: {
     flex: 1,
@@ -406,7 +394,7 @@ function mapDispatchToProps(dispatch) {
 }
 
 function mapStateToProps(state) {
-  return { tokenObj: state.tokenObj };
+  return { tokenObj: state.tokenObj, cwsStore: state.cwsStore };
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Profil);
