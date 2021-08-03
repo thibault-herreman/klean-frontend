@@ -1,14 +1,22 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, View, ImageBackground, SafeAreaView, ScrollView, StatusBar } from 'react-native';
-import { connect } from 'react-redux';
-import ScreenTitles from '../lib/ScreenTitles.js';
+import {
+  StyleSheet,
+  Text,
+  View,
+  ImageBackground,
+  SafeAreaView,
+  ScrollView,
+  StatusBar,
+} from "react-native";
+import { connect } from "react-redux";
+import ScreenTitles from "../lib/ScreenTitles.js";
 import ButtonElement from "../lib/ButtonElement";
 import Participants from "../lib/Participants";
-import BadgesList from '../lib/BadgesList.js';
-import { windowDimensions } from '../lib/windowDimensions.js';
-import { typography } from '../lib/typography.js';
+import BadgesList from "../lib/BadgesList.js";
+import { windowDimensions } from "../lib/windowDimensions.js";
+import { typography } from "../lib/typography.js";
 import { colors } from "../lib/colors.js";
-import changeDateFormat from "../lib/changeDateFormat"
+import changeDateFormat from "../lib/changeDateFormat";
 
 import PROXY from "../proxy.js";
 
@@ -17,11 +25,40 @@ function ConnectedEventDetailMapStack(props) {
     let idCW = props.cwIdMapStack;
 
     const [cleanwalk, setCleanwalk] = useState(null);
+    const [error, setError] = useState(null);
 
     const dataParticipants = (admin, participants) => {
         participants.unshift(admin);
 
         return participants;
+    };
+
+    useEffect(() => {
+        async function loadData() {
+            const responseCleanwalk = await fetch(PROXY + `/load-cleanwalk/${idCW}/${props.tokenObj.token}`);
+            const jsonResponseCleanwalk = await responseCleanwalk.json();
+
+            // console.log("test", jsonResponseCleanwalk);
+
+            setCleanwalk(jsonResponseCleanwalk.cleanwalk);
+        }
+        loadData();
+    }, []);
+
+    let participate = async () => {
+        let data = await fetch(PROXY + "/subscribe-cw", {
+          method: "POST",
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
+          body: `cleanwalkID=${props.cwIdMapStack}&token=${props.tokenObj.token}`,
+        });
+
+        let body = await data.json();
+        if (body.result == true) {
+            props.addCws(idCW);
+            props.navigation.navigate("Profil");
+        } if (body.result == false){
+            setError(body.error)
+        }
     };
 
     const unsubscribeCw = async () => {
@@ -31,8 +68,14 @@ function ConnectedEventDetailMapStack(props) {
             body: `token=${props.tokenObj.token}&idCW=${idCW}`
         });
 
-        props.majCwsParticip(idCW);
-        props.navigation.navigate("Profil");
+        let body = await rawResponse.json();
+        if (body.result == true) {
+            props.desinsCws(idCW);
+            props.navigation.navigate("Profil");
+        } if (body.result == false){
+            setError(body.error)
+        }
+    
     }
 
     const deleteCw = async () => {
@@ -40,8 +83,14 @@ function ConnectedEventDetailMapStack(props) {
             method: 'DELETE'
         });
 
-        props.majCwsOrga(idCW);
-        props.navigation.navigate("Profil");
+        let body = await rawResponse.json();
+        if (body.result == true) {
+            props.supCws(idCW);
+            props.navigation.navigate("Profil");
+        } if (body.result == false){
+            setError(body.error)
+        }
+
     }
 
     const checkCwsParticipate = props.cwsStore.infosCWparticipate.findIndex(
@@ -74,25 +123,18 @@ function ConnectedEventDetailMapStack(props) {
                             <ButtonElement
                                 typeButton="middleSecondary"
                                 text="Participer"
-                                onPress={() => {
-                                    props.cleanwalkId;
-                                    props.navigation.navigate("Profil");
-                                }}
+                                onPress={ () => participate() }
                             />
                         </View>;
     }
 
-    useEffect(() => {
-        async function loadData() {
-            const responseCleanwalk = await fetch(PROXY + `/load-cleanwalk/${idCW}`);
-            const jsonResponseCleanwalk = await responseCleanwalk.json();
+    let errors = (
+        <View>
+            <Text>{error};</Text>
+        </View>
+    );
 
-            // console.log("test", jsonResponseCleanwalk);
-
-            setCleanwalk(jsonResponseCleanwalk.cleanwalk);
-        }
-        loadData();
-    }, []);
+    
 
     if (cleanwalk === null) {
         return <View style={{ flex: 1, backgroundColor: colors.white }}></View>;
@@ -166,6 +208,7 @@ function ConnectedEventDetailMapStack(props) {
                         </View>
                     </View>
 
+                    {errors}
                     {confirmButton}
 
                 </ScrollView>
@@ -173,6 +216,7 @@ function ConnectedEventDetailMapStack(props) {
 
         );
     }
+  
 }
 
 function mapDispatchToProps(dispatch) {
@@ -183,11 +227,14 @@ function mapDispatchToProps(dispatch) {
         signOut: function () {
             dispatch({ type: "signOut" });
         },
-        majCwsParticip: function (idCW) {
-            dispatch({ type: "majCwsParticip", idCW });
+        desinsCws: function (idCW) {
+            dispatch({ type: "desinsCws", idCW });
         },
-        majCwsOrga: function (idCW) {
-            dispatch({ type: "majCwsOrga", idCW });
+        addCws: function (idCW) {
+            dispatch({ type: "addCws", idCW });
+        },
+        supCws: function (idCW) {
+            dispatch({ type: "supCws", idCW });
         }
     };
 }
@@ -197,79 +244,65 @@ function mapStateToProps(state) {
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#fff',
-    },
-    banner: {
-        width: windowDimensions.width,
-        height: 100,
-        marginTop: 29,
-        justifyContent: 'space-between',
-        paddingLeft: 17,
-        paddingRight: 17,
-        flexDirection: 'row',
-        alignItems: 'center',
-        marginTop: StatusBar.currentHeight || 0,
-    },
-    backButton: {
-        position: 'absolute',
-        zIndex: 10,
-    },
-    goButton: {
-        position: 'absolute',
-        zIndex: 10,
-    },
-    generalInfoCleanwalk: {
-        marginTop: 11,
-        marginBottom: 11,
-        marginLeft: 18,
-    },
-    descriptionCleanwalk: {
-        marginBottom: 11,
-        marginLeft: 18,
-    },
-    cleanwakDescriptionContainer: {
-        marginRight: 18,
-    },
-    badges: {
-        marginLeft: 11,
-        marginBottom: 30,
-    },
-    participantsContainer: {
-        flexDirection: 'column',
-        height: 300,
-    },
-    participantsList: {
-        marginTop: 11,
-        marginBottom: 30,
-    },
-    chat: {
-        marginTop: 11,
-        marginRight: 18,
-    },
-    confirmButton: {
-        flexDirection: 'row',
-        justifyContent: 'center',
-        marginBottom: 11,
-    }
+  container: {
+    flex: 1,
+    backgroundColor: "#fff",
+  },
+  banner: {
+    width: windowDimensions.width,
+    height: 100,
+    marginTop: 29,
+    justifyContent: "space-between",
+    paddingLeft: 17,
+    paddingRight: 17,
+    flexDirection: "row",
+    alignItems: "center",
+    marginTop: StatusBar.currentHeight || 0,
+  },
+  backButton: {
+    position: "absolute",
+    zIndex: 10,
+  },
+  goButton: {
+    position: "absolute",
+    zIndex: 10,
+  },
+  generalInfoCleanwalk: {
+    marginTop: 11,
+    marginBottom: 11,
+    marginLeft: 18,
+  },
+  descriptionCleanwalk: {
+    marginBottom: 11,
+    marginLeft: 18,
+  },
+  cleanwakDescriptionContainer: {
+    marginRight: 18,
+  },
+  badges: {
+    marginLeft: 11,
+    marginBottom: 30,
+  },
+  participantsContainer: {
+    flexDirection: "column",
+    height: 300,
+  },
+  participantsList: {
+    marginTop: 11,
+    marginBottom: 30,
+  },
+  chat: {
+    marginTop: 11,
+    marginRight: 18,
+  },
+  confirmButton: {
+    flexDirection: "row",
+    justifyContent: "center",
+    marginBottom: 11,
+  },
 });
 
 export default connect(
-    mapStateToProps,
-    mapDispatchToProps
+  mapStateToProps,
+  mapDispatchToProps
 )(ConnectedEventDetailMapStack);
-
-
-        // <View style={styles.container}>
-        //     <Text>ConnectedEventDetail-MapStack</Text>
-        //     <Text>{`${props.token}`}</Text>
-        //     <Button title="login" onPress={() => props.login("monsupertokenchercheenbdd")} />
-        //     <Button title="signOut" onPress={() => props.signOut()} />
-        //     <Button title="ConnectedMapScreen"
-        //         onPress={() => props.navigation.navigate('ConnectedMapScreen')} />
-        //     <Button title="ConnectedEventDetail"
-        //         onPress={() => props.navigation.navigate('ConnectedEventDetailMapStack')} />
-        //     <Button title="Chat"
-        //         onPress={() => props.navigation.navigate('ChatMapStack')} />
-        // </View>

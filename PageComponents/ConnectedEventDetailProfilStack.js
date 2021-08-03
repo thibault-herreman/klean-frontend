@@ -9,7 +9,7 @@ import { windowDimensions } from '../lib/windowDimensions.js';
 import { typography } from '../lib/typography.js';
 import { colors } from "../lib/colors.js";
 import changeDateFormat from "../lib/changeDateFormat"
-import {createOpenLink} from 'react-native-open-maps'; 
+import { showLocation } from 'react-native-map-link';
 
 import PROXY from "../proxy.js";
 
@@ -18,29 +18,23 @@ function ConnectedEventDetailProfilStack(props) {
     let idCW = props.cwIdProfilStack;
 
     const [cleanwalk, setCleanwalk] = useState(null);
-    const [end, setEnd] = useState(null)
-;
+
     const dataParticipants = (admin, participants) => {
         participants.unshift(admin);
-
         return participants;
     };
 
     useEffect(() => {
         async function loadData() {
-            const responseCleanwalk = await fetch(PROXY + `/load-cleanwalk/${idCW}`);
+            const responseCleanwalk = await fetch(PROXY + `/load-cleanwalk/${idCW}/${props.tokenObj.token}`);
             const jsonResponseCleanwalk = await responseCleanwalk.json();
 
             setCleanwalk(jsonResponseCleanwalk.cleanwalk);
-            setEnd({latitude: jsonResponseCleanwalk.cleanwalk.cleanwalkCoordinates.latitude, longitude: jsonResponseCleanwalk.cleanwalk.cleanwalkCoordinates.longitude})
-            
         }
         loadData();
     }, []);
     
-    // const end = {latitude: 48.862729, longitude: 2.329997} 
-
-    if (cleanwalk === null || end === null) {
+    if (cleanwalk === null) {
         return (
             <View style={styles.wait}>
                 <ActivityIndicator size="large" color={colors.primary}/>
@@ -65,7 +59,11 @@ function ConnectedEventDetailProfilStack(props) {
                         <ButtonElement
                             style={styles.goButton}
                             typeButton="go"
-                            onPress={createOpenLink({ ...end, query: cleanwalk.cleanwalkTitle })}
+                            onPress={() => showLocation({
+                                latitude: cleanwalk.cleanwalkCoordinates.latitude,
+                                longitude: cleanwalk.cleanwalkCoordinates.longitude,
+                                title: cleanwalk.cleanwalkTitle,
+                            })} 
                         />
                     </ImageBackground>
 

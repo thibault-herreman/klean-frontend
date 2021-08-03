@@ -25,6 +25,7 @@ function SignUp(props) {
   const [email, setEmail] = useState("");
   const [city, setCity] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
   const [userExists, setUserExists] = useState(false);
   const [listErrorSignup, setListErrorSignup] = useState([]);
@@ -41,7 +42,7 @@ function SignUp(props) {
       let rawResponse = await fetch(PROXY + "/autocomplete-search-city-only", {
         method: "POST",
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: `city=${city.replace(" ", "+")}`,
+        body: `city=${city.replace(" ", "+")}&token=${props.tokenObj.token}`,
       });
       let response = await rawResponse.json();
       setAutoComplete(response.newResponse);
@@ -52,9 +53,25 @@ function SignUp(props) {
     }
   }, [city]);
 
+  let changeState = (name, value) => {
+    if (name == "firstName") {
+      setFirstName(value);
+    } else if (name == "lastName") {
+      setLastName(value);
+    } else if (name == "email") {
+      setEmail(value);
+    } else if (name == "city") {
+      setCity(value);
+    } else if (name == "password") {
+      setPassword(value);
+    } else if (name == "confirmPassword") {
+      setConfirmPassword(value);
+    }
+  };
+
   async function register() {
-    let bodyWithoutID = `firstNameFromFront=${firstName}&lastNameFromFront=${lastName}&emailFromFront=${email}&cityFromFront=${city}&passwordFromFront=${password}&cityInfo=${JSON.stringify(cityInfo)}`;
-    let bodyWithId = `firstNameFromFront=${firstName}&lastNameFromFront=${lastName}&emailFromFront=${email}&cityFromFront=${city}&passwordFromFront=${password}&cityInfo=${JSON.stringify(cityInfo)}&cleanwalkIdFromFront=${props.cwIdInvited}`;
+    let bodyWithoutID = `token=${props.tokenObj.token}&firstNameFromFront=${firstName}&lastNameFromFront=${lastName}&emailFromFront=${email}&cityFromFront=${city}&passwordFromFront=${password}&cityInfo=${JSON.stringify(cityInfo)}`;
+    let bodyWithId = `token=${props.tokenObj.token}&firstNameFromFront=${firstName}&lastNameFromFront=${lastName}&emailFromFront=${email}&cityFromFront=${city}&passwordFromFront=${password}&cityInfo=${JSON.stringify(cityInfo)}&cleanwalkIdFromFront=${props.cwIdInvited}`;
     let finalBody;
 
     if (props.cwIdInvited == null) {
@@ -63,6 +80,8 @@ function SignUp(props) {
     if (props.cwIdInvited != null) {
       finalBody = bodyWithId;
     }
+
+    if (password === confirmPassword) {
     let data = await fetch(PROXY + "/users/sign-up", {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
@@ -76,25 +95,15 @@ function SignUp(props) {
     } else {
       setListErrorSignup(body.error);
     }
+    }
+    else if (password !== confirmPassword) {
+      setListErrorSignup(["Les deux mots de passe ne sont pas identiques."])
+    }
   }
 
   let errorsRegister = listErrorSignup.map((error, i) => {
     return <Text key={`error${i}`}>{error}</Text>;
   });
-
-  let changeState = (name, value) => {
-    if (name == "firstName") {
-      setFirstName(value);
-    } else if (name == "lastName") {
-      setLastName(value);
-    } else if (name == "email") {
-      setEmail(value);
-    } else if (name == "city") {
-      setCity(value);
-    } else if (name == "password") {
-      setPassword(value);
-    }
-  };
 
   function backArrow() {
     props.navigation.navigate("InvitedEventDetail");
@@ -125,84 +134,91 @@ function SignUp(props) {
   return (
     <SafeAreaView style={styles.safeArea}>
       {/* <ScrollView style={{height:windowDimensions.height}}> */}
-        <View style={styles.mainView}>
-          <View style={styles.topBanner}>
-            <View style={styles.backButton}>
-              <ButtonElement typeButton="back" onPress={() => backArrow()} />
-            </View>
-            <View style={styles.title}>
-              <Text style={typography.h1}>INSCRIPTION</Text>
-            </View>
+      <View style={styles.mainView}>
+        <View style={styles.topBanner}>
+          <View style={styles.backButton}>
+            <ButtonElement typeButton="back" onPress={() => backArrow()} />
           </View>
-
-          <ScrollView>
-            <View style={styles.inputFields}>
-              <InputElement
-                name="firstName"
-                setState={changeState}
-                value={firstName}
-                placeholder="Prénom *"
-                type="simpleInput"
-              ></InputElement>
-              <InputElement
-                name="lastName"
-                setState={changeState}
-                value={lastName}
-                placeholder="Nom *"
-                type="simpleInput"
-              ></InputElement>
-              <InputElement
-                name="email"
-                setState={changeState}
-                value={email}
-                placeholder="Email *"
-                type="simpleInput"
-              ></InputElement>
-              <InputElement
-                name="city"
-                setState={changeState}
-                setShowAutoComplete={setShowAutoComplete}
-                value={city}
-                placeholder="Ville *"
-                type="simpleInput"
-              ></InputElement>
-              {showAutoComplete ? (
-                <AutoComplete
-                  data={autoComplete}
-                  onPress={setCity}
-                  setShowAutoComplete={setShowAutoComplete}
-                  cityInfoSetter={setCityInfo}
-                />
-              ) : null}
-
-              <InputElement
-                name="password"
-                setState={changeState}
-                placeholder="Password *"
-                type="simpleInput"
-                secureTextEntry={true}
-              ></InputElement>
-            </View>
-            <View style={styles.error}>{errorsRegister}</View>
-
-            <View style={styles.register}>
-              {button}
-              <View style={styles.textContainer}>
-                <Text style={typography.body}>Vous avez déjà un compte?</Text>
-                <Text
-                  style={(typography.body, styles.link)}
-                  onPress={() => props.navigation.navigate("Login")}
-                >
-                  Se connecter
-                </Text>
-              </View>
-            </View>
-          </ScrollView>
-
-          <View style={styles.logoContainer}>
-            <Image source={LogoKlean} style={styles.logo} />
+          <View style={styles.title}>
+            <Text style={typography.h1}>INSCRIPTION</Text>
           </View>
         </View>
+
+        <ScrollView>
+          <View style={styles.inputFields}>
+            <InputElement
+              name="firstName"
+              setState={changeState}
+              value={firstName}
+              placeholder="Prénom *"
+              type="simpleInput"
+            ></InputElement>
+            <InputElement
+              name="lastName"
+              setState={changeState}
+              value={lastName}
+              placeholder="Nom *"
+              type="simpleInput"
+            ></InputElement>
+            <InputElement
+              name="email"
+              setState={changeState}
+              value={email}
+              placeholder="Email *"
+              type="simpleInput"
+            ></InputElement>
+            <InputElement
+              name="city"
+              setState={changeState}
+              setShowAutoComplete={setShowAutoComplete}
+              value={city}
+              placeholder="Ville *"
+              type="simpleInput"
+            ></InputElement>
+            {showAutoComplete ? (
+              <AutoComplete
+                data={autoComplete}
+                onPress={setCity}
+                setShowAutoComplete={setShowAutoComplete}
+                cityInfoSetter={setCityInfo}
+              />
+            ) : null}
+
+            <InputElement
+              name="password"
+              setState={changeState}
+              placeholder="Password *"
+              type="simpleInput"
+              secureTextEntry={true}
+            ></InputElement>
+            <InputElement
+              name="confirmPassword"
+              setState={changeState}
+              placeholder="Confirm password *"
+              type="simpleInput"
+              secureTextEntry={true}
+            ></InputElement>
+          </View>
+          <View style={styles.error}>{errorsRegister}</View>
+
+          <View style={styles.register}>
+            {button}
+            <View style={styles.textContainer}>
+              <Text style={typography.body}>Vous avez déjà un compte?</Text>
+              <Text
+                style={(typography.body, styles.link)}
+                onPress={() => props.navigation.navigate("Login")}
+              >
+                Se connecter
+              </Text>
+            </View>
+          </View>
+        </ScrollView>
+
+        <View style={styles.logoContainer}>
+          <Image source={LogoKlean} style={styles.logo} />
+        </View>
+      </View>
       {/* </ScrollView> */}
     </SafeAreaView>
   );
@@ -268,6 +284,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   error: {
+    justifyContent: "center",
     alignItems: "center",
   },
   link: {
