@@ -3,7 +3,7 @@ import {
   StyleSheet,
   Text,
   View,
-  Image,
+  ImageBackground,
   KeyboardAvoidingView,
   Button,
   ScrollView,
@@ -79,19 +79,19 @@ function SignUp(props) {
     }
 
     if (password === confirmPassword) {
-    let data = await fetch(PROXY + "/users/sign-up", {
-      method: "POST",
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: finalBody,
-    });
+      let data = await fetch(PROXY + "/users/sign-up", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: finalBody,
+      });
 
-    let body = await data.json();
-    if (body.result == true) {
-      setUserExists(true);
-      props.login(body.token);
-    } else {
-      setListErrorSignup(body.error);
-    }
+      let body = await data.json();
+      if (body.result == true) {
+        setUserExists(true);
+        props.login(body.token);
+      } else {
+        setListErrorSignup(body.error);
+      }
     }
     else if (password !== confirmPassword) {
       setListErrorSignup(["Les deux mots de passe ne sont pas identiques."])
@@ -209,11 +209,10 @@ function SignUp(props) {
               </Text>
             </View>
           </View>
+          <View style={styles.logoContainer}>
+            <ImageBackground source={LogoKlean} resizeMode="contain" style={styles.logo} />
+          </View>
         </ScrollView>
-
-        <View style={styles.logoContainer}>
-          <Image source={LogoKlean} style={styles.logo} />
-        </View>
       </View>
     </SafeAreaView>
   );
@@ -286,8 +285,6 @@ const styles = StyleSheet.create({
     paddingTop: 10,
   },
   logoContainer: {
-    position: "absolute",
-    bottom: 0,
     width: windowDimensions.width,
     alignItems: "center",
   },

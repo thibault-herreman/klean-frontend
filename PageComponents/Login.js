@@ -3,7 +3,7 @@ import {
   StyleSheet,
   Text,
   View,
-  Image,
+  ImageBackground,
   KeyboardAvoidingView,
   ScrollView,
 } from "react-native";
@@ -108,7 +108,6 @@ function Login(props) {
           </View>
         </View>
 
-        {/* <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} > */}
         <ScrollView>
           <View style={styles.inputFields}>
             <InputElement
@@ -140,12 +139,10 @@ function Login(props) {
               </Text>
             </View>
           </View>
+          <View style={styles.logoContainer}>
+            <ImageBackground source={LogoKlean} resizeMode="contain" style={styles.logo} />
+          </View>
         </ScrollView>
-        {/* </KeyboardAvoidingView> */}
-
-        <View style={styles.logoContainer}>
-          <Image source={LogoKlean} style={styles.logo} />
-        </View>
       </View>
     </SafeAreaView>
   );

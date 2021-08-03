@@ -21,6 +21,8 @@ import ChangePassword from "../lib/ChangePassword";
 import { FontAwesome } from "@expo/vector-icons";
 import CleanwalkList from "../lib/CleanwalkList";
 import { ScrollView } from "react-native-gesture-handler";
+import * as ImagePicker from 'expo-image-picker';
+
 import PROXY from "../proxy";
 
 function Profil(props) {
@@ -46,6 +48,7 @@ function Profil(props) {
   });
   const [statPerso, setStatPerso] = useState(null);
   const [statCity, setStatCity] = useState(null);
+  const [image, setImage] = useState(null);
 
   useEffect(() => {
     const loadProfil = async () => {
@@ -63,6 +66,32 @@ function Profil(props) {
     };
     loadProfil();
   }, [props.cwsStore]);
+
+  useEffect(() => {
+    (async () => {
+      if (Platform.OS !== 'web') {
+        const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+        if (status !== 'granted') {
+          alert('Sorry, we need camera roll permissions to make this work!');
+        }
+      }
+    })();
+  }, []);
+
+  const pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    console.log(result);
+
+    if (!result.cancelled) {
+      setImage(result.uri);
+    }
+  };
 
   function modal() {
     setModalVisible(false);
@@ -260,9 +289,12 @@ function Profil(props) {
             titleType="secondary"
           />
           <View style={styles.infoPerso}>
-            <View style={styles.avatar}>
-              <FontAwesome name="user" size={40} color="white" />
-            </View>
+
+          <Image
+            style={styles.robot}
+            source={{uri: infosUser.avatarUrl}}
+            
+          />
             <View style={styles.statBody}>
               <Text style={styles.statBodyText}>{infosUser.firstName}</Text>
               <Text style={styles.statBodyText}>{infosUser.lastName}</Text>
@@ -272,6 +304,12 @@ function Profil(props) {
                 typeButton="password"
                 onPress={() => setModalVisible(true)}
               />
+              <ButtonElement
+                text="Modifier ma photo"
+                typeButton="password"
+                onPress={pickImage}
+              />
+              {image && <Image source={{ uri: image }} style={{ width: 80, height: 80 }} />}
             </View>
           </View>
           <ChangePassword
