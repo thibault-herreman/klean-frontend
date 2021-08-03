@@ -10,10 +10,9 @@ import pinSmall from "../assets/imagesKlean/pinSmall.png";
 import { windowDimensions } from "../lib/windowDimensions";
 import { typography } from "../lib/typography";
 import PROXY from "../proxy";
-import AutoComplete from "../lib/AutoComplete"
+import AutoComplete from "../lib/AutoComplete";
 
 function CreateEvent(props) {
-
   const [region, setRegion] = useState();
   const [newCleanwalk, setNewCleanwalk] = useState(null);
 
@@ -42,27 +41,25 @@ function CreateEvent(props) {
     getLocation();
   }, []);
 
-
   useEffect(() => {
     async function loadData() {
-        let rawResponse = await fetch(PROXY + '/autocomplete-search', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: `adress=${adress.replace(" ", "+")}`
-        });
-        let response = await rawResponse.json();
-        setAutoComplete(response.response)
-    };
+      let rawResponse = await fetch(PROXY + "/autocomplete-search", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: `adress=${adress.replace(" ", "+")}`,
+      });
+      let response = await rawResponse.json();
+      setAutoComplete(response.response);
+    }
     if (adress.length != null) {
-        loadData()
+      loadData();
     } else {
+    }
+  }, [adress]);
 
-    };
-}, [adress]);
-
-  function setRegionAndCw (item) {
+  function setRegionAndCw(item) {
     setRegion(item);
-    setNewCleanwalk({latitude: item.latitude, longitude: item.longitude});
+    setNewCleanwalk({ latitude: item.latitude, longitude: item.longitude });
   }
 
   function addCleanwalk(e) {
@@ -72,12 +69,22 @@ function CreateEvent(props) {
     });
   }
 
-  // async function centerOnUser() {
-  //   region = {
-  //     setCurrentLatitude(location.coords.latitude)
-  //     setCurrentLongitude(location.coords.longitude)
-  //   }
-  // }
+  async function centerOnUser() {
+    let { status } = await Location.requestForegroundPermissionsAsync();
+    if (status === "granted") {
+      let location = await Location.watchPositionAsync(
+        { distanceInterval: 10 },
+        (location) => {
+          setRegion({
+            latitude: location.coords.latitude,
+            longitude: location.coords.longitude,
+            latitudeDelta: 0.0922,
+            longitudeDelta: 0.0421,
+          });
+        }
+      );
+    }
+  }
 
   async function continueToForm() {
     let data = await fetch(PROXY + "/get-city-from-coordinates", {
@@ -95,7 +102,6 @@ function CreateEvent(props) {
       body: `city=${city}`,
     });
     let newResponse = await newData.json();
-    console.log("réponse front NEW: ", newResponse);
 
     props.sendCityInfo({
       cityName: newResponse.newResponse[0].properties.city,
@@ -104,7 +110,7 @@ function CreateEvent(props) {
       cityPopulation: newResponse.newResponse[0].properties.population,
 
       infoFromApi: response.response.features[0].properties,
-      cleanwalkCoordinates: { lat: latitudeOnClick, lon: longitudeOnClick },
+      cleanwalkCoordinates: { lat: newCleanwalk.latitude, lon: newCleanwalk.longitude },
     });
 
     props.navigation.navigate("EventFillInfo");
@@ -113,10 +119,22 @@ function CreateEvent(props) {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={styles.contentSearchBar}>
-        <SearchBarElement adress={adress} setAdress={setAdress} onChangeShowAutoComplete={setShowAutoComplete} placeholder="Où ? (adresse)" />
+        <SearchBarElement
+          adress={adress}
+          setAdress={setAdress}
+          onChangeShowAutoComplete={setShowAutoComplete}
+          placeholder="Où ? (adresse)"
+        />
       </View>
       <View>
-        {showAutoComplete ? <AutoComplete data={autoComplete} onPress={setAdress} setShowAutoComplete={setShowAutoComplete} regionSetter={setRegionAndCw} /> : null}
+        {showAutoComplete ? (
+          <AutoComplete
+            data={autoComplete}
+            onPress={setAdress}
+            setShowAutoComplete={setShowAutoComplete}
+            regionSetter={setRegionAndCw}
+          />
+        ) : null}
       </View>
       <MapView
         region={region}
@@ -143,16 +161,11 @@ function CreateEvent(props) {
       </MapView>
 
       <View style={styles.information}>
-        {/* <View>
-          <ButtonElement typeButton="geoloc" onPress={() => centerOnUser()} />
-        </View> */}
-
         <Text style={styles.textInfo}>
           <ButtonElement typeButton="geoloc" onPress={() => centerOnUser()} />-
           Saisir une adresse OU {"\n"}- appuyer longuement pour ajouter un
           repère.
         </Text>
-        {/*<Text style={styles.textInfo}></Text>*/}
       </View>
 
       <ButtonElement
@@ -222,31 +235,3 @@ const styles = StyleSheet.create({
   },
 });
 export default connect(mapStateToProps, mapDispatchToProps)(CreateEvent);
-
-/* <MapView
-style={styles.container}
-provider={PROVIDER_GOOGLE}
-initialRegion={{
-  latitude: 48.866667,
-  longitude: 2.333333,
-  latitudeDelta: 0.0922,
-  longitudeDelta: 0.0421,
-}}
-></MapView> */
-
-// const [position, setPosition] = useState({ latitude: 0, longitude: 0 });
-
-// useEffect(() => {
-//   async function askPermissions() {
-//     let { status } = await Location.requestForegroundPermissionsAsync();
-//     if (status === "granted") {
-//       Location.watchPositionAsync({ distanceInterval: 10 }, (location) => {
-//         setPosition({
-//           latitude: location.coords.latitude,
-//           longitude: location.coords.longitude,
-//         });
-//       });
-//     }
-//   }
-//   askPermissions();
-// }, []);
