@@ -1,4 +1,4 @@
-export default function (tokenObj = { token: "XeDLD?Mr3!U4HSJ?Sl74HJpKD!", IsFirstVisit: true }, action) {
+export default function (tokenObj = { token: "XeDLDMr3U4HSJSl74HJpKD", IsFirstVisit: true }, action) {
 
     if (action.type == 'login') {
         console.log("login in reducer")
@@ -6,7 +6,7 @@ export default function (tokenObj = { token: "XeDLD?Mr3!U4HSJ?Sl74HJpKD!", IsFir
 
     } else if (action.type == 'signOut') {
         console.log("signOut in reducer")
-        return { token: "XeDLD?Mr3!U4HSJ?Sl74HJpKD!", IsFirstVisit: false };
+        return { token: "XeDLDMr3U4HSJSl74HJpKD", IsFirstVisit: false };
 
     } else {
         console.log("not login in reducer")

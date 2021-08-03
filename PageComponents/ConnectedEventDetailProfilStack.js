@@ -28,7 +28,7 @@ function ConnectedEventDetailProfilStack(props) {
 
     useEffect(() => {
         async function loadData() {
-            const responseCleanwalk = await fetch(PROXY + `/load-cleanwalk/${idCW}`);
+            const responseCleanwalk = await fetch(PROXY + `/load-cleanwalk/${idCW}/${props.tokenObj.token}`);
             const jsonResponseCleanwalk = await responseCleanwalk.json();
 
             setCleanwalk(jsonResponseCleanwalk.cleanwalk);

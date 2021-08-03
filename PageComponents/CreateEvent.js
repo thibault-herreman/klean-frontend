@@ -48,7 +48,7 @@ function CreateEvent(props) {
         let rawResponse = await fetch(PROXY + '/autocomplete-search', {
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: `adress=${adress.replace(" ", "+")}`
+            body: `adress=${adress.replace(" ", "+")}&token=${props.tokenObj.token}`
         });
         let response = await rawResponse.json();
         setAutoComplete(response.response)
@@ -83,7 +83,7 @@ function CreateEvent(props) {
     let data = await fetch(PROXY + "/get-city-from-coordinates", {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: `latFromFront=${newCleanwalk.latitude}&lonFromFront=${newCleanwalk.longitude}`,
+      body: `token=${props.tokenObj.token}&latFromFront=${newCleanwalk.latitude}&lonFromFront=${newCleanwalk.longitude}`,
     });
     let response = await data.json();
 
@@ -92,7 +92,7 @@ function CreateEvent(props) {
     let newData = await fetch(PROXY + "/search-city-only", {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: `city=${city}`,
+      body: `token=${props.tokenObj.token}&city=${city}`,
     });
     let newResponse = await newData.json();
     console.log("réponse front NEW: ", newResponse);
