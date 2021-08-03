@@ -26,11 +26,8 @@ function SignUp(props) {
   const [city, setCity] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-
   const [userExists, setUserExists] = useState(false);
   const [listErrorSignup, setListErrorSignup] = useState([]);
-  const [listErrorRegister, setListErrorRegister] = useState([]);
-  const [listErrorNetwork, setListErrorNetwork] = useState([]);
 
   const [autoComplete, setAutoComplete] = useState([]);
   const [showAutoComplete, setShowAutoComplete] = useState(true);
@@ -137,7 +134,6 @@ function SignUp(props) {
 
   return (
     <SafeAreaView style={styles.safeArea}>
-      {/* <ScrollView style={{height:windowDimensions.height}}> */}
       <View style={styles.mainView}>
         <View style={styles.topBanner}>
           <View style={styles.backButton}>
@@ -223,7 +219,6 @@ function SignUp(props) {
           <Image source={LogoKlean} style={styles.logo} />
         </View>
       </View>
-      {/* </ScrollView> */}
     </SafeAreaView>
   );
 }
