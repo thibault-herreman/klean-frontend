@@ -10,13 +10,16 @@ import pinSmall from "../assets/imagesKlean/pinSmall.png";
 import { windowDimensions } from "../lib/windowDimensions";
 import { typography } from "../lib/typography";
 import PROXY from "../proxy";
+import AutoComplete from "../lib/AutoComplete"
 
 function CreateEvent(props) {
-  const [currentLatitude, setCurrentLatitude] = useState();
-  const [currentLongitude, setCurrentLongitude] = useState(0);
-  const [region, setRegion] = useState();
 
+  const [region, setRegion] = useState();
   const [newCleanwalk, setNewCleanwalk] = useState(null);
+
+  const [autoComplete, setAutoComplete] = useState([]);
+  const [showAutoComplete, setShowAutoComplete] = useState(false);
+  const [adress, setAdress] = useState("");
 
   // à terminer pour géolocaliser le user au clic sur le picto géoloc
   useEffect(() => {
@@ -38,6 +41,29 @@ function CreateEvent(props) {
     }
     getLocation();
   }, []);
+
+
+  useEffect(() => {
+    async function loadData() {
+        let rawResponse = await fetch(PROXY + '/autocomplete-search', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: `adress=${adress.replace(" ", "+")}`
+        });
+        let response = await rawResponse.json();
+        setAutoComplete(response.response)
+    };
+    if (adress.length != null) {
+        loadData()
+    } else {
+
+    };
+}, [adress]);
+
+  function setRegionAndCw (item) {
+    setRegion(item);
+    setNewCleanwalk({latitude: item.latitude, longitude: item.longitude});
+  }
 
   function addCleanwalk(e) {
     setNewCleanwalk({
@@ -87,7 +113,10 @@ function CreateEvent(props) {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={styles.contentSearchBar}>
-        <SearchBarElement placeholder="Où ? (adresse)" />
+        <SearchBarElement adress={adress} setAdress={setAdress} onChangeShowAutoComplete={setShowAutoComplete} placeholder="Où ? (adresse)" />
+      </View>
+      <View>
+        {showAutoComplete ? <AutoComplete data={autoComplete} onPress={setAdress} setShowAutoComplete={setShowAutoComplete} regionSetter={setRegionAndCw} /> : null}
       </View>
       <MapView
         region={region}
