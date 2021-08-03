@@ -18,6 +18,7 @@ function ConnectedEventDetailProfilStack(props) {
     let idCW = props.cwIdProfilStack;
 
     const [cleanwalk, setCleanwalk] = useState(null);
+    const [error, setError] = useState(null);
 
     const dataParticipants = (admin, participants) => {
         participants.unshift(admin);
@@ -33,6 +34,67 @@ function ConnectedEventDetailProfilStack(props) {
         }
         loadData();
     }, []);
+
+    const unsubscribeCw = async () => {
+        let rawResponse = await fetch(`${PROXY}/unsubscribe-cw`, {
+            method: "POST",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            body: `token=${props.tokenObj.token}&idCW=${idCW}`
+        });
+
+        let body = await rawResponse.json();
+        if (body.result == true) {
+            props.desinsCws(idCW);
+            props.navigation.navigate("Profil");
+        } if (body.result == false){
+            setError(body.error)
+        }
+    
+    }
+
+    const deleteCw = async () => {
+        let rawResponse = await fetch(`${PROXY}/delete-cw/${props.tokenObj.token}/${idCW}`, {
+            method: 'DELETE'
+        });
+
+        let body = await rawResponse.json();
+        if (body.result == true) {
+            props.supCws(idCW);
+            props.navigation.navigate("Profil");
+        } if (body.result == false){
+            setError(body.error)
+        }
+
+    }
+
+    const checkCwsOrganize = props.cwsStore.infosCWorganize.findIndex(
+        index => index === idCW
+    );
+
+    let confirmButton;
+    if (checkCwsOrganize !== -1) {
+        confirmButton = <View style={styles.confirmButton}>
+                            <ButtonElement
+                                typeButton="middleSecondary"
+                                text="Supprimer la cleanwalk"
+                                onPress={ () => deleteCw() }
+                            />
+                        </View>;
+    } else {
+        confirmButton = <View style={styles.confirmButton}>
+                            <ButtonElement
+                                typeButton="middleSecondary"
+                                text="Se désinscrire"
+                                onPress={ () => unsubscribeCw() }
+                            />
+                        </View>;
+    }
+
+    let errors = (
+        <View>
+            <Text>{error};</Text>
+        </View>
+    );
     
     if (cleanwalk === null) {
         return (
@@ -116,13 +178,8 @@ function ConnectedEventDetailProfilStack(props) {
 
                     </View>
 
-                    <View style={styles.confirmButton}>
-                        <ButtonElement
-                            typeButton="middleSecondary"
-                            text="Me désinscrire"
-                            onPress={() => props.navigation.navigate('Profil')}
-                        />
-                    </View>
+                    {errors}
+                    {confirmButton}
 
                 </ScrollView>
             </SafeAreaView>
@@ -132,22 +189,20 @@ function ConnectedEventDetailProfilStack(props) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        login: function (token) {
-            dispatch({ type: "login", token });
+        desinsCws: function (idCW) {
+            dispatch({ type: "desinsCws", idCW });
         },
-        signOut: function () {
-            dispatch({ type: "signOut" });
-        },
-        participateCleanwalk: function (cleanwalkId) {
-            dispatch({ type: "participate", cleanwalkIdFromButton: cleanwalkId });
-        },
+        supCws: function (idCW) {
+            dispatch({ type: "supCws", idCW });
+        }
     };
 }
 
 function mapStateToProps(state) {
     return { 
         tokenObj: state.tokenObj, 
-        cwIdProfilStack: state.cwIdProfilStack 
+        cwIdProfilStack: state.cwIdProfilStack,
+        cwsStore: state.cwsStore
     };
 }
 
@@ -220,17 +275,3 @@ export default connect(
     mapStateToProps,
     mapDispatchToProps
 )(ConnectedEventDetailProfilStack);
-
-
-        // <View style={styles.container}>
-        //     <Text>ConnectedEventDetail-MapStack</Text>
-        //     <Text>{`${props.token}`}</Text>
-        //     <Button title="login" onPress={() => props.login("monsupertokenchercheenbdd")} />
-        //     <Button title="signOut" onPress={() => props.signOut()} />
-        //     <Button title="ConnectedMapScreen"
-        //         onPress={() => props.navigation.navigate('ConnectedMapScreen')} />
-        //     <Button title="ConnectedEventDetail"
-        //         onPress={() => props.navigation.navigate('ConnectedEventDetailMapStack')} />
-        //     <Button title="Chat"
-        //         onPress={() => props.navigation.navigate('ChatMapStack')} />
-        // </View>

@@ -3,7 +3,7 @@ import {
   StyleSheet,
   Text,
   View,
-  Image,
+  ImageBackground,
   KeyboardAvoidingView,
   Button,
   ScrollView,
@@ -26,11 +26,8 @@ function SignUp(props) {
   const [city, setCity] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-
   const [userExists, setUserExists] = useState(false);
   const [listErrorSignup, setListErrorSignup] = useState([]);
-  const [listErrorRegister, setListErrorRegister] = useState([]);
-  const [listErrorNetwork, setListErrorNetwork] = useState([]);
 
   const [autoComplete, setAutoComplete] = useState([]);
   const [showAutoComplete, setShowAutoComplete] = useState(true);
@@ -82,19 +79,19 @@ function SignUp(props) {
     }
 
     if (password === confirmPassword) {
-    let data = await fetch(PROXY + "/users/sign-up", {
-      method: "POST",
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: finalBody,
-    });
+      let data = await fetch(PROXY + "/users/sign-up", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: finalBody,
+      });
 
-    let body = await data.json();
-    if (body.result == true) {
-      setUserExists(true);
-      props.login(body.token);
-    } else {
-      setListErrorSignup(body.error);
-    }
+      let body = await data.json();
+      if (body.result == true) {
+        setUserExists(true);
+        props.login(body.token);
+      } else {
+        setListErrorSignup(body.error);
+      }
     }
     else if (password !== confirmPassword) {
       setListErrorSignup(["Les deux mots de passe ne sont pas identiques."])
@@ -133,7 +130,6 @@ function SignUp(props) {
 
   return (
     <SafeAreaView style={styles.safeArea}>
-      {/* <ScrollView style={{height:windowDimensions.height}}> */}
       <View style={styles.mainView}>
         <View style={styles.topBanner}>
           <View style={styles.backButton}>
@@ -213,13 +209,11 @@ function SignUp(props) {
               </Text>
             </View>
           </View>
+          <View style={styles.logoContainer}>
+            <ImageBackground source={LogoKlean} resizeMode="contain" style={styles.logo} />
+          </View>
         </ScrollView>
-
-        <View style={styles.logoContainer}>
-          <Image source={LogoKlean} style={styles.logo} />
-        </View>
       </View>
-      {/* </ScrollView> */}
     </SafeAreaView>
   );
 }
@@ -291,8 +285,6 @@ const styles = StyleSheet.create({
     paddingTop: 10,
   },
   logoContainer: {
-    position: "absolute",
-    bottom: 0,
     width: windowDimensions.width,
     alignItems: "center",
   },
