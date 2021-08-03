@@ -9,10 +9,11 @@ import tokenObj from './Reducers/token.reducer'
 import cwIdInvited from './Reducers/cwIdInvited';
 import cwIdMapStack from './Reducers/cwIdMapStack';
 import cwIdProfilStack from './Reducers/cwIdProfilStack';
-import cityInfo from './Reducers/createCleanwalk'
-import Nav from './NavComponents/Nav'
+import cityInfo from './Reducers/createCleanwalk';
+import cwsStore from './Reducers/cwsStore';
+import Nav from './NavComponents/Nav';
 
-const store = createStore(combineReducers({ tokenObj, cwIdInvited, cwIdMapStack, cwIdProfilStack, cityInfo }));
+const store = createStore(combineReducers({ tokenObj, cwIdInvited, cwIdMapStack, cwIdProfilStack, cityInfo, cwsStore }));
 
 export default function App() {
 

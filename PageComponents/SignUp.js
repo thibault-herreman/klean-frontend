@@ -39,7 +39,7 @@ function SignUp(props) {
       let rawResponse = await fetch(PROXY + "/autocomplete-search-city-only", {
         method: "POST",
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: `city=${city.replace(" ", "+")}`,
+        body: `city=${city.replace(" ", "+")}&token=${props.tokenObj.token}`,
       });
       let response = await rawResponse.json();
       setAutoComplete(response.newResponse);
@@ -67,12 +67,8 @@ function SignUp(props) {
   };
 
   async function register() {
-    let bodyWithoutID = `firstNameFromFront=${firstName}&lastNameFromFront=${lastName}&emailFromFront=${email}&cityFromFront=${city}&passwordFromFront=${password}&cityInfo=${JSON.stringify(
-      cityInfo
-    )}`;
-    let bodyWithId = `firstNameFromFront=${firstName}&lastNameFromFront=${lastName}&emailFromFront=${email}&cityFromFront=${city}&passwordFromFront=${password}&cityInfo=${JSON.stringify(
-      cityInfo
-    )}&cleanwalkIdFromFront=${props.cwIdInvited}`;
+    let bodyWithoutID = `token=${props.tokenObj.token}&firstNameFromFront=${firstName}&lastNameFromFront=${lastName}&emailFromFront=${email}&cityFromFront=${city}&passwordFromFront=${password}&cityInfo=${JSON.stringify(cityInfo)}`;
+    let bodyWithId = `token=${props.tokenObj.token}&firstNameFromFront=${firstName}&lastNameFromFront=${lastName}&emailFromFront=${email}&cityFromFront=${city}&passwordFromFront=${password}&cityInfo=${JSON.stringify(cityInfo)}&cleanwalkIdFromFront=${props.cwIdInvited}`;
     let finalBody;
 
     if (props.cwIdInvited == null) {
