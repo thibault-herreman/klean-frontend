@@ -138,6 +138,9 @@ function CreateEvent(props) {
       </View>
       <MapView
         region={region}
+        onRegionChangeComplete={ (newRegion) => {
+          setRegion(newRegion)
+        }}
         style={styles.container}
         provider={PROVIDER_GOOGLE}
         initialRegion={{
