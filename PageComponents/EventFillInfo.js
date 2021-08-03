@@ -53,8 +53,6 @@ function EventFillInfo(props) {
     }
   };
 
-  console.log("props: ", props.cityInfo);
-
   var addCW = async () => {
     const dataCW = await fetch(PROXY + "/create-cw", {
       method: "POST",
@@ -68,7 +66,6 @@ function EventFillInfo(props) {
 
     let body = await dataCW.json();
     setError(body.error);
-    console.log("body: ", body);
 
     if (body.result == true) {
       props.navigation.navigate("Profil");

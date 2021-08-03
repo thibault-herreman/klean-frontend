@@ -14,11 +14,9 @@ import PROXY from "../proxy";
 function CreateEvent(props) {
   const [currentLatitude, setCurrentLatitude] = useState();
   const [currentLongitude, setCurrentLongitude] = useState(0);
+  const [region, setRegion] = useState();
 
-  const [latitudeOnClick, setLatitudeOnClick] = useState(0);
-  const [longitudeOnClick, setLongitudeOnClick] = useState(0);
-
-  const [cleanwalk, setCleanwalk] = useState([]);
+  const [newCleanwalk, setNewCleanwalk] = useState(null);
 
   // à terminer pour géolocaliser le user au clic sur le picto géoloc
   useEffect(() => {
@@ -28,8 +26,12 @@ function CreateEvent(props) {
         let location = await Location.watchPositionAsync(
           { distanceInterval: 10 },
           (location) => {
-            setCurrentLatitude(location.coords.latitude);
-            setCurrentLongitude(location.coords.longitude);
+            setRegion({
+              latitude: location.coords.latitude,
+              longitude: location.coords.longitude,
+              latitudeDelta: 0.0922,
+              longitudeDelta: 0.0421,
+            });
           }
         );
       }
@@ -37,36 +39,25 @@ function CreateEvent(props) {
     getLocation();
   }, []);
 
-  let newMarker = cleanwalk.map(function (marker, i) {
-    return (
-      <Marker
-        coordinate={{
-          latitude: latitudeOnClick,
-          longitude: longitudeOnClick,
-        }}
-        image={pinSmall}
-        draggable
-      />
-    );
-  });
-
   function addCleanwalk(e) {
-    setLatitudeOnClick(e.nativeEvent.coordinate.latitude);
-    setLongitudeOnClick(e.nativeEvent.coordinate.longitude);
-    setCleanwalk([
-      ...cleanwalk,
-      { latitude: latitudeOnClick, longitude: longitudeOnClick },
-    ]);
-    console.log("lat: ", latitudeOnClick, "lon: ", longitudeOnClick);
+    setNewCleanwalk({
+      latitude: e.nativeEvent.coordinate.latitude,
+      longitude: e.nativeEvent.coordinate.longitude,
+    });
   }
 
-  // function centerOnUser() {}
+  async function centerOnUser() {
+    region = {
+      setCurrentLatitude(location.coords.latitude)
+      setCurrentLongitude(location.coords.longitude)
+    }
+  }
 
   async function continueToForm() {
     let data = await fetch(PROXY + "/get-city-from-coordinates", {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: `latFromFront=${latitudeOnClick}&lonFromFront=${longitudeOnClick}`,
+      body: `latFromFront=${newCleanwalk.latitude}&lonFromFront=${newCleanwalk.longitude}`,
     });
     let response = await data.json();
 
@@ -99,6 +90,7 @@ function CreateEvent(props) {
         <SearchBarElement placeholder="Où ? (adresse)" />
       </View>
       <MapView
+        region={region}
         style={styles.container}
         provider={PROVIDER_GOOGLE}
         initialRegion={{
@@ -109,16 +101,26 @@ function CreateEvent(props) {
         }}
         onLongPress={(e) => addCleanwalk(e)}
       >
-        {newMarker}
+        {newCleanwalk ? (
+          <Marker
+            coordinate={{
+              latitude: newCleanwalk.latitude,
+              longitude: newCleanwalk.longitude,
+            }}
+            image={pinSmall}
+            draggable
+          />
+        ) : null}
       </MapView>
 
       <View style={styles.information}>
-        <View>
+        {/* <View>
           <ButtonElement typeButton="geoloc" onPress={() => centerOnUser()} />
-        </View>
+        </View> */}
 
         <Text style={styles.textInfo}>
-          - Saisir une adresse OU {"\n"}- appuyer longuement pour ajouter un
+          <ButtonElement typeButton="geoloc" onPress={() => centerOnUser()} />-
+          Saisir une adresse OU {"\n"}- appuyer longuement pour ajouter un
           repère.
         </Text>
         {/*<Text style={styles.textInfo}></Text>*/}

@@ -53,7 +53,6 @@ function Login(props) {
       props.login(body.token);
       let rawResponse = await fetch(`${PROXY}/load-cw-forstore/${body.token}`);
       let response = await rawResponse.json();
-      //console.log('response cw login', response);
     }
   }
 
