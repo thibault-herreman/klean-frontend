@@ -24,6 +24,64 @@ function ConnectedEventDetailMapStack(props) {
         return participants;
     };
 
+    const unsubscribeCw = async () => {
+        let rawResponse = await fetch(`${PROXY}/unsubscribe-cw`, {
+            method: "POST",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            body: `token=${props.tokenObj.token}&idCW=${idCW}`
+        });
+
+        props.majCwsParticip(idCW);
+        props.navigation.navigate("Profil");
+    }
+
+    const deleteCw = async () => {
+        let rawResponse = await fetch(`${PROXY}/delete-cw/${props.tokenObj.token}/${idCW}`, {
+            method: 'DELETE'
+        });
+
+        props.majCwsOrga(idCW);
+        props.navigation.navigate("Profil");
+    }
+
+    const checkCwsParticipate = props.cwsStore.infosCWparticipate.findIndex(
+        index => index === idCW
+    );
+
+    const checkCwsOrganize = props.cwsStore.infosCWorganize.findIndex(
+        index => index === idCW
+    );
+
+    let confirmButton;
+    if (checkCwsParticipate !== -1) {
+        confirmButton = <View style={styles.confirmButton}>
+                            <ButtonElement
+                                typeButton="middleSecondary"
+                                text="Se désinscrire"
+                                onPress={ () => unsubscribeCw() }
+                            />
+                        </View>;
+    } else if (checkCwsOrganize !== -1) {
+        confirmButton = <View style={styles.confirmButton}>
+                            <ButtonElement
+                                typeButton="middleSecondary"
+                                text="Supprimer la cleanwalk"
+                                onPress={ () => deleteCw() }
+                            />
+                        </View>;
+    } else {
+        confirmButton = <View style={styles.confirmButton}>
+                            <ButtonElement
+                                typeButton="middleSecondary"
+                                text="Participer"
+                                onPress={() => {
+                                    props.cleanwalkId;
+                                    props.navigation.navigate("Profil");
+                                }}
+                            />
+                        </View>;
+    }
+
     useEffect(() => {
         async function loadData() {
             const responseCleanwalk = await fetch(PROXY + `/load-cleanwalk/${idCW}`);
@@ -108,16 +166,7 @@ function ConnectedEventDetailMapStack(props) {
                         </View>
                     </View>
 
-                    <View style={styles.confirmButton}>
-                        <ButtonElement
-                            typeButton="middleSecondary"
-                            text="Participer"
-                            onPress={() => {
-                                props.cleanwalkId;
-                                props.navigation.navigate("Profil");
-                            }}
-                        />
-                    </View>
+                    {confirmButton}
 
                 </ScrollView>
             </SafeAreaView>
@@ -134,11 +183,17 @@ function mapDispatchToProps(dispatch) {
         signOut: function () {
             dispatch({ type: "signOut" });
         },
+        majCwsParticip: function (idCW) {
+            dispatch({ type: "majCwsParticip", idCW });
+        },
+        majCwsOrga: function (idCW) {
+            dispatch({ type: "majCwsOrga", idCW });
+        }
     };
 }
 
 function mapStateToProps(state) {
-    return { tokenObj: state.tokenObj, cwIdMapStack: state.cwIdMapStack };
+    return { tokenObj: state.tokenObj, cwIdMapStack: state.cwIdMapStack, cwsStore: state.cwsStore };
 }
 
 const styles = StyleSheet.create({
