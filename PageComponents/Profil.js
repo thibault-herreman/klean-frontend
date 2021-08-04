@@ -47,7 +47,6 @@ function Profil(props) {
   });
   const [statPerso, setStatPerso] = useState(null);
   const [statCity, setStatCity] = useState(null);
-  const [image, setImage] = useState(null);
 
   useEffect(() => {
     const loadProfil = async () => {
@@ -82,13 +81,15 @@ function Profil(props) {
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
       aspect: [4, 3],
-      quality: 1,
+      quality: 0.7,
     });
 
-    console.log(result);
+    console.log("result", result);
 
     if (!result.cancelled) {
-      setImage(result.uri);
+      return result.uri;
+    } else {
+      return false
     }
   };
 
@@ -311,9 +312,34 @@ function Profil(props) {
               <ButtonElement
                 text="Modifier ma photo"
                 typeButton="password"
-                onPress={pickImage}
+                // onPress={pickImage}
+
+                onPress={async () => {
+                  let image = await pickImage();
+                  console.log("image", image)
+                  
+                  if (image) {
+                  var data = new FormData();
+                  data.append('avatar', {
+                    uri: image,
+                    type: 'image/jpeg',
+                    name: 'avatar.jpg',
+                  });
+
+                  var rawResponse = await fetch (PROXY + `/upload-photo/${props.tokenObj.token}`, {
+                    method: 'POST',
+                    body: data
+                  });
+              
+                  var response = await rawResponse.json();
+                  console.log("response", response);
+                } else {
+
+                }
+                }}
+                
               />
-              {image && <Image source={{ uri: image }} style={{ width: 80, height: 80 }} />}
+
             </View>
           </View>
           <ChangePassword
