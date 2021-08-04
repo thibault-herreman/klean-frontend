@@ -109,8 +109,6 @@ function CreateEvent(props) {
     props.navigation.navigate("EventFillInfo");
   }
 
-  console.log("coord: ", newCleanwalk);
-
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={styles.contentSearchBar}>
