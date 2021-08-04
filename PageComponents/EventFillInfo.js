@@ -68,9 +68,8 @@ function EventFillInfo(props) {
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
       body: `title=${title}&city=${JSON.stringify(
         props.cityInfo
-      )}&startingDate=${startingDate}&endingDate=${endingDate}&description=${description}&tool=${tool}&token=${
-        props.tokenObj.token
-      }`,
+      )}&startingDate=${startingDate}&endingDate=${endingDate}&description=${description}&tool=${tool}&token=${props.tokenObj.token
+        }`,
     });
 
     let body = await dataCW.json();
@@ -101,7 +100,9 @@ function EventFillInfo(props) {
       </View>
 
       {/* <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} > */}
-      <ScrollView>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+      >
         <View style={styles.inputFields}>
           <InputElement
             placeholder="Titre *"
@@ -121,14 +122,14 @@ function EventFillInfo(props) {
             type="date"
             dateSearch={startingDate}
             setDateSearch={setStartingDate}
-            // resetDate={resetDate}
+          // resetDate={resetDate}
           />
           <SearchBarElement
             type="time"
             dateSearch={startingDate}
             setDateSearch={setStartingDate}
-            // reset={reset}
-            // setReset={setReset}
+          // reset={reset}
+          // setReset={setReset}
           />
 
           <SearchBarElement
