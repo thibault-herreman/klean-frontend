@@ -172,6 +172,7 @@ function ConnectedEventDetailProfilStack(props) {
                             <ScreenTitles titleType="secondary" title="Chat" />
                             <ButtonElement
                                 typeButton="chat"
+                                btnActive={true}
                                 onPress={() => props.navigation.navigate('ChatProfilStack')}
                             />
                         </View>
