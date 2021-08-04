@@ -99,6 +99,8 @@ function Login(props) {
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.mainView}>
+        <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"}>
+
         <View style={styles.topBanner}>
           <View style={styles.backButton}>
             <ButtonElement typeButton="back" onPress={() => backArrow()} />
@@ -143,6 +145,8 @@ function Login(props) {
             <ImageBackground source={LogoKlean} resizeMode="contain" style={styles.logo} />
           </View>
         </ScrollView>
+        
+        </KeyboardAvoidingView>
       </View>
     </SafeAreaView>
   );
