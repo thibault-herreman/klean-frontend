@@ -6,7 +6,7 @@ import {
   StatusBar,
   Image,
   SafeAreaView,
-  ActivityIndicator,
+  ActivityIndicator
 } from "react-native";
 
 import { colors } from "../lib/colors";
@@ -117,7 +117,7 @@ function Profil(props) {
     cwListParticipate = (
       <View style={styles.ctTextNoCw}>
         <Text style={styles.textNoCw}>
-          Vous ne participez à aucune cleanwalk :(
+          {"Vous ne participez à aucune cleanwalk :\("}
         </Text>
       </View>
     );
@@ -139,7 +139,7 @@ function Profil(props) {
     cwListOrganize = (
       <View style={styles.ctTextNoCw}>
         <Text style={styles.textNoCw}>
-          Vous n'organisez pas encore de cleanwalks
+        {"Vous n'organisez pas encore de cleanwalks :\("}
         </Text>
       </View>
     );
@@ -160,6 +160,7 @@ function Profil(props) {
     return (
       <View style={styles.container}>
         <SafeAreaView style={styles.header}>
+        
           <View style={styles.dull}></View>
           <Text style={styles.mainTitle}> MON PROFIL </Text>
           <View style={styles.logout}>

@@ -68,9 +68,8 @@ function EventFillInfo(props) {
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
       body: `title=${title}&city=${JSON.stringify(
         props.cityInfo
-      )}&startingDate=${startingDate}&endingDate=${endingDate}&description=${description}&tool=${tool}&token=${
-        props.tokenObj.token
-      }`,
+      )}&startingDate=${startingDate}&endingDate=${endingDate}&description=${description}&tool=${tool}&token=${props.tokenObj.token
+        }`,
     });
 
     let body = await dataCW.json();
@@ -93,97 +92,99 @@ function EventFillInfo(props) {
 
   return (
     <SafeAreaView style={styles.safeArea}>
-      <View style={styles.topBanner}>
-        <View style={styles.backButton}>
-          <ButtonElement
-            typeButton="back"
-            onPress={() => props.navigation.navigate("CreateEvent")}
-          />
-        </View>
-      </View>
+      <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"}>
 
-      {/* <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} > */}
-      <ScrollView>
-        <View style={styles.inputFields}>
-          <InputElement
-            placeholder="Titre *"
-            type="simpleInput"
-            name="title"
-            setState={changeState}
-            value={title}
-          />
-          <InputElement
-            placeholder="Ville *"
-            type="simpleInputDisabled"
-            name="city"
-            setState={changeState}
-            value={city}
-          />
-          <SearchBarElement
-            type="date"
-            dateSearch={startingDate}
-            setDateSearch={setStartingDate}
-            // resetDate={resetDate}
-          />
-          <SearchBarElement
-            type="time"
-            dateSearch={startingDate}
-            setDateSearch={setStartingDate}
-            // reset={reset}
-            // setReset={setReset}
-          />
-
-          <SearchBarElement
-            type="date"
-            dateSearch={endingDate}
-            setDateSearch={setEndingDate}
-          />
-          <SearchBarElement
-            type="time"
-            dateSearch={endingDate}
-            setDateSearch={setEndingDate}
-          />
-
-          <InputElement
-            placeholder="Description *"
-            type="multilineInput"
-            name="description"
-            setState={changeState}
-            value={description}
-          />
-          <InputElement
-            placeholder="Matériel 1, matériel 2, matériel 3; ... (respecter la mise en forme) *"
-            type="multilineInput"
-            name="tool"
-            setState={changeState}
-            value={tool}
-          />
-
-          {errors}
-
-          <View style={styles.guide}>
-            <Text style={typography.body}>Guide pour l'organisateur</Text>
+        <View style={styles.topBanner}>
+          <View style={styles.backButton}>
             <ButtonElement
-              style={styles.infoIcon}
-              onPress={() => setModalVisible(true)}
-              typeButton="info"
+              typeButton="back"
+              onPress={() => props.navigation.navigate("CreateEvent")}
             />
-            <EventGuide visible={modalVisible} close={modal} />
           </View>
         </View>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+        >
+          <View style={styles.inputFields}>
+            <InputElement
+              placeholder="Titre *"
+              type="simpleInput"
+              name="title"
+              setState={changeState}
+              value={title}
+            />
+            <InputElement
+              placeholder="Ville *"
+              type="simpleInputDisabled"
+              name="city"
+              setState={changeState}
+              value={city}
+            />
+            <SearchBarElement
+              type="date"
+              dateSearch={startingDate}
+              setDateSearch={setStartingDate}
+            // resetDate={resetDate}
+            />
+            <SearchBarElement
+              type="time"
+              dateSearch={startingDate}
+              setDateSearch={setStartingDate}
+            // reset={reset}
+            // setReset={setReset}
+            />
 
-        <View style={styles.register}>
-          <ButtonElement
-            style={styles.registerButton}
-            typeButton="middleSecondary"
-            text="Organiser"
-            onPress={() => {
-              addCW();
-            }}
-          />
-        </View>
-      </ScrollView>
-      {/* </KeyboardAvoidingView> */}
+            <SearchBarElement
+              type="date"
+              dateSearch={endingDate}
+              setDateSearch={setEndingDate}
+            />
+            <SearchBarElement
+              type="time"
+              dateSearch={endingDate}
+              setDateSearch={setEndingDate}
+            />
+
+            <InputElement
+              placeholder="Description *"
+              type="multilineInput"
+              name="description"
+              setState={changeState}
+              value={description}
+            />
+            <InputElement
+              placeholder="Matériel 1, matériel 2, matériel 3; ... (respecter la mise en forme) *"
+              type="multilineInput"
+              name="tool"
+              setState={changeState}
+              value={tool}
+            />
+
+            {errors}
+
+            <Text style={styles.guide} style={typography.body}>Guide pour l'organisateur
+              <ButtonElement
+                onPress={() => setModalVisible(true)}
+                typeButton="info"
+              />
+            </Text>
+            <EventGuide visible={modalVisible} close={modal} />
+
+          </View>
+
+          <View style={styles.register}>
+            <ButtonElement
+              style={styles.registerButton}
+              typeButton="middleSecondary"
+              text="Organiser"
+              onPress={() => {
+                addCW();
+              }}
+            />
+          </View>
+
+        </ScrollView>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 }
@@ -231,12 +232,9 @@ const styles = StyleSheet.create({
   guide: {
     flexDirection: "row",
     alignItems: "center",
+    justifyContent: 'center',
     marginTop: 10,
-  },
-  infoIcon: {
-    backgroundColor: "#000000",
-    marginHorizontal: 100,
-  },
+  }
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(EventFillInfo);

@@ -43,18 +43,16 @@ function Login(props) {
     });
 
     let body = await data.json();
+    console.log("body: ", body);
     if (body.result == true) {
       setUserExists(true);
-    } else {
-      setListErrorLogin(body.error);
-    }
-
-    if (userExists) {
       props.login(body.token);
       let rawResponse = await fetch(`${PROXY}/load-cw-forstore/${body.token}`);
       let response = await rawResponse.json();
       props.loadCwsStore({ infosCWparticipate: response.infosCWparticipate, infosCWorganize: response.infosCWorganize });
       AsyncStorage.setItem('token', JSON.stringify({ token: body.token, IsFirstVisit: false }));
+    } else {
+      setListErrorLogin(body.error);
     }
   }
 
@@ -98,6 +96,8 @@ function Login(props) {
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.mainView}>
+        <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"}>
+
         <View style={styles.topBanner}>
           <View style={styles.backButton}>
             <ButtonElement typeButton="back" onPress={() => backArrow()} />
@@ -142,6 +142,8 @@ function Login(props) {
             <ImageBackground source={LogoKlean} resizeMode="contain" style={styles.logo} />
           </View>
         </ScrollView>
+        
+        </KeyboardAvoidingView>
       </View>
     </SafeAreaView>
   );
