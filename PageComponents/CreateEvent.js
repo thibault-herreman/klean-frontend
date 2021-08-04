@@ -113,6 +113,7 @@ function CreateEvent(props) {
       cleanwalkCoordinates: { lat: newCleanwalk.latitude, lon: newCleanwalk.longitude },
     });
 
+    setNewCleanwalk(null);
     props.navigation.navigate("EventFillInfo");
   }
 

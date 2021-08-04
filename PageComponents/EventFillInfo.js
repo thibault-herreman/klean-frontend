@@ -24,7 +24,7 @@ function EventFillInfo(props) {
   const [endingDate, setEndingDate] = useState(new Date());
   const [description, setDescription] = useState("");
   const [tool, setTool] = useState("");
-
+  const [reset, setReset] = useState(false);
   const [error, setError] = useState();
 
   const [modalVisible, setModalVisible] = useState(false);
@@ -53,20 +53,33 @@ function EventFillInfo(props) {
     }
   };
 
+  function cleanFields() {
+    setTitle("");
+    setCity("");
+    setStartingDate(new Date());
+    setEndingDate(new Date());
+    setDescription("");
+    setTool("");
+  }
+
   var addCW = async () => {
     const dataCW = await fetch(PROXY + "/create-cw", {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: `title=${title}&city=${JSON.stringify(props.cityInfo)}&startingDate=${startingDate}&endingDate=${endingDate}&description=${description}&tool=${tool}&token=${props.tokenObj.token}`,});
-
+      body: `title=${title}&city=${JSON.stringify(
+        props.cityInfo
+      )}&startingDate=${startingDate}&endingDate=${endingDate}&description=${description}&tool=${tool}&token=${
+        props.tokenObj.token
+      }`,
+    });
 
     let body = await dataCW.json();
-    console.log("body: ", body);
 
     setError(body.error);
 
     if (body.result == true) {
       props.navigation.navigate("Profil");
+      cleanFields();
     }
   };
 
@@ -110,11 +123,14 @@ function EventFillInfo(props) {
             type="date"
             dateSearch={startingDate}
             setDateSearch={setStartingDate}
+            // resetDate={resetDate}
           />
           <SearchBarElement
             type="time"
             dateSearch={startingDate}
             setDateSearch={setStartingDate}
+            // reset={reset}
+            // setReset={setReset}
           />
 
           <SearchBarElement
