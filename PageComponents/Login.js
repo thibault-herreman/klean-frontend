@@ -43,19 +43,17 @@ function Login(props) {
     });
 
     let body = await data.json();
+    console.log("body: ", body);
     if (body.result == true) {
       setUserExists(true);
-    } else {
-      setListErrorLogin(body.error);
-    }
-
-    if (userExists) {
       props.login(body.token);
       let rawResponse = await fetch(`${PROXY}/load-cw-forstore/${body.token}`);
       let response = await rawResponse.json();
       props.loadCwsStore({ infosCWparticipate: response.infosCWparticipate, infosCWorganize: response.infosCWorganize });
       AsyncStorage.setItem('token', JSON.stringify({ token: body.token, IsFirstVisit: false }));
       AsyncStorage.setItem('cwsUser', JSON.stringify({ infosCWparticipate: response.infosCWparticipate, infosCWorganize: response.infosCWorganize }));
+    } else {
+      setListErrorLogin(body.error);
     }
   }
 
