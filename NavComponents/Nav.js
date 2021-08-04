@@ -1,11 +1,27 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux'
 import { NavigationContainer } from '@react-navigation/native';
 
 import InvitedFlow from './InvitedFlow';
 import ConnectedFlow from './ConnectedFlow';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 function Nav(props) {
+
+  useEffect(() => {
+    //AsyncStorage.removeItem("token");
+    AsyncStorage.getItem('token', (err, value) => {
+      if (value) {
+        const valueParse = JSON.parse(value);
+        props.login(valueParse.token);
+      }
+    });
+    AsyncStorage.getItem('cwsUser', (err, value) => {
+      if (value) {
+        props.loadCwsStore(JSON.parse(value));
+      }
+    });
+  }, []);
   
   return (
     <NavigationContainer>
@@ -19,7 +35,18 @@ function mapStateToProps(state) {
   return { tokenObj: state.tokenObj }
 }
 
+function mapDispatchToProps(dispatch) {
+  return {
+    login: function (token) {
+      dispatch({ type: "login", token });
+    },
+    loadCwsStore: function (cwsStore) {
+      dispatch({ type: "loadCwsStore", cwsStore });
+    }
+  };
+}
+
 export default connect(
   mapStateToProps,
-  null
+  mapDispatchToProps
 )(Nav);
