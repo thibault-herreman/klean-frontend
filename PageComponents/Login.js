@@ -43,7 +43,6 @@ function Login(props) {
     });
 
     let body = await data.json();
-    console.log("body: ", body);
     if (body.result == true) {
       setUserExists(true);
       props.login(body.token);
