@@ -25,9 +25,7 @@ function CreateEvent(props) {
     async function getLocation() {
       let { status } = await Location.requestForegroundPermissionsAsync();
       if (status === "granted") {
-        let location = await Location.watchPositionAsync(
-          { distanceInterval: 10 },
-          (location) => {
+        let location = await Location.getCurrentPositionAsync({});
             setRegion({
               latitude: location.coords.latitude,
               longitude: location.coords.longitude,
@@ -35,9 +33,7 @@ function CreateEvent(props) {
               longitudeDelta: 0.0421,
             });
           }
-        );
       }
-    }
     getLocation();
   }, []);
 
@@ -72,17 +68,13 @@ function CreateEvent(props) {
   async function centerOnUser() {
     let { status } = await Location.requestForegroundPermissionsAsync();
     if (status === "granted") {
-      let location = await Location.watchPositionAsync(
-        { distanceInterval: 10 },
-        (location) => {
-          setRegion({
-            latitude: location.coords.latitude,
-            longitude: location.coords.longitude,
-            latitudeDelta: 0.0922,
-            longitudeDelta: 0.0421,
-          });
-        }
-      );
+      let location = await Location.getCurrentPositionAsync({});
+            setRegion({
+              latitude: location.coords.latitude,
+              longitude: location.coords.longitude,
+              latitudeDelta: 0.0922,
+              longitudeDelta: 0.0421,
+            });
     }
   }
 

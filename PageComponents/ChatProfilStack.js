@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, View, KeyboardAvoidingView, ActivityIndicator } from "react-native";
+import { StyleSheet, Text, View, KeyboardAvoidingView, ActivityIndicator, Keyboard } from "react-native";
 import { connect } from "react-redux";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { colors } from "../lib/colors";
@@ -35,6 +35,7 @@ function ChatProfilStack(props) {
         } else {
             clearInterval(loadInterval)
         }
+        return () => { clearInterval(loadInterval) }
     }, [isFocused]);
 
     const sendMessage = async (message) => {
@@ -43,7 +44,7 @@ function ChatProfilStack(props) {
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             body: `token=${token}&cwid=${cwid}&message=${JSON.stringify(message)}&date=${JSON.stringify(new Date())}`
           });
-        
+          Keyboard.dismiss()
         setMessageEnvoie("")
     }
 
