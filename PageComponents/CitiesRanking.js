@@ -14,6 +14,8 @@ function CitiesRanking(props) {
     let token = props.tokenObj.token
     const [listCities, setListCities] = useState(null)
 
+    console.log(token);
+
     useEffect(() => {
         async function loadData() {
             let rawResponse = await fetch(PROXY + `/load-cities-ranking?token=${token}`);
