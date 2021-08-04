@@ -51,7 +51,7 @@ function ConnectedEventDetailMapStack(props) {
 
         let body = await data.json();
         if (body.result == true) {
-            props.addCws(idCW);
+            props.addCwsPart(idCW);
             props.navigation.navigate("Profil");
         } if (body.result == false){
             setError(body.error)
@@ -91,11 +91,11 @@ function ConnectedEventDetailMapStack(props) {
     }
 
     const checkCwsParticipate = props.cwsStore.infosCWparticipate.findIndex(
-        index => index === idCW
+        index => index.toString() === idCW.toString()
     );
 
     const checkCwsOrganize = props.cwsStore.infosCWorganize.findIndex(
-        index => index === idCW
+        index => index.toString() === idCW.toString()
     );
 
     let confirmButton;
@@ -221,8 +221,8 @@ function mapDispatchToProps(dispatch) {
         desinsCws: function (idCW) {
             dispatch({ type: "desinsCws", idCW });
         },
-        addCws: function (idCW) {
-            dispatch({ type: "addCws", idCW });
+        addCwsPart: function (idCW) {
+            dispatch({ type: "addCwsPart", idCW });
         },
         supCws: function (idCW) {
             dispatch({ type: "supCws", idCW });

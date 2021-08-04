@@ -78,6 +78,8 @@ function EventFillInfo(props) {
     setError(body.error);
 
     if (body.result == true) {
+      const idCW = body.cleanwalkSave._id;
+      props.addCwsOrga(idCW);
       props.navigation.navigate("Profil");
       cleanFields();
     }
@@ -188,12 +190,9 @@ function EventFillInfo(props) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    login: function (token) {
-      dispatch({ type: "login", token });
-    },
-    signOut: function () {
-      dispatch({ type: "signOut" });
-    },
+    addCwsOrga: function (idCW) {
+      dispatch({ type: "addCwsOrga", idCW });
+    }
   };
 }
 
@@ -241,14 +240,3 @@ const styles = StyleSheet.create({
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(EventFillInfo);
-
-// <View style={styles.container}>
-//     <Text>EventFillInfo</Text>
-//     <Text>{`${props.token}`}</Text>
-//     <Button title="login" onPress={() => props.login("monsupertokenchercheenbdd")} />
-//     <Button title="signOut" onPress={() => props.signOut()} />
-//     <Button title="CreateEvent"
-//         onPress={() => props.navigation.navigate('CreateEvent')} />
-//     <Button title="EventFillInfo"
-//         onPress={() => props.navigation.navigate('EventFillInfo')} />
-// </View>

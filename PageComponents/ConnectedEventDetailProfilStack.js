@@ -68,7 +68,7 @@ function ConnectedEventDetailProfilStack(props) {
     }
 
     const checkCwsOrganize = props.cwsStore.infosCWorganize.findIndex(
-        index => index === idCW
+        index => index.toString() === idCW.toString()
     );
 
     let confirmButton;

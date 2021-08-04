@@ -99,7 +99,6 @@ function Profil(props) {
   const signoutAppli = () => {
     props.signOut();
     AsyncStorage.setItem('token', JSON.stringify({ token: "XeDLDMr3U4HSJSl74HJpKD", IsFirstVisit: false }));
-    AsyncStorage.removeItem("cwsUser");
   }
 
   let cwListParticipate;

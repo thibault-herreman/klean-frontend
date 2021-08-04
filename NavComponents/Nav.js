@@ -6,21 +6,29 @@ import InvitedFlow from './InvitedFlow';
 import ConnectedFlow from './ConnectedFlow';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+import PROXY from "../proxy";
+
 function Nav(props) {
 
   useEffect(() => {
+
+    const loadCws = async (token) => {
+      let rawResponse = await fetch(`${PROXY}/load-cw-forstore/${token}`);
+      let response = await rawResponse.json();
+      props.loadCwsStore({ infosCWparticipate: response.infosCWparticipate, infosCWorganize: response.infosCWorganize });
+    }
+
     //AsyncStorage.removeItem("token");
     AsyncStorage.getItem('token', (err, value) => {
       if (value) {
         const valueParse = JSON.parse(value);
         props.login(valueParse.token);
+
+        loadCws(valueParse.token);
+
       }
     });
-    AsyncStorage.getItem('cwsUser', (err, value) => {
-      if (value) {
-        props.loadCwsStore(JSON.parse(value));
-      }
-    });
+    
   }, []);
   
   return (

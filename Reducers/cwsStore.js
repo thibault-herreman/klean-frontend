@@ -5,22 +5,25 @@ export default function (cwsStore={ infosCWparticipate: [], infosCWorganize: [] 
   } else if (action.type == "desinsCws") {
 
     let cwsStoreCopy = {... cwsStore};
-
-    cwsStoreCopy.infosCWparticipate = cwsStoreCopy.infosCWparticipate.filter(idCW => idCW !== action.idCW);
+    cwsStoreCopy.infosCWparticipate = cwsStoreCopy.infosCWparticipate.filter(idCW => idCW.toString() !== action.idCW.toString());
 
     return cwsStoreCopy;
-  } else if (action.type == "addCws") {
+  } else if (action.type == "addCwsOrga") {
 
     let cwsStoreCopy = {... cwsStore};
+    cwsStoreCopy.infosCWorganize = [...cwsStoreCopy.infosCWorganize, action.idCW];
 
+    return cwsStoreCopy;
+  } else if (action.type == "addCwsPart") {
+
+    let cwsStoreCopy = {... cwsStore};
     cwsStoreCopy.infosCWparticipate = [...cwsStoreCopy.infosCWparticipate, action.idCW];
 
     return cwsStoreCopy;
   } else if (action.type == "supCws") {
 
     let cwsStoreCopy = {... cwsStore};
-
-    cwsStoreCopy.infosCWorganize = cwsStoreCopy.infosCWorganize.filter(idCW => idCW !== action.idCW);
+    cwsStoreCopy.infosCWorganize = cwsStoreCopy.infosCWorganize.filter(idCW => idCW.toString() !== action.idCW.toString());
 
     return cwsStoreCopy;
   } else {

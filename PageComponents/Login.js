@@ -55,7 +55,6 @@ function Login(props) {
       let response = await rawResponse.json();
       props.loadCwsStore({ infosCWparticipate: response.infosCWparticipate, infosCWorganize: response.infosCWorganize });
       AsyncStorage.setItem('token', JSON.stringify({ token: body.token, IsFirstVisit: false }));
-      AsyncStorage.setItem('cwsUser', JSON.stringify({ infosCWparticipate: response.infosCWparticipate, infosCWorganize: response.infosCWorganize }));
     }
   }
 
