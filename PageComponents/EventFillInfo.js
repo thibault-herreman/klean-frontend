@@ -57,12 +57,12 @@ function EventFillInfo(props) {
     const dataCW = await fetch(PROXY + "/create-cw", {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: `title=${title}&city=${JSON.stringify(
-        props.cityInfo
-      )}&startingDate=${startingDate}&endingDate=${endingDate}&description=${description}&tool=${tool}&token=${props.tokenObj.token}`,
-    });
+      body: `title=${title}&city=${JSON.stringify(props.cityInfo)}&startingDate=${startingDate}&endingDate=${endingDate}&description=${description}&tool=${tool}&token=${props.tokenObj.token}`,});
+
 
     let body = await dataCW.json();
+    console.log("body: ", body);
+
     setError(body.error);
 
     if (body.result == true) {
