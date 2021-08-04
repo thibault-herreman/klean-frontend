@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, View, KeyboardAvoidingView, ActivityIndicator } from "react-native";
+import { StyleSheet, Keyboard, Text, View, KeyboardAvoidingView, ActivityIndicator } from "react-native";
 import { connect } from "react-redux";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { colors } from "../lib/colors";
@@ -29,12 +29,13 @@ function ChatMapStack(props) {
                 setMessages(response.messages)
             }
         };
-        
+
         if (isFocused) {
             setLoadInterval(setInterval(loadData, 5000));
         } else {
             clearInterval(loadInterval)
         }
+        return () => { clearInterval(loadInterval) }
     }, [isFocused]);
 
     const sendMessage = async (message) => {
@@ -42,8 +43,8 @@ function ChatMapStack(props) {
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             body: `token=${token}&cwid=${cwid}&message=${JSON.stringify(message)}&date=${JSON.stringify(new Date())}`
-          });
-        
+        });
+        Keyboard.dismiss()
         setMessageEnvoie("")
     }
 
@@ -109,7 +110,7 @@ function mapDispatchToProps(dispatch) {
 }
 
 function mapStateToProps(state) {
-    return { 
+    return {
         tokenObj: state.tokenObj,
         cwIdMapStack: state.cwIdMapStack
     }
