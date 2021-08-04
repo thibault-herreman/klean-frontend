@@ -28,18 +28,15 @@ function ConnectedMapScreen(props) {
   const [listPositionCW, setListPositionCW] = useState([]);
   const [previewInfo, setPreviewInfo] = useState(null)
 
-  const geoLoc = () => {
-    Location.watchPositionAsync({ distanceInterval: 10 },
-        (location) => {
-            setCurrentRegion({ 
-                latitude: location.coords.latitude, 
-                longitude: location.coords.longitude,
-                latitudeDelta: 0.0922,
-                longitudeDelta: 0.0421
-            });
-        }
-    );
-  }
+  const geoLoc = async () => {
+    location = await Location.getCurrentPositionAsync({});
+      setCurrentRegion({
+        latitude: location.coords.latitude,
+        longitude: location.coords.longitude,
+        latitudeDelta: 0.0922,
+        longitudeDelta: 0.0421,
+    });
+  };
 
   useEffect(() => {
       async function askPermissions() {
