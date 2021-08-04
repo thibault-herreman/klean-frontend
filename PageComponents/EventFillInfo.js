@@ -91,6 +91,8 @@ function EventFillInfo(props) {
 
   return (
     <SafeAreaView style={styles.safeArea}>
+      <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"}>
+
       <View style={styles.topBanner}>
         <View style={styles.backButton}>
           <ButtonElement
@@ -100,8 +102,8 @@ function EventFillInfo(props) {
         </View>
       </View>
 
-      {/* <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} > */}
       <ScrollView>
+        
         <View style={styles.inputFields}>
           <InputElement
             placeholder="Titre *"
@@ -158,16 +160,15 @@ function EventFillInfo(props) {
           />
 
           {errors}
+          
+          <Text style={styles.guide} style={typography.body}>Guide pour l'organisateur
+          <ButtonElement
+            onPress={() => setModalVisible(true)}
+            typeButton="info"
+          />
+          </Text>
+          <EventGuide visible={modalVisible} close={modal} />
 
-          <View style={styles.guide}>
-            <Text style={typography.body}>Guide pour l'organisateur</Text>
-            <ButtonElement
-              style={styles.infoIcon}
-              onPress={() => setModalVisible(true)}
-              typeButton="info"
-            />
-            <EventGuide visible={modalVisible} close={modal} />
-          </View>
         </View>
 
         <View style={styles.register}>
@@ -180,8 +181,9 @@ function EventFillInfo(props) {
             }}
           />
         </View>
+
       </ScrollView>
-      {/* </KeyboardAvoidingView> */}
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 }
@@ -232,12 +234,9 @@ const styles = StyleSheet.create({
   guide: {
     flexDirection: "row",
     alignItems: "center",
+    justifyContent: 'center',
     marginTop: 10,
-  },
-  infoIcon: {
-    backgroundColor: "#000000",
-    marginHorizontal: 100,
-  },
+  }
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(EventFillInfo);
