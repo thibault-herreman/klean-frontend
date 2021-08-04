@@ -17,6 +17,7 @@ import { windowDimensions } from "../lib/windowDimensions.js";
 import { typography } from "../lib/typography.js";
 import { colors } from "../lib/colors.js";
 import changeDateFormat from "../lib/changeDateFormat";
+import { showLocation } from 'react-native-map-link';
 
 import PROXY from "../proxy.js";
 
@@ -98,6 +99,7 @@ function ConnectedEventDetailMapStack(props) {
         index => index.toString() === idCW.toString()
     );
 
+    let btnActive = false;
     let confirmButton;
     if (checkCwsParticipate !== -1) {
         confirmButton = <View style={styles.confirmButton}>
@@ -107,6 +109,8 @@ function ConnectedEventDetailMapStack(props) {
                                 onPress={ () => unsubscribeCw() }
                             />
                         </View>;
+        btnActive = true;
+        
     } else if (checkCwsOrganize !== -1) {
         confirmButton = <View style={styles.confirmButton}>
                             <ButtonElement
@@ -115,6 +119,7 @@ function ConnectedEventDetailMapStack(props) {
                                 onPress={ () => deleteCw() }
                             />
                         </View>;
+        btnActive = true;
     } else {
         confirmButton = <View style={styles.confirmButton}>
                             <ButtonElement
@@ -130,8 +135,6 @@ function ConnectedEventDetailMapStack(props) {
             <Text>{error};</Text>
         </View>
     );
-
-    
 
     if (cleanwalk === null) {
         return <View style={{ flex: 1, backgroundColor: colors.white }}></View>;
@@ -151,11 +154,22 @@ function ConnectedEventDetailMapStack(props) {
                             typeButton="back"
                             onPress={() => props.navigation.navigate('ConnectedMapScreen')}
                         />
-                        <ButtonElement
-                            style={styles.goButton}
-                            typeButton="go"
-                            disabled={true}
-                        />
+                        {btnActive ? 
+                            <ButtonElement
+                                style={styles.goButton}
+                                typeButton="go"
+                                onPress={() => showLocation({
+                                    latitude: cleanwalk.cleanwalkCoordinates.latitude,
+                                    longitude: cleanwalk.cleanwalkCoordinates.longitude,
+                                    title: cleanwalk.cleanwalkTitle,
+                                })} 
+                            /> : 
+                            <ButtonElement
+                                style={styles.goButton}
+                                typeButton="go"
+                                disabled={true}
+                            />
+                        }
                     </ImageBackground>
 
                     <View style={styles.generalInfoCleanwalk}>
@@ -199,7 +213,7 @@ function ConnectedEventDetailMapStack(props) {
                             <ScreenTitles titleType="secondary" title="Chat" />
                             <ButtonElement
                                 typeButton="chat"
-                                disabled={true}
+                                btnActive={btnActive}
                                 onPress={() => props.navigation.navigate('ChatMapStack')}
                             />
                         </View>
