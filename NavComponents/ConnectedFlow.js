@@ -1,11 +1,13 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { useNavigation } from '@react-navigation/native';
+import { useIsFocused } from '@react-navigation/native';
 
-import { FontAwesome } from '@expo/vector-icons'; 
-import { Ionicons } from '@expo/vector-icons'; 
-import { AntDesign } from '@expo/vector-icons'; 
+import { FontAwesome } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
+import { AntDesign } from '@expo/vector-icons';
 
 import EventFillInfo from '../PageComponents/EventFillInfo';
 import ConnectedMapScreen from '../PageComponents/ConnectedMapScreen';
@@ -26,27 +28,29 @@ const Stack = createStackNavigator();
 
 export default function ConnectedFlow() {
   return (
-    <Tab.Navigator screenOptions={({ route }) => ({
-      unmountOnBlur: false,
-      tabBarIcon: ({ color }) => {
+    <Tab.Navigator
+      initialRouteName="Chercher"
+      screenOptions={({ route }) => ({
+        unmountOnBlur: false,
+        tabBarIcon: ({ color }) => {
 
-        if (route.name === 'Chercher') {
-          return <Ionicons name="earth" size={25} color={color} />;
+          if (route.name === 'Chercher') {
+            return <Ionicons name="earth" size={25} color={color} />;
 
-        } else if (route.name === 'Proposer') {
-          return <AntDesign name="pluscircle" size={25} color={color} />
+          } else if (route.name === 'Proposer') {
+            return <AntDesign name="pluscircle" size={25} color={color} />
 
-        } else if (route.name === 'Profil') {
-          return <FontAwesome name="user" size={25} color={color} />;
+          } else if (route.name === 'Profil') {
+            return <FontAwesome name="user" size={25} color={color} />;
 
-        } else if (route.name === 'Classement') {
-          return <Ionicons name="stats-chart-sharp" size={25} color={color} />
+          } else if (route.name === 'Classement') {
+            return <Ionicons name="stats-chart-sharp" size={25} color={color} />
 
-        } else if (route.name === 'Actualité') {
-          return <Ionicons name="newspaper-outline" size={25} color={color} />
-        }
-      },
-    })}
+          } else if (route.name === 'Actualité') {
+            return <Ionicons name="newspaper-outline" size={25} color={color} />
+          }
+        },
+      })}
       tabBarOptions={{
         activeTintColor: colors.white,
         inactiveTintColor: "#D1D1D1",
@@ -73,8 +77,64 @@ export default function ConnectedFlow() {
 
 function ConnectedMapStack() {
 
+  const navigation = useNavigation();
+  const isFocused = useIsFocused();
+
+  useEffect(() => {
+    function back() {
+      navigation.reset({
+        history: navigation.dangerouslyGetState().history.slice(-1),
+        index: 0,
+        routeNames: [
+          "Chercher",
+          "Classement",
+          "Proposer",
+          "Profil",
+          "Actualité",
+        ],
+        routes:  [
+         {
+            key: "Chercher-LnoZY_eAc_zltdO06qMeR",
+            name: "Chercher",
+            params: undefined,
+          },
+           {
+            key: "Classement-DtdmTG0KQ7IYaQIxvD0bE",
+            name: "Classement",
+            params: undefined,
+          },
+           {
+            key: "Proposer-vuxpJBUjLDuEMFN5Lg7Zc",
+            name: "Proposer",
+            params: undefined,
+          },
+           {
+            key: "Profil-jl_XJIfAXXulX3ykpEn8E",
+            name: "Profil",
+            params: undefined,
+          },
+           {
+            key: "Actualité-agTpC7a_x3lxQN469zmsP",
+            name: "Actualité",
+            params: undefined,
+          },
+        ],
+        stale: true,
+        type: "tab",
+      })
+      };
+
+    if (isFocused) {
+      back();
+    } else {
+      null
+    }
+  }, [isFocused]);
+
   return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
+    <Stack.Navigator
+      initialRouteName="ConnectedMapScreen"
+      screenOptions={{ headerShown: false }}>
       <Stack.Screen name="ConnectedMapScreen" component={ConnectedMapScreen} />
       <Stack.Screen name="ConnectedEventDetailMapStack" component={ConnectedEventDetailMapStack} />
       <Stack.Screen name="ChatMapStack" component={ChatMapStack} />
@@ -84,8 +144,64 @@ function ConnectedMapStack() {
 
 function CreateEventStack() {
 
+  const navigation = useNavigation();
+  const isFocused = useIsFocused();
+
+  useEffect(() => {
+    function back() {
+      navigation.reset({
+        history: navigation.dangerouslyGetState().history.slice(-1),
+        index: 2,
+        routeNames: [
+          "Chercher",
+          "Classement",
+          "Proposer",
+          "Profil",
+          "Actualité",
+        ],
+        routes:  [
+         {
+            key: "Chercher-LnoZY_eAc_zltdO06qMeR",
+            name: "Chercher",
+            params: undefined,
+          },
+           {
+            key: "Classement-DtdmTG0KQ7IYaQIxvD0bE",
+            name: "Classement",
+            params: undefined,
+          },
+           {
+            key: "Proposer-vuxpJBUjLDuEMFN5Lg7Zc",
+            name: "Proposer",
+            params: undefined,
+          },
+           {
+            key: "Profil-jl_XJIfAXXulX3ykpEn8E",
+            name: "Profil",
+            params: undefined,
+          },
+           {
+            key: "Actualité-agTpC7a_x3lxQN469zmsP",
+            name: "Actualité",
+            params: undefined,
+          },
+        ],
+        stale: true,
+        type: "tab",
+      })
+      };
+
+    if (isFocused) {
+      back();
+    } else {
+      null
+    }
+  }, [isFocused]);
+
   return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
+    <Stack.Navigator
+      initialRouteName="CreateEvent"
+      screenOptions={{ headerShown: false }}>
       <Stack.Screen name="CreateEvent" component={CreateEvent} />
       <Stack.Screen name="EventFillInfo" component={EventFillInfo} />
     </Stack.Navigator>
@@ -94,8 +210,64 @@ function CreateEventStack() {
 
 function ProfilStack() {
 
+  const navigation = useNavigation();
+  const isFocused = useIsFocused();
+
+  useEffect(() => {
+    function back() {
+      navigation.reset({
+        history: navigation.dangerouslyGetState().history.slice(-1),
+        index: 3,
+        routeNames: [
+          "Chercher",
+          "Classement",
+          "Proposer",
+          "Profil",
+          "Actualité",
+        ],
+        routes:  [
+         {
+            key: "Chercher-LnoZY_eAc_zltdO06qMeR",
+            name: "Chercher",
+            params: undefined,
+          },
+           {
+            key: "Classement-DtdmTG0KQ7IYaQIxvD0bE",
+            name: "Classement",
+            params: undefined,
+          },
+           {
+            key: "Proposer-vuxpJBUjLDuEMFN5Lg7Zc",
+            name: "Proposer",
+            params: undefined,
+          },
+           {
+            key: "Profil-jl_XJIfAXXulX3ykpEn8E",
+            name: "Profil",
+            params: undefined,
+          },
+           {
+            key: "Actualité-agTpC7a_x3lxQN469zmsP",
+            name: "Actualité",
+            params: undefined,
+          },
+        ],
+        stale: true,
+        type: "tab",
+      })
+      };
+
+    if (isFocused) {
+      back();
+    } else {
+      null
+    }
+  }, [isFocused]);
+
   return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
+    <Stack.Navigator
+      initialRouteName="Profil"
+      screenOptions={{ headerShown: false }}>
       <Stack.Screen name="Profil" component={Profil} />
       <Stack.Screen name="ConnectedEventDetailProfilStack" component={ConnectedEventDetailProfilStack} />
       <Stack.Screen name="ChatProfilStack" component={ChatProfilStack} />

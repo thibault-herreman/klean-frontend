@@ -9,17 +9,16 @@ import {
   ActivityIndicator,
 } from "react-native";
 
-import ScreenTitles from "../lib/ScreenTitles";
-import ButtonElement from "../lib/ButtonElement";
-
-import { connect } from "react-redux";
 import { colors } from "../lib/colors";
 import { typography } from "../lib/typography";
+import ScreenTitles from "../lib/ScreenTitles";
+import ButtonElement from "../lib/ButtonElement";
+import CleanwalkList from "../lib/CleanwalkList";
+
+import { connect } from "react-redux";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { windowDimensions } from "../lib/windowDimensions";
 import ChangePassword from "../lib/ChangePassword";
-
-import { FontAwesome } from "@expo/vector-icons";
-import CleanwalkList from "../lib/CleanwalkList";
 import { ScrollView } from "react-native-gesture-handler";
 import * as ImagePicker from 'expo-image-picker';
 
@@ -97,6 +96,12 @@ function Profil(props) {
     setModalVisible(false);
   }
 
+  const signoutAppli = () => {
+    props.signOut();
+    AsyncStorage.setItem('token', JSON.stringify({ token: "XeDLDMr3U4HSJSl74HJpKD", IsFirstVisit: false }));
+    AsyncStorage.removeItem("cwsUser");
+  }
+
   let cwListParticipate;
   if (listCWparticipate.length > 0) {
     cwListParticipate = (
@@ -161,9 +166,7 @@ function Profil(props) {
           <View style={styles.logout}>
             <ButtonElement
               typeButton="logout"
-              onPress={() => {
-                props.signOut();
-              }}
+              onPress={ () => signoutAppli() }
             />
           </View>
         </SafeAreaView>

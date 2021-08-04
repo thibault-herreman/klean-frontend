@@ -18,6 +18,7 @@ import InputElement from "../lib/InputElement";
 import LogoKlean from "../assets/imagesKlean/LogoKlean.png";
 import PROXY from "../proxy";
 import AutoComplete from "../lib/AutoComplete";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 function SignUp(props) {
   const [firstName, setFirstName] = useState("");
@@ -89,6 +90,7 @@ function SignUp(props) {
       if (body.result == true) {
         setUserExists(true);
         props.login(body.token);
+        AsyncStorage.setItem('token', JSON.stringify({ token: body.token, IsFirstVisit: false }));
       } else {
         setListErrorSignup(body.error);
       }
