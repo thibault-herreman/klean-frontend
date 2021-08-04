@@ -17,7 +17,6 @@ function InvitedFlow(props) {
     return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
         {props.tokenObj.IsFirstVisit ? <Stack.Screen name="OnBoarding" component={OnBoarding} /> : null }
-        <Stack.Screen name="AdminPanel" component={AdminPanel} />
         <Stack.Screen name="InvitedMapScreen" component={InvitedMapScreen} />
         <Stack.Screen name="InvitedEventDetail" component={InvitedEventDetail} />
         <Stack.Screen name="Login" component={Login} />
