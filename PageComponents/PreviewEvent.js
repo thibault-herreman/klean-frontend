@@ -93,7 +93,7 @@ function PreviewEvent(props) {
                 </View>
                 <View style={styles.ctOrga}>
                     <Image
-                        source={require('../assets/imagesKlean/Organisator.jpg')}
+                        source={{uri: props.avatar}}
                         style={styles.imgPreviewEvent}
                     />
                     <Text>{props.firstnameOrga.toUpperCase().substr(0, 1)}. {nameOrga}</Text>

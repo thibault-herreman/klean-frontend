@@ -13,7 +13,7 @@ function OnBoarding(props) {
                 <ButtonElement
                     text='Skip'
                     typeButton='middleSecondary'
-                    onPress={() => props.navigation.navigate('AdminPanel')}
+                    onPress={() => props.navigation.navigate('InvitedMapScreen')}
                 />
             </View>
         </View>
