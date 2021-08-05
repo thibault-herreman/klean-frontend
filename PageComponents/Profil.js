@@ -293,12 +293,12 @@ function Profil(props) {
           <View style={styles.infoPerso}>
 
           <Image
-            style={styles.robot}
+            style={styles.avatar}
             source={{uri: infosUser.avatarUrl}}
             
           />
             <View style={styles.statBody}>
-              <Text style={styles.statBodyText}>{infosUser.firstName}</Text>
+              <Text style={styles.statBodyTitle}>{infosUser.firstName}</Text>
               <Text style={styles.statBodyText}>{infosUser.lastName}</Text>
               <Text style={styles.statBodyText}>{infosUser.email}</Text>
               <ButtonElement
@@ -385,7 +385,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
   },
   list: {
-    height: windowDimensions.height * 0.3,
+    height: windowDimensions.height * 0.25,
   },
   stat: {
     flexDirection: "row",
@@ -399,6 +399,7 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     borderColor: colors.grey,
     borderWidth: 1,
+    marginRight: 15,
   },
   statBody: {
     marginLeft: 15,
@@ -412,12 +413,13 @@ const styles = StyleSheet.create({
     fontFamily: typography.bodyLight.fontFamily,
   },
   avatar: {
-    width: 80,
-    height: 80,
+    width: 100,
+    height: 100,
     backgroundColor: colors.grey,
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 50,
+    marginRight: 15,
   },
   infoPerso: {
     flexDirection: "row",
