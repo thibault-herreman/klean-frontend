@@ -24,7 +24,6 @@ function EventFillInfo(props) {
   const [endingDate, setEndingDate] = useState(new Date());
   const [description, setDescription] = useState("");
   const [tool, setTool] = useState("");
-  const [reset, setReset] = useState(false);
   const [error, setError] = useState();
 
   const [modalVisible, setModalVisible] = useState(false);
