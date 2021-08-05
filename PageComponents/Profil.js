@@ -385,7 +385,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
   },
   list: {
-    height: windowDimensions.height * 0.25,
+    marginBottom: 30
   },
   stat: {
     flexDirection: "row",
