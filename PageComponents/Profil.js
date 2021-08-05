@@ -84,8 +84,6 @@ function Profil(props) {
       quality: 0.7,
     });
 
-    console.log("result", result);
-
     if (!result.cancelled) {
       return result.uri;
     } else {
@@ -151,7 +149,7 @@ function Profil(props) {
     cwListParticipate === null ||
     cwListOrganize === null ||
     statPerso === null ||
-    statCity === null
+    statCity === null 
   ) {
     return (
       <View style={styles.wait}>
@@ -312,11 +310,9 @@ function Profil(props) {
               <ButtonElement
                 text="Modifier ma photo"
                 typeButton="password"
-                // onPress={pickImage}
 
                 onPress={async () => {
                   let image = await pickImage();
-                  console.log("image", image)
                   
                   if (image) {
                   var data = new FormData();
@@ -332,11 +328,14 @@ function Profil(props) {
                   });
               
                   var response = await rawResponse.json();
-                  console.log("response", response);
-                } else {
 
-                }
-                }}
+                  if(response.result) {
+                  let copy = {...infosUser}
+                  copy.avatarUrl = response.resultCloudinary.secure_url
+                  setInfosUser(copy)
+                  }
+
+                }}}
                 
               />
 
