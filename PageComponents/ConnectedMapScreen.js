@@ -133,6 +133,7 @@ function ConnectedMapScreen(props) {
           toolBadge={previewInfo.toolBadge}
           nameOrga={previewInfo.admin.lastName}
           firstnameOrga={previewInfo.admin.firstName}
+          avatar={previewInfo.admin.avatarUrl}
           onPress={() => {
             props.setCwIdMapStack(previewInfo._id);
             props.navigation.navigate('ConnectedEventDetailMapStack')
