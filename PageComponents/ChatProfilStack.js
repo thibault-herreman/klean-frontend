@@ -51,6 +51,7 @@ function ChatProfilStack(props) {
     return (
 
         <SafeAreaView style={styles.safeArea}>
+            <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"}>
 
             <View style={styles.topBanner}>
                 <View style={styles.backButton}>
@@ -77,24 +78,23 @@ function ChatProfilStack(props) {
                 </View>
             )}
 
-            < KeyboardAvoidingView style={styles.messageElements}>
-                <View style={styles.input}>
-                    <InputElement
-                        type="messageInput"
-                        placeholder="votre message"
-                        value={messageEnvoie}
-                        onChangeText={setMessageEnvoie}
-                    />
-                </View>
-
-                <ButtonElement
-                    typeButton="fullFine"
-                    text="Envoyer"
-                    onPress={() => sendMessage(messageEnvoie)}
+            <View style={styles.input}>
+                <InputElement
+                    type="messageInput"
+                    placeholder="votre message"
+                    value={messageEnvoie}
+                    onChangeText={setMessageEnvoie}
                 />
-            </KeyboardAvoidingView>
+            </View>
 
-        </SafeAreaView >
+            <ButtonElement
+                typeButton="fullFine"
+                text="Envoyer"
+                onPress={() => sendMessage(messageEnvoie)}
+            />
+
+            </KeyboardAvoidingView>
+        </SafeAreaView>
     );
 }
 
@@ -143,11 +143,9 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
     },
-    messageElements: {
-        alignItems: "center"
-    },
     input: {
         marginBottom: 15,
+        alignItems: "center",
     }
 });
 

@@ -424,6 +424,7 @@ const styles = StyleSheet.create({
     height: 120,
     alignItems: "center",
     justifyContent: "center",
+    marginTop: 18,
   },
   ctTextNoCw: {
     height: windowDimensions.height * 0.1,
