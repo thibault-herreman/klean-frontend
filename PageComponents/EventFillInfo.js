@@ -76,7 +76,7 @@ function EventFillInfo(props) {
 
     setError(body.error);
 
-    if (body.result == true) {
+    if (body.result) {
       const idCW = body.cleanwalkSave._id;
       props.addCwsOrga(idCW);
       props.navigation.navigate("Profil");
