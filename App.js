@@ -16,10 +16,11 @@ import cityInfo from './Reducers/createCleanwalk';
 import cwsStore from './Reducers/cwsStore';
 import Nav from './NavComponents/Nav';
 
+// création du store
 const store = createStore(combineReducers({ tokenObj, cwIdInvited, cwIdMapStack, cwIdProfilStack, cityInfo, cwsStore }));
 
 export default function App() {
-
+  // chargement des fonts
   let [fontsLoaded] = useFonts({
     Lato_100Thin,
     Lato_100Thin_Italic,
@@ -33,6 +34,7 @@ export default function App() {
     Lato_900Black_Italic 
   });
 
+  // loader si les fonts mettent du tps à se charger
   if (!fontsLoaded) {
     return <AppLoading />
   }

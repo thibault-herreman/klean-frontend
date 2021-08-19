@@ -22,17 +22,20 @@ import PROXY from "../proxy.js";
 
 function InvitedEventDetail(props) {
 
+  // store id de cleanwalk
   let idCW = props.cwIdInvited;
 
+  // hook d'état
   const [cleanwalk, setCleanwalk] = useState(null);
 
+  // tri pour enlever l'admin de la liste des participants
   const dataParticipants = (admin, participants) => {
     participants.unshift(admin);
-
     return participants;
   };
 
   useEffect(() => {
+    // chargement de la cleanwalk en bdd via son id enregistré ds le store
     async function loadData() {
       const responseCleanwalk = await fetch(PROXY + `/load-cleanwalk/${idCW}/${props.tokenObj.token}`);
       const jsonResponseCleanwalk = await responseCleanwalk.json();
@@ -42,6 +45,7 @@ function InvitedEventDetail(props) {
     loadData();
   }, []);
 
+  // retour sur la map et suppression de l'id de la cleanwalk ds le store
   function backArrow() {
     props.resetCwIdInvited();
     props.navigation.navigate("InvitedMapScreen");
@@ -137,12 +141,6 @@ function InvitedEventDetail(props) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    login: function (token) {
-      dispatch({ type: "login", token });
-    },
-    signOut: function () {
-      dispatch({ type: "signOut" });
-    },
     resetCwIdInvited: function () {
       dispatch({ type: "resetCwIdInvited" });
     },
@@ -215,18 +213,3 @@ const styles = StyleSheet.create({
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(InvitedEventDetail);
-
-// <View style={styles.container}>
-//     <Text>InvitedEventDetail</Text>
-//     <Text>{`${props.token}`}</Text>
-//     <Button title="login" onPress={() => props.login("monsupertokenchercheenbdd")} />
-//     <Button title="signOut" onPress={() => props.signOut()} />
-//     <Button title="InvitedMapScreen"
-//         onPress={() => props.navigation.navigate('InvitedMapScreen')} />
-//     <Button title="InvitedEventDetail"
-//         onPress={() => props.navigation.navigate('InvitedEventDetail')} />
-//     <Button title="Login"
-//         onPress={() => props.navigation.navigate('Login')} />
-//     <Button title="SignUp"
-//         onPress={() => props.navigation.navigate('SignUp')} />
-// </View>

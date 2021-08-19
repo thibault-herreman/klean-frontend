@@ -93,18 +93,6 @@ function News(props) {
     );
 }
 
-
-function mapDispatchToProps(dispatch) {
-    return {
-        login: function (token) {
-            dispatch({ type: 'login', token })
-        },
-        signOut: function () {
-            dispatch({ type: 'signOut' })
-        }
-    }
-}
-
 function mapStateToProps(state) {
     return { tokenObj: state.tokenObj }
 }
@@ -136,8 +124,5 @@ const styles = StyleSheet.create({
 
 export default connect(
     mapStateToProps,
-    mapDispatchToProps
+    null
 )(News);
-
-// <Button title="login" onPress={() => props.login("monsupertokenchercheenbdd")} />
-// <Button title="signOut" onPress={() => props.signOut()} />

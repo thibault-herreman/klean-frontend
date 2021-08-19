@@ -19,6 +19,8 @@ import AutoComplete from "../lib/AutoComplete";
 import PROXY from "../proxy";
 
 function InvitedMapScreen(props) {
+
+  // hooks d'état
   const [isVisiblePreview, setIsVisiblePreview] = useState(false);
   const [dateSearch, setDateSearch] = useState(new Date());
   const [adress, setAdress] = useState("");
@@ -33,6 +35,7 @@ function InvitedMapScreen(props) {
   const [listPositionCW, setListPositionCW] = useState([]);
   const [previewInfo, setPreviewInfo] = useState(null);
 
+  // géolocalisation
   const geoLoc = async () => {
     location = await Location.getCurrentPositionAsync({});
       setCurrentRegion({
@@ -44,6 +47,7 @@ function InvitedMapScreen(props) {
   };
 
   useEffect(() => {
+    // demande de permissions et lancement géoloc
     async function askPermissions() {
       let { status } = await Location.requestForegroundPermissionsAsync();
       if (status === "granted") {
@@ -54,10 +58,12 @@ function InvitedMapScreen(props) {
   }, []);
 
   useEffect(() => {
+    // lancement de la fct au chargement du composant
     loadCleanwalk(currentRegion, dateSearch);
   }, [dateSearch]);
 
   useEffect(() => {
+    // recherche des villes/adresses selon ce qui est tapé ds le champ
     async function loadData() {
       let rawResponse = await fetch(PROXY + "/autocomplete-search", {
         method: "POST",
@@ -73,6 +79,7 @@ function InvitedMapScreen(props) {
     }
   }, [adress]);
 
+  // chargement des cleanwalks en bdd via les coordonnées et la date rentrée
   const loadCleanwalk = async (currentRegion, dateSearch) => {
     let rawResponse = await fetch(PROXY + "/load-pin-on-change-region", {
       method: "POST",
@@ -85,6 +92,7 @@ function InvitedMapScreen(props) {
     setListPositionCW(response.cleanWalkArray);
   };
 
+  // création des markers grâce au résultat de la fonction loadCleanwalk
   const markers = listPositionCW.map((marker, i) => {
     return (
       <Marker
@@ -96,6 +104,7 @@ function InvitedMapScreen(props) {
         image={pinSmall}
         anchor={{ x: 0.5, y: 1 }}
         centerOffset={{ x: 0.5, y: 1 }}
+        // au clic on affiche la preview et on set les infos à afficher de la cleanwalk
         onPress={() => {
           setPreviewInfo(listPositionCW[i]);
           setIsVisiblePreview(!isVisiblePreview);
@@ -132,6 +141,7 @@ function InvitedMapScreen(props) {
       </View>
       <MapView
         style={styles.container}
+        // on force googleMap
         provider={PROVIDER_GOOGLE}
         initialRegion={{
           latitude: 48.866667,
@@ -139,7 +149,9 @@ function InvitedMapScreen(props) {
           latitudeDelta: 0.0922,
           longitudeDelta: 0.0421,
         }}
+        // renvoyé par la géoloc
         region={currentRegion}
+        // lancé qd on bouge sur la map
         onRegionChangeComplete={(newRegion) => {
           setCurrentRegion(newRegion);
           loadCleanwalk(newRegion, dateSearch);
@@ -147,6 +159,7 @@ function InvitedMapScreen(props) {
       >
         {markers}
       </MapView>
+      {/* affichage dans la preview des infos récupérées au clic sur le marker */}
       {previewInfo ? (
         <PreviewEvent
           title={previewInfo.cleanwalkTitle}
@@ -155,6 +168,7 @@ function InvitedMapScreen(props) {
           nameOrga={previewInfo.admin.lastName}
           firstnameOrga={previewInfo.admin.firstName}
           avatar={previewInfo.admin.avatarUrl}
+          // enregistre l'id de la cleanwalk ds le store et redirige vers la page détail
           onPress={() => {
             props.setCwIdInvited(previewInfo._id);
             props.navigation.navigate("InvitedEventDetail");
@@ -177,9 +191,6 @@ function mapDispatchToProps(dispatch) {
   return {
     login: function (token) {
       dispatch({ type: "login", token });
-    },
-    signOut: function () {
-      dispatch({ type: "signOut" });
     },
     setCwIdInvited: function (id) {
       dispatch({ type: "setCwIdInvited", id });

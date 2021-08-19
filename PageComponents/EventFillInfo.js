@@ -18,6 +18,7 @@ import PROXY from "../proxy";
 import SearchBarElement from "../lib/SearchBarElement";
 
 function EventFillInfo(props) {
+  // hooks d'état
   const [title, setTitle] = useState("");
   const [city, setCity] = useState("");
   const [startingDate, setStartingDate] = useState(new Date());
@@ -25,9 +26,9 @@ function EventFillInfo(props) {
   const [description, setDescription] = useState("");
   const [tool, setTool] = useState("");
   const [error, setError] = useState();
-
   const [modalVisible, setModalVisible] = useState(false);
 
+  // nom de la ville récupéré ds la store
   useEffect(() => {
     setCity(props.cityInfo.cityName);
   }, []);
@@ -36,6 +37,7 @@ function EventFillInfo(props) {
     setModalVisible(false);
   }
 
+  // on récupére ce qu'il y a dans les champs
   let changeState = (name, value) => {
     if (name == "title") {
       setTitle(value);
@@ -52,6 +54,7 @@ function EventFillInfo(props) {
     }
   };
 
+  // on vide les champs
   function cleanFields() {
     setTitle("");
     setCity("");
@@ -61,6 +64,7 @@ function EventFillInfo(props) {
     setTool("");
   }
 
+  // enregistrement de la cleanwalk en bdd
   var addCW = async () => {
     const dataCW = await fetch(PROXY + "/create-cw", {
       method: "POST",
@@ -77,6 +81,7 @@ function EventFillInfo(props) {
 
     if (body.result) {
       const idCW = body.cleanwalkSave._id;
+      // enregistrement ds le tableau du store de l'id de la cleanwalk organisée
       props.addCwsOrga(idCW);
       props.navigation.navigate("Profil");
       cleanFields();
@@ -123,14 +128,11 @@ function EventFillInfo(props) {
               type="date"
               dateSearch={startingDate}
               setDateSearch={setStartingDate}
-            // resetDate={resetDate}
             />
             <SearchBarElement
               type="time"
               dateSearch={startingDate}
               setDateSearch={setStartingDate}
-            // reset={reset}
-            // setReset={setReset}
             />
 
             <SearchBarElement

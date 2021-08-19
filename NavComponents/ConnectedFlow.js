@@ -25,8 +25,8 @@ import { colors } from '../lib/colors';
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
-
 export default function ConnectedFlow() {
+  // initialisation et création des routes de la tab navigator
   return (
     <Tab.Navigator
       initialRouteName="Chercher"
@@ -80,6 +80,7 @@ function ConnectedMapStack() {
   const navigation = useNavigation();
   const isFocused = useIsFocused();
 
+  // suppression de l'historique de navigation, équivalent au démontage du composant
   useEffect(() => {
     function back() {
       navigation.reset({
@@ -131,6 +132,7 @@ function ConnectedMapStack() {
     }
   }, [isFocused]);
 
+  // création des routes de la stack navigation dans la route 'chercher' de la tab navigation 
   return (
     <Stack.Navigator
       initialRouteName="ConnectedMapScreen"
@@ -146,7 +148,8 @@ function CreateEventStack() {
 
   const navigation = useNavigation();
   const isFocused = useIsFocused();
-
+  
+  // suppression de l'historique de navigation, équivalent au démontage du composant
   useEffect(() => {
     function back() {
       navigation.reset({
@@ -198,6 +201,7 @@ function CreateEventStack() {
     }
   }, [isFocused]);
 
+  // création des routes de la stack navigation dans la route 'Proposer' de la tab navigation
   return (
     <Stack.Navigator
       initialRouteName="CreateEvent"
@@ -213,6 +217,7 @@ function ProfilStack() {
   const navigation = useNavigation();
   const isFocused = useIsFocused();
 
+  // suppression de l'historique de navigation, équivalent au démontage du composant
   useEffect(() => {
     function back() {
       navigation.reset({
@@ -264,6 +269,7 @@ function ProfilStack() {
     }
   }, [isFocused]);
 
+  // création des routes de la stack navigation dans la route 'Profil' de la tab navigation
   return (
     <Stack.Navigator
       initialRouteName="Profil"

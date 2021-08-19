@@ -1,3 +1,4 @@
+// reduceur pour la gestion des cleanwalks de l'utilisateur et afficher les bons boutons dans le détail
 export default function (cwsStore={ infosCWparticipate: [], infosCWorganize: [] }, action) {
   if (action.type=="loadCwsStore") {
     

@@ -19,12 +19,14 @@ import PROXY from "../proxy";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 function Login(props) {
+  // hooks d'état
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const [userExists, setUserExists] = useState(false);
   const [listErrorLogin, setListErrorLogin] = useState([]);
 
+  // login à l'application
   async function login() {
     let bodyWithoutID = `emailFromFront=${email}&passwordFromFront=${password}`;
     let bodyWithId = `emailFromFront=${email}&passwordFromFront=${password}&cleanwalkIdFromFront=${props.cwIdInvited}`;
@@ -33,6 +35,8 @@ function Login(props) {
     if (props.cwIdInvited == null) {
       finalBody = bodyWithoutID;
     }
+    // s'il y a une cleanwalk ds le store on l'envoie pour enregistrer 
+    // l'utilisateur ds le tableau de participants de la cleanwalk en bdd
     if (props.cwIdInvited != null) {
       finalBody = bodyWithId;
     }
@@ -43,12 +47,18 @@ function Login(props) {
     });
 
     let body = await data.json();
+
+    // si le résultat de la route renvoie true
     if (body.result == true) {
+      // on set userExits à true
       setUserExists(true);
+      // on enregistre le token dans le store
       props.login(body.token);
+      // on regarde en bdd les cleanwalks de l'utilisateur et on les charge ds le store
       let rawResponse = await fetch(`${PROXY}/load-cw-forstore/${body.token}`);
       let response = await rawResponse.json();
       props.loadCwsStore({ infosCWparticipate: response.infosCWparticipate, infosCWorganize: response.infosCWorganize });
+      // on crée l'item token ds le localStorage
       AsyncStorage.setItem('token', JSON.stringify({ token: body.token, IsFirstVisit: false }));
     } else {
       setListErrorLogin(body.error);
@@ -59,6 +69,7 @@ function Login(props) {
     return <Text key={`error${i}`}>{error}</Text>;
   });
 
+  // on récupére ce qu'il y a dans les champs
   let changeState = (name, value) => {
     if (name == "email") {
       setEmail(value);
@@ -72,6 +83,8 @@ function Login(props) {
   }
 
   let button;
+
+  // on regarde s'il y a une cleanwalk dans le store et on affiche le bon bouton en conséquence
   if (props.cwIdInvited == null) {
     button = (
       <ButtonElement
@@ -152,9 +165,6 @@ function mapDispatchToProps(dispatch) {
   return {
     login: function (token) {
       dispatch({ type: "login", token });
-    },
-    signOut: function () {
-      dispatch({ type: "signOut" });
     },
     loadCwsStore: function (cwsStore) {
       dispatch({ type: "loadCwsStore", cwsStore });

@@ -13,14 +13,14 @@ import PROXY from "../proxy";
 import AutoComplete from "../lib/AutoComplete";
 
 function CreateEvent(props) {
+  // hooks d'état
   const [region, setRegion] = useState();
   const [newCleanwalk, setNewCleanwalk] = useState(null);
-
   const [autoComplete, setAutoComplete] = useState([]);
   const [showAutoComplete, setShowAutoComplete] = useState(false);
   const [adress, setAdress] = useState("");
 
-  // à terminer pour géolocaliser le user au clic sur le picto géoloc
+  // géolocalisation au chargement du composant
   useEffect(() => {
     async function getLocation() {
       let { status } = await Location.requestForegroundPermissionsAsync();
@@ -38,6 +38,7 @@ function CreateEvent(props) {
   }, []);
 
   useEffect(() => {
+    // recherche des villes/adresses selon ce qui est tapé ds le champ
     async function loadData() {
         let rawResponse = await fetch(PROXY + '/autocomplete-search', {
             method: 'POST',
@@ -53,11 +54,13 @@ function CreateEvent(props) {
     }
   }, [adress]);
 
+  // lancé via l'autocomplete
   function setRegionAndCw(item) {
     setRegion(item);
     setNewCleanwalk({ latitude: item.latitude, longitude: item.longitude });
   }
 
+  // lancé via le onLongPress sur la map
   function addCleanwalk(e) {
     setNewCleanwalk({
       latitude: e.nativeEvent.coordinate.latitude,
@@ -65,20 +68,23 @@ function CreateEvent(props) {
     });
   }
 
+  // re géolocalisation au clic sur le bouton
   async function centerOnUser() {
     let { status } = await Location.requestForegroundPermissionsAsync();
     if (status === "granted") {
       let location = await Location.getCurrentPositionAsync({});
-            setRegion({
-              latitude: location.coords.latitude,
-              longitude: location.coords.longitude,
-              latitudeDelta: 0.0922,
-              longitudeDelta: 0.0421,
-            });
+        setRegion({
+          latitude: location.coords.latitude,
+          longitude: location.coords.longitude,
+          latitudeDelta: 0.0922,
+          longitudeDelta: 0.0421,
+        });
     }
   }
 
+  // on récupère la ville via les coordonnées
   async function continueToForm() {
+    // première recherche avec les coordonnées
     let data = await fetch(PROXY + "/get-city-from-coordinates", {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
@@ -88,6 +94,7 @@ function CreateEvent(props) {
 
     let city = response.response.features[0].properties.city;
 
+    // 2e recherche avec le nom de la ville renvoyé ds le cas où on a des arrondissements
     let newData = await fetch(PROXY + "/search-city-only", {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
@@ -95,6 +102,7 @@ function CreateEvent(props) {
     });
     let newResponse = await newData.json();
 
+    // enregistrement dans le store pour la suite du processus
     props.sendCityInfo({
       cityName: newResponse.newResponse[0].properties.city,
       cityCode: newResponse.newResponse[0].properties.citycode,
@@ -106,6 +114,7 @@ function CreateEvent(props) {
     });
 
     setNewCleanwalk(null);
+    // on redirige vers la suite du processus
     props.navigation.navigate("EventFillInfo");
   }
 
@@ -130,11 +139,14 @@ function CreateEvent(props) {
         ) : null}
       </View>
       <MapView
+        // renvoyé par la géoloc
         region={region}
+        // lancé qd on bouge sur la map
         onRegionChangeComplete={ (newRegion) => {
           setRegion(newRegion)
         }}
         style={styles.container}
+        // on force googleMap
         provider={PROVIDER_GOOGLE}
         initialRegion={{
           latitude: 48.866667,
@@ -152,6 +164,7 @@ function CreateEvent(props) {
             }}
             image={pinSmall}
             draggable
+            // lancé qd on déplace le marker
             onDragEnd = {(e) => setNewCleanwalk(e.nativeEvent.coordinate)}
           />
         ) : null}
@@ -176,12 +189,6 @@ function CreateEvent(props) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    login: function (token) {
-      dispatch({ type: "login", token });
-    },
-    signOut: function () {
-      dispatch({ type: "signOut" });
-    },
     sendCityInfo: function (cityInfo) {
       dispatch({ type: "sendCityInfo", payLoad: cityInfo });
     },

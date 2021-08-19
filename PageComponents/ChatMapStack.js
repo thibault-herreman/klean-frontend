@@ -15,13 +15,15 @@ import { useIsFocused } from '@react-navigation/native';
 function ChatMapStack(props) {
     let token = props.tokenObj.token
     let cwid = props.cwIdMapStack
-
+    // fonctionnalité pour gérer le fait qu’un composant soit affiché ou pas
     const isFocused = useIsFocused();
+    // hooks d'état
     const [messages, setMessages] = useState(null)
     const [messageEnvoie, setMessageEnvoie] = useState()
     const [loadInterval, setLoadInterval] = useState()
 
     useEffect(() => {
+        // chargement depuis la bdd des messages de la cleanwalk 
         async function loadData() {
             let rawResponse = await fetch(PROXY + `/load-messages/${token}/${cwid}`);
             let response = await rawResponse.json();
@@ -30,14 +32,17 @@ function ChatMapStack(props) {
             }
         };
 
+        // si le composant est affiché on lance le setInterval
         if (isFocused) {
             setLoadInterval(setInterval(loadData, 5000));
+        // si le composant n'est pas affiché on clear l'interval
         } else {
             clearInterval(loadInterval)
         }
         return () => { clearInterval(loadInterval) }
     }, [isFocused]);
 
+    // enregistrement du message envoyé en bdd
     const sendMessage = async (message) => {
         let requete = await fetch(PROXY + '/save-message', {
             method: 'POST',
@@ -98,17 +103,6 @@ function ChatMapStack(props) {
     );
 }
 
-function mapDispatchToProps(dispatch) {
-    return {
-        login: function (token) {
-            dispatch({ type: 'login', token })
-        },
-        signOut: function () {
-            dispatch({ type: 'signOut' })
-        }
-    }
-}
-
 function mapStateToProps(state) {
     return {
         tokenObj: state.tokenObj,
@@ -151,5 +145,5 @@ const styles = StyleSheet.create({
 
 export default connect(
     mapStateToProps,
-    mapDispatchToProps
+    null
 )(ChatMapStack);

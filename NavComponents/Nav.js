@@ -12,13 +12,15 @@ function Nav(props) {
 
   useEffect(() => {
 
+    // Chargement dans le store des cleanwalks de l'utilisateur
     const loadCws = async (token) => {
       let rawResponse = await fetch(`${PROXY}/load-cw-forstore/${token}`);
       let response = await rawResponse.json();
       props.loadCwsStore({ infosCWparticipate: response.infosCWparticipate, infosCWorganize: response.infosCWorganize });
     }
 
-    //AsyncStorage.removeItem("token");
+    // chargement de l'item 'token' du localStorage si value et enregistrement ds le store
+    //AsyncStorage.removeItem("token"); //-> suppression de l'item 'token' au besoin
     AsyncStorage.getItem('token', (err, value) => {
       if (value) {
         const valueParse = JSON.parse(value);
@@ -33,6 +35,7 @@ function Nav(props) {
   
   return (
     <NavigationContainer>
+      {/* si token invité InvitedFlow, si non ConnectedFlow */}
       {props.tokenObj.token === "XeDLDMr3U4HSJSl74HJpKD" ? <InvitedFlow /> : <ConnectedFlow /> }
     </NavigationContainer>
   )

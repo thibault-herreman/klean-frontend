@@ -15,17 +15,21 @@ import PROXY from "../proxy.js";
 
 function ConnectedEventDetailProfilStack(props) {
 
+    // store id de cleanwalk
     let idCW = props.cwIdProfilStack;
 
+    // hooks d'état
     const [cleanwalk, setCleanwalk] = useState(null);
     const [error, setError] = useState(null);
 
+    // tri pour enlever l'admin de la liste des participants
     const dataParticipants = (admin, participants) => {
         participants.unshift(admin);
         return participants;
     };
 
     useEffect(() => {
+        // chargement de la cleanwalk en bdd via son id enregistré ds le store
         async function loadData() {
             const responseCleanwalk = await fetch(PROXY + `/load-cleanwalk/${idCW}/${props.tokenObj.token}`);
             const jsonResponseCleanwalk = await responseCleanwalk.json();
@@ -35,6 +39,7 @@ function ConnectedEventDetailProfilStack(props) {
         loadData();
     }, []);
 
+    // suppression de l'utilisateur ds la liste de participants
     const unsubscribeCw = async () => {
         let rawResponse = await fetch(`${PROXY}/unsubscribe-cw`, {
             method: "POST",
@@ -44,6 +49,7 @@ function ConnectedEventDetailProfilStack(props) {
 
         let body = await rawResponse.json();
         if (body.result == true) {
+            // suppression de l'id de la cleanwalk ds le tableau du store de l'utilisateur
             props.desinsCws(idCW);
             props.navigation.navigate("Profil");
         } if (body.result == false){
@@ -52,6 +58,7 @@ function ConnectedEventDetailProfilStack(props) {
     
     }
 
+    // suppression de la cleanwalk
     const deleteCw = async () => {
         let rawResponse = await fetch(`${PROXY}/delete-cw/${props.tokenObj.token}/${idCW}`, {
             method: 'DELETE'
@@ -59,6 +66,7 @@ function ConnectedEventDetailProfilStack(props) {
 
         let body = await rawResponse.json();
         if (body.result == true) {
+            // suppression de l'id de la cleanwalk ds le tableau du store de l'utilisateur
             props.supCws(idCW);
             props.navigation.navigate("Profil");
         } if (body.result == false){
@@ -67,10 +75,12 @@ function ConnectedEventDetailProfilStack(props) {
 
     }
 
+    // on regarde quelles cleanwalks il organise via le store
     const checkCwsOrganize = props.cwsStore.infosCWorganize.findIndex(
         index => index.toString() === idCW.toString()
     );
 
+    // on affiche les bons boutons et les appels aux bonnes fonctions
     let confirmButton;
     if (checkCwsOrganize !== -1) {
         confirmButton = <View style={styles.confirmButton}>

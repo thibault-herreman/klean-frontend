@@ -21,6 +21,7 @@ import AutoComplete from "../lib/AutoComplete";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 function SignUp(props) {
+  // hooks d'état
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
@@ -36,6 +37,7 @@ function SignUp(props) {
   const [cityInfo, setCityInfo] = useState({});
 
   useEffect(() => {
+    // recherche des villes selon ce qui est tapé ds le champ
     async function loadData() {
       let rawResponse = await fetch(PROXY + "/autocomplete-search-city-only", {
         method: "POST",
@@ -51,6 +53,7 @@ function SignUp(props) {
     }
   }, [city]);
 
+  // on récupére ce qu'il y a dans les champs
   let changeState = (name, value) => {
     if (name == "firstName") {
       setFirstName(value);
@@ -67,6 +70,7 @@ function SignUp(props) {
     }
   };
 
+  // création compte
   async function register() {
     let bodyWithoutID = `token=${props.tokenObj.token}&firstNameFromFront=${firstName}&lastNameFromFront=${lastName}&emailFromFront=${email}&cityFromFront=${city}&passwordFromFront=${password}&cityInfo=${JSON.stringify(cityInfo)}`;
     let bodyWithId = `token=${props.tokenObj.token}&firstNameFromFront=${firstName}&lastNameFromFront=${lastName}&emailFromFront=${email}&cityFromFront=${city}&passwordFromFront=${password}&cityInfo=${JSON.stringify(cityInfo)}&cleanwalkIdFromFront=${props.cwIdInvited}`;
@@ -75,10 +79,13 @@ function SignUp(props) {
     if (props.cwIdInvited == null) {
       finalBody = bodyWithoutID;
     }
+    // s'il y a une cleanwalk ds le store on l'envoie pour enregistrer 
+    // l'utilisateur ds le tableau de participants de la cleanwalk en bdd
     if (props.cwIdInvited != null) {
       finalBody = bodyWithId;
     }
 
+    // vérification de l'égalité des 2 champs de mot de passe
     if (password === confirmPassword) {
       let data = await fetch(PROXY + "/users/sign-up", {
         method: "POST",
@@ -87,9 +94,14 @@ function SignUp(props) {
       });
 
       let body = await data.json();
+
+      // si le résultat de la route renvoie true
       if (body.result == true) {
+        // on set userExits à true
         setUserExists(true);
+        // on enregistre le token dans le store
         props.login(body.token);
+        // on crée l'item token ds le localStorage
         AsyncStorage.setItem('token', JSON.stringify({ token: body.token, IsFirstVisit: false }));
       } else {
         setListErrorSignup(body.error);
@@ -109,6 +121,8 @@ function SignUp(props) {
   }
 
   let button;
+
+  // on regarde s'il y a une cleanwalk dans le store et on affiche le bon bouton en conséquence
   if (props.cwIdInvited == null) {
     button = (
       <ButtonElement
@@ -229,10 +243,7 @@ function mapDispatchToProps(dispatch) {
   return {
     login: function (token) {
       dispatch({ type: "login", token });
-    },
-    signOut: function () {
-      dispatch({ type: "signOut" });
-    },
+    }
   };
 }
 

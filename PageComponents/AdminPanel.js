@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, View, Button } from 'react-native';
 import { connect } from 'react-redux';
 
-
+// composant pour nous faciliter la connexion et l'accès aux screens en phase de dev
 function AdminPanel(props) {
 
     return (

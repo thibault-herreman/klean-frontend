@@ -51,6 +51,7 @@ function PreviewEvent(props) {
         }
     });
 
+    // on limite la taille des caractère du nom
     let nameOrga = '';
     if (props.nameOrga.length > 10) {
         nameOrga = `${props.nameOrga.substr(0, 10)}...`;
@@ -58,6 +59,7 @@ function PreviewEvent(props) {
         nameOrga = props.nameOrga;
     }
 
+    // on limite la taille des caractère du titre
     let titlePreviewEvent = '';
     if (props.title.length > 30) {
         titlePreviewEvent = `${props.title.substr(0, 30)}...`;
@@ -65,6 +67,7 @@ function PreviewEvent(props) {
         titlePreviewEvent = props.title;
     }
 
+    // on limite la taille des caractère de la description
     let descPreviewEvent = '';
     if (props.desc.length > 60) {
         descPreviewEvent = `${props.desc.substr(0, 60)}...`;

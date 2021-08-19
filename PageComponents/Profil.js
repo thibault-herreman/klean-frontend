@@ -25,6 +25,7 @@ import * as ImagePicker from 'expo-image-picker';
 import PROXY from "../proxy";
 
 function Profil(props) {
+  // hooks d'état
   const [isCwOnOrganize, setIsCwOnOrganize] = useState(true);
   const [isStatOnPerso, setIsStatOnPerso] = useState(true);
   const [modalVisible, setModalVisible] = useState(false);
@@ -48,6 +49,8 @@ function Profil(props) {
   const [statPerso, setStatPerso] = useState(null);
   const [statCity, setStatCity] = useState(null);
 
+  // chargement du profil de l'utilisateur : ses cleanwalks, ses infos persos, ses stats et celles de sa ville
+  // on a une écoute sur le tableau des cleanwalks du store pour mettre à jour au besoin
   useEffect(() => {
     const loadProfil = async () => {
       let rawResponse = await fetch(
@@ -66,6 +69,7 @@ function Profil(props) {
   }, [props.cwsStore]);
 
   useEffect(() => {
+    // demande permissions imagePicker
     (async () => {
       if (Platform.OS !== 'web') {
         const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -76,6 +80,7 @@ function Profil(props) {
     })();
   }, []);
 
+  // rechercher une image dans la galerie du téléphone
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
@@ -95,8 +100,12 @@ function Profil(props) {
     setModalVisible(false);
   }
 
+  // déconnexion de l'application
   const signoutAppli = () => {
+    // on enregistre le token invité ds le store
     props.signOut();
+    // on set l'item 'token' du localStorage : on remet le token invité 
+    // et on met isFirstVisit à false pour empêcher de réafficher le onBoarding à la prochaine connexion
     AsyncStorage.setItem('token', JSON.stringify({ token: "XeDLDMr3U4HSJSl74HJpKD", IsFirstVisit: false }));
   }
 
@@ -104,6 +113,8 @@ function Profil(props) {
   if (listCWparticipate.length > 0) {
     cwListParticipate = (
       <View style={styles.list}>
+        {/* on envoie la liste de cleanwalk au composant et la fonction pour rediriger vers la page détail,
+        elle sera utilisée via la reverse data flow */}
         <CleanwalkList
           onPress={() =>
             props.navigation.navigate("ConnectedEventDetailProfilStack")
@@ -228,6 +239,7 @@ function Profil(props) {
                 />
               </View>
               <View style={styles.stat}>
+                {/* on charge la bonne image et le nom de badge selon la valeur des stats persos */}
                 <Image
                   style={styles.robot}
                   source={
@@ -274,6 +286,7 @@ function Profil(props) {
                   style={styles.robot}
                   source={require("../assets/imagesKlean/CityPicto.png")}
                 />
+                {/* on affiche les stats de la ville de l'utilisateur */}
                 <View style={styles.statBody}>
                   <Text style={styles.statBodyTitle}>
                     {statCity["city_info"][0].cityName}
@@ -292,11 +305,13 @@ function Profil(props) {
           />
           <View style={styles.infoPerso}>
 
+          {/* on affiche l'avatar de l'utilisateur */}
           <Image
             style={styles.avatar}
             source={{uri: infosUser.avatarUrl}}
             
           />
+            {/* on affiche les stats persos de l'utilisateur */}
             <View style={styles.statBody}>
               <Text style={styles.statBodyTitle}>{infosUser.firstName}</Text>
               <Text style={styles.statBodyText}>{infosUser.lastName}</Text>
@@ -321,6 +336,7 @@ function Profil(props) {
                     name: 'avatar.jpg',
                   });
 
+                  // on enregistre l'avatar en bdd et dans cloudinary
                   var rawResponse = await fetch (PROXY + `/upload-photo/${props.tokenObj.token}`, {
                     method: 'POST',
                     body: data
@@ -437,12 +453,9 @@ const styles = StyleSheet.create({
 
 function mapDispatchToProps(dispatch) {
   return {
-    login: function (token) {
-      dispatch({ type: "login", token });
-    },
     signOut: function () {
       dispatch({ type: "signOut" });
-    },
+    }
   };
 }
 
